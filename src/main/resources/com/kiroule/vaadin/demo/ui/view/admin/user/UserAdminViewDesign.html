@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;orderstheme&quot;}">
+  <meta name="vaadin-version" content="8.0.2">
+  <meta name="package-mapping" content="com_vaadin_template_orders_ui_view_admin:com.kiroule.vaadin.demo.ui.view.admin">
+ </head>
+ <body>
+  <vaadin-vertical-layout style-name="crud-template" spacing="false" responsive size-full margin="false">
+   <vaadin-horizontal-layout style-name="top-bar" spacing="false" width-full height="50px">
+    <vaadin-horizontal-layout spacing="false" width-full :middle :expand>
+     <vaadin-text-field icon="fonticon://FontAwesome/f002" style-name="small inline-icon search" id="search" placeholder="Search" width-full _id="search"></vaadin-text-field>
+    </vaadin-horizontal-layout>
+    <vaadin-button icon="fonticon://FontAwesome/f067" style-name="borderless" id="add" plain-text _id="add" :middle :right>
+      Add new 
+    </vaadin-button>
+   </vaadin-horizontal-layout>
+   <vaadin-css-layout style-name="content" size-full :expand>
+    <vaadin-css-layout style-name="list" size-full>
+     <vaadin-grid id="list" size-full data-item-type="com.kiroule.vaadin.demo.backend.data.entity.User" _id="list"></vaadin-grid>
+    </vaadin-css-layout>
+    <vaadin-vertical-layout enabled="false" style-name="inspect" spacing="false" id="form" size-full margin="false" _id="form">
+     <vaadin-css-layout style-name="edit" size-full :expand>
+      <vaadin-css-layout style-name="section half" width-full>
+       <vaadin-text-field caption="Email (login)" style-name="small" id="email" width-full height="31px" _id="email"></vaadin-text-field>
+      </vaadin-css-layout>
+      <vaadin-css-layout style-name="section half" width-full>
+       <vaadin-text-field caption="Name" style-name="small" id="name" width-full _id="name"></vaadin-text-field>
+      </vaadin-css-layout>
+      <vaadin-css-layout style-name="section half" width-full>
+       <vaadin-text-field caption="Password" style-name="small" id="password" width-full _id="password"></vaadin-text-field>
+      </vaadin-css-layout>
+      <vaadin-css-layout style-name="section half" width-full>
+       <com_vaadin_template_orders_ui_view_admin-role-select style-name="small" id="role" width-full _id="role"></com_vaadin_template_orders_ui_view_admin-role-select>
+      </vaadin-css-layout>
+     </vaadin-css-layout>
+     <vaadin-horizontal-layout style-name="buttons border-top" width-full height="50px">
+      <vaadin-button style-name="small primary" id="update" plain-text _id="update" :middle>
+        Update 
+      </vaadin-button>
+      <vaadin-button style-name="small" id="cancel" plain-text _id="cancel" :middle :center>
+        Cancel 
+      </vaadin-button>
+      <vaadin-button style-name="small danger" id="delete" plain-text _id="delete" :middle :right :expand>
+        Delete 
+      </vaadin-button>
+     </vaadin-horizontal-layout>
+    </vaadin-vertical-layout>
+   </vaadin-css-layout>
+  </vaadin-vertical-layout>
+ </body>
+</html>

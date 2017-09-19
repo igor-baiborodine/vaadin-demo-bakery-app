@@ -1,0 +1,83 @@
+@mixin menu {
+  .app-shell {
+    .logo {
+      // our logo text is white
+      color: #fff;
+      word-wrap: break-word;
+    }
+    .v-caption-logo {
+      // this is the (font)icon
+      @extend .v-label;
+      @extend .logo;
+    }
+  
+    .navigation-bar {
+      color: lighten($v-focus-color,40%);
+      background-size: cover;
+      background-position: top;
+  
+      .v-button {
+        border-radius: 0;
+      }
+      .selected {
+        background: rgba(0,0,0,.2);
+        color: lighten($v-focus-color,60%);
+        .v-icon, .v-button-caption {
+            color: lighten($v-focus-color,60%);
+        }
+      }
+      .activeViewName {
+        line-height: $v-unit-size;
+        width: auto !important;
+        padding: 0 $v-unit-size / 2.5;
+        font-size: $v-font-size;
+      }
+    }
+  }
+
+  // narrow screens
+  .app-shell[width-range~="-600px"] {
+    .logo {
+      max-width: 150px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .v-caption-logo {
+      float: left;
+    }
+  }
+
+  // medium screens
+  .app-shell[width-range~="601px-"] {
+    .activeViewName {
+      display: none;
+    }
+    .v-caption-logo {
+      display:block;
+      text-align: center;
+    }
+    @if $app-background-gradient {
+      // apply gradient, if configured
+      .navigation-bar-container {
+          background-image: $app-background-gradient;
+      }
+      .navigation-bar {
+        background-color: transparent;
+      }
+      .navigation {
+        background-color: transparent;
+        border: none;
+      }
+    }
+  }
+  // wide screens
+  .app-shell[width-range~="1001px-"] {
+    @if $app-background-image {
+      // load the background image, if configured
+      .navigation-bar {
+        background-image: $app-background-image;
+      }
+    }
+  }
+}

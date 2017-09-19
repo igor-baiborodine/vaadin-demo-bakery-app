@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;apptheme&quot;}">
+  <meta name="vaadin-version" content="8.0.5">
+  <meta name="package-mapping" content="com_vaadin_template_orders_ui_view_orders:com.kiroule.vaadin.demo.ui.view.orders">
+  <meta name="package-mapping" content="com_vaadin_template_orders_ui_components:com.kiroule.vaadin.demo.ui.components">
+  <meta name="package-mapping" content="com_vaadin_template_orders_ui_view_orderedit:com.kiroule.vaadin.demo.ui.view.orderedit">
+ </head>
+ <body>
+  <vaadin-vertical-layout spacing="false" margin-top="false">
+   <vaadin-css-layout style-name="order-form responsive" responsive width-full>
+    <vaadin-horizontal-layout id="reportHeader" width-full _id="reportHeader">
+     <vaadin-label style-name="h4 colored" id="orderId" plain-text _id="orderId">
+       #182 
+     </vaadin-label>
+     <vaadin-label style-name="h4 colored" id="stateLabel" width-full plain-text _id="stateLabel" :expand>
+       New order 
+     </vaadin-label>
+     <com_vaadin_template_orders_ui_view_orderedit-order-state-select id="state" _id="state" :middle :right></com_vaadin_template_orders_ui_view_orderedit-order-state-select>
+    </vaadin-horizontal-layout>
+    <vaadin-label style-name="header" width-full plain-text>
+      Due 
+    </vaadin-label>
+    <vaadin-horizontal-layout style-name="half" width-full>
+     <vaadin-date-field lenient id="dueDate" placeholder="Date" width="180px" _id="dueDate"></vaadin-date-field>
+     <vaadin-combo-box empty-selection-allowed="false" id="dueTime" text-input-allowed="false" width="6em" data-item-type="java.time.LocalTime" _id="dueTime" :expand></vaadin-combo-box>
+    </vaadin-horizontal-layout>
+    <vaadin-horizontal-layout style-name="half" width-full>
+     <vaadin-label style-name="large" plain-text :middle>
+       @ 
+     </vaadin-label>
+     <com_vaadin_template_orders_ui_view_orderedit-pickup-location-combo-box id="pickupLocation" width-full _id="pickupLocation" :middle :expand></com_vaadin_template_orders_ui_view_orderedit-pickup-location-combo-box>
+    </vaadin-horizontal-layout>
+    <vaadin-label style-name="header" width-full plain-text>
+      Customer 
+    </vaadin-label>
+    <vaadin-text-field style-name="half" id="fullName" placeholder="Firstname Lastname" width-full data-property-id="customer.fullName" _id="fullName"></vaadin-text-field>
+    <vaadin-text-field style-name="half" id="phone" placeholder="Phone number" width-full data-property-id="customer.phoneNumber" _id="phone"></vaadin-text-field>
+    <vaadin-text-field id="details" placeholder="Additional details" width-full data-property-id="customer.details" _id="details"></vaadin-text-field>
+    <vaadin-label style-name="header" width-full plain-text>
+      Products 
+    </vaadin-label>
+    <vaadin-css-layout style-name="product-container" id="productInfoContainer" width-full _id="productInfoContainer"></vaadin-css-layout>
+    <vaadin-button icon="fonticon://Vaadin-Icons/e7fe" style-name="add-items link" id="addItems" width-full height="100px" _id="addItems">
+      Add item 
+    </vaadin-button>
+    <vaadin-label style-name="total huge bold" id="total" width-full plain-text _id="total">
+      0.00 
+    </vaadin-label>
+    <com_vaadin_template_orders_ui_view_orderedit-order-history id="history" width-full _id="history"></com_vaadin_template_orders_ui_view_orderedit-order-history>
+    <vaadin-css-layout style-name="buttons" width-full>
+     <vaadin-button icon="fonticon://Vaadin-Icons/e7ad" style-name="cancel" id="cancel" _id="cancel">
+       Cancel 
+     </vaadin-button>
+     <vaadin-button icon="fonticon://Vaadin-Icons/e6ec" style-name="primary icon-align-right" id="ok" plain-text _id="ok">
+       Place order 
+     </vaadin-button>
+    </vaadin-css-layout>
+   </vaadin-css-layout>
+  </vaadin-vertical-layout>
+ </body>
+</html>

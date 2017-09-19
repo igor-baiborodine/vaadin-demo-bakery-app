@@ -1,0 +1,129 @@
+@mixin ordersview {
+
+	.order-form {
+		max-width: 768px;
+		.add-items {
+			text-align: left;
+			border: 1px dashed rgba(0,0,0,.2);
+		}
+		.total {
+			text-align: right;
+			border-top: 2px solid black;
+		}
+		.v-widget.header {
+			font-weight: bold;
+			text-transform: uppercase;
+			font-size: 12px;
+			margin-bottom: $v-layout-spacing-vertical;
+			margin-top: $v-layout-spacing-vertical;
+			border-bottom: 2px solid rgba(0, 0, 0, .1);
+		}
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      .v-button {
+        margin-top: $v-layout-spacing-vertical;
+      }
+    }
+    .product-container {
+      margin-top: 0;
+    }
+    .product-row {
+      border-bottom: 1px solid rgba(0,0,0,.05);
+      padding-bottom: $v-layout-spacing-vertical;
+      margin-bottom: round($v-layout-spacing-vertical * 2);
+      .times {
+        text-align: center;
+      }
+      .quantity, .price {
+        text-align: right;
+      }
+      .delete {
+        border-radius: 4px 0 0 4px;
+        border-right: 0;
+      }
+      .product {
+        border-radius: 0 4px 4px 0;
+      }
+      .v-label.comment {
+        // read-only mode only
+        font-size: $v-font-size--small;
+        white-space: pre-wrap;
+        margin-bottom: 0;
+        margin-top: -$v-layout-spacing-vertical;
+      }
+    }
+    .product-row:last-child {
+        border-bottom: 0;
+        margin-bottom: 0;
+    }
+  
+    .history .v-caption {
+      padding-bottom: 0;
+      .v-captiontext,
+      .v-icon {
+        font-size: 10px;
+        font-weight: bold;
+        line-height: 1;
+      }
+    }
+
+    // Make components completely invisible in read-only mode
+    .v-textfield.v-readonly {
+      // Hide placeholder in readonly fields
+      &::placeholder {
+        color: transparent;
+      }
+      &:-ms-input-placeholder {
+        color: transparent;
+      }
+      &::-webkit-input-placeholder {
+        color: transparent;
+      }
+      padding-left: 0;
+      border: 0;
+      font-weight: 100;
+    }
+    .v-filterselect.v-readonly {
+      input {
+        padding-left: 0;
+        border: 0;
+        font-weight: 100;
+      }
+      .v-filterselect-button {
+        display: none;
+      }
+    }
+    .v-datefield.v-readonly {
+      .v-datefield-button {
+        display: none;
+      }
+    }
+  }
+
+  // minimalistic custom responsive "layout"
+	.responsive {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    > .v-widget {
+      margin: 0 0 $v-layout-spacing-vertical 0;
+    }
+    .v-caption-half {
+      margin: -1px;
+    }
+	}
+	.responsive[width-range~="-599px"] {
+		justify-content: flex-end;
+	}
+	.responsive[width-range~="600px-"] .half {
+		width: calc(50% - $v-layout-spacing-horizontal) !important;
+	}
+	.responsive[width-range~="600px-"] .long {
+		width: calc(100% - 166px) !important;
+	}
+	.responsive[width-range~="600px-"] .short {
+		width: 150px !important;
+	}
+}

@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;apptheme&quot;}">
+  <meta name="vaadin-version" content="8.0.5">
+  <meta name="package-mapping" content="orders:com.kiroule.vaadin.demo.ui.components">
+ </head>
+ <body>
+  <vaadin-vertical-layout style-name="storefront" spacing="false" size-full margin="false">
+   <vaadin-panel style-name="borderless" _id="searchPanel">
+    <vaadin-horizontal-layout spacing="false" width-full margin-left margin-right margin-top>
+     <vaadin-css-layout style-name="list-filters" width-full :expand>
+      <vaadin-text-field id="searchField" placeholder="Search" _id="searchField"></vaadin-text-field>
+      <vaadin-button icon="fonticon://Vaadin-Icons/e805" id="searchButton" plain-text _id="searchButton"></vaadin-button>
+      <vaadin-check-box caption="Include past" style-name="small" _id="includePast"></vaadin-check-box>
+     </vaadin-css-layout>
+     <vaadin-button icon="fonticon://Vaadin-Icons/e801" style-name="friendly" id="newOrder" plain-text _id="newOrder">
+       New 
+     </vaadin-button>
+    </vaadin-horizontal-layout>
+   </vaadin-panel>
+   <orders-orders-grid id="list" size-full _id="list" :expand></orders-orders-grid>
+  </vaadin-vertical-layout>
+ </body>
+</html>

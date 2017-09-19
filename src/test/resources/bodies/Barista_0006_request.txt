@@ -1,0 +1,1 @@
+{"csrfToken":"${seckey}","rpc":[["datareqrpc1","com.vaadin.shared.data.DataRequestRpc","requestRows",[40,40,0,40]],["0","com.vaadin.shared.ui.ui.UIServerRpc","resize",[1254,824,1254,824]]],"syncId":${syncId},"clientId":${clientId}}

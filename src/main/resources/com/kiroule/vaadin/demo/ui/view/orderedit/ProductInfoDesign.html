@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;apptheme&quot;}">
+  <meta name="vaadin-version" content="8.0.5">
+  <meta name="package-mapping" content="com_vaadin_template_orders_ui_view_orderedit:com.kiroule.vaadin.demo.ui.view.orderedit">
+  <meta name="package-mapping" content="orders:com.kiroule.vaadin.demo.ui.components">
+ </head>
+ <body>
+  <vaadin-css-layout style-name="product-row responsive" responsive width-full>
+   <vaadin-horizontal-layout style-name="long" spacing="false" width-full>
+    <vaadin-button icon="fonticon://Vaadin-Icons/e80b" style-name="delete" id="delete" plain-text _id="delete" :middle></vaadin-button>
+    <com_vaadin_template_orders_ui_view_orderedit-product-combo-box style-name="product" id="product" width-full _id="product" :middle :expand></com_vaadin_template_orders_ui_view_orderedit-product-combo-box>
+   </vaadin-horizontal-layout>
+   <vaadin-horizontal-layout style-name="short" spacing="false" width="150px" height="37px">
+    <vaadin-text-field style-name="quantity" id="quantity" width="4em" _id="quantity"></vaadin-text-field>
+    <vaadin-label style-name="times" width-full plain-text :middle :center :expand>
+      x 
+    </vaadin-label>
+    <vaadin-label style-name="price" id="price" plain-text _id="price" :middle :right>
+      0.00 
+    </vaadin-label>
+   </vaadin-horizontal-layout>
+   <vaadin-text-area rows="2" style-name="comment long" id="comment" placeholder="Details" width-full _id="comment"></vaadin-text-area>
+  </vaadin-css-layout>
+ </body>
+</html>

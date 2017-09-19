@@ -1,0 +1,134 @@
+@mixin dashboardview {
+	$padding: $v-layout-margin-top;
+	
+	$spacing: round($padding / 3);
+	$spacing-small:  round($spacing / 2);
+	
+	$first-row-compensation: round(160px / 3);
+	
+	vaadin-board {
+		padding: $padding;
+
+		vaadin-board-row:nth-child(2) > .board-box {
+			height: calc(20vh - $first-row-compensation) !important;
+			min-height: 150px;
+		}
+		vaadin-board-row:nth-child(3) > .board-box {
+			height: calc(40vh - $first-row-compensation) !important;
+			min-height: 200px;
+		}
+		vaadin-board-row:nth-child(4) {
+			height: calc(40vh - $first-row-compensation);
+			min-height: 200px;
+		}
+	
+		vaadin-board-row.medium:nth-child(2) > .board-box {
+			height: calc(20vh - $first-row-compensation * 2) !important;
+		}
+		vaadin-board-row.medium:nth-child(3) > .board-box {
+			height: calc(40vh - $first-row-compensation * 2) !important;
+		}
+		vaadin-board-row.medium:nth-child(4) {
+			height: calc(40vh - $first-row-compensation * 2);
+		}
+
+  		.board-box {
+  			padding: $spacing;
+  		}	
+		.board-box-needs-attention {
+			background-color: transparentize($v-error-indicator-color, .96);
+			h1, h4 {
+				color: $v-error-indicator-color;
+			}
+		}
+
+  		.board-box-label {
+  			text-align: center;
+  			h1, 
+  			h4 {
+  				margin: $v-layout-spacing-vertical $v-layout-spacing-horizontal !important;
+  				margin-top: $spacing !important;
+  				font-weight: 100;
+  			}
+  	     h1 {
+            @extend .v-label-huge;
+        }
+  		}
+
+		.board-row-group {
+			@include valo-panel-style;
+      		margin-bottom: $spacing;
+
+          .new h4 {
+      			color: $v-friendly-color;
+      		}
+          .na h4 {
+      			color: $v-error-indicator-color;
+      		}
+
+      		&.large {
+      			.board-box:not(:first-child) {
+      				border-left: valo-border($strength: .3);
+      			}
+      		}
+      		&.medium {
+      			.board-box:nth-child(even) {
+      				border-left: valo-border($strength: .3);
+      			}
+      			.board-box:nth-child(1n+3) {
+      				border-top: valo-border($strength: .3);
+      			}
+      		}
+      		&.small {
+      			margin-bottom: $spacing-small;
+      			.board-box:nth-child(1n+2) {
+      				border-top: valo-border($strength: .3);
+      			}
+      		}
+		}
+	
+		.board-row-panels {
+			.board-box:first-child {
+				padding-left: 0;
+			}
+			.board-box:last-child {
+				padding-right: 0;
+			}
+      		.board-box-inner {
+				@include valo-panel-style;
+				position: relative;
+				z-index: 0;
+				overflow: hidden;
+				padding: $spacing;
+			}
+      		&.small {
+      			.board-box {
+      				padding: $spacing-small 0;
+      			}
+      		}
+			.due-grid {
+				.board-box-inner {
+					padding: 0;
+				}
+				.v-grid > div {
+					border: 0;
+				}
+			}
+		}
+
+		text.highcharts-title {
+			@extend .v-label-h4;
+		}
+	}
+	.dashboard-view[width-range~="-599px"] {
+ 		/* minimize spacing/padding on small screens */
+		vaadin-board {
+			padding: 0;
+			.board-row-group,
+			.board-row-panels .board-box-inner {
+				border-radius: 0;
+				border-width: 1px 0px;
+			}
+		}
+	}
+}

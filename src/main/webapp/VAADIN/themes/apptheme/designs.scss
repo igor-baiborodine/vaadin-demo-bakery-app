@@ -1,0 +1,316 @@
+
+// Styles imported from Application_Menu.html
+// App shell
+  .app-shell {
+
+    // Navigation bar background color
+    $navigation-bar-bg-color: $v-focus-color;
+
+    .custom-menubar {
+      .v-menubar-menuitem {
+        position: relative;
+        :before {
+          content: "";
+          display: block;
+          position: absolute;
+          width: 100%;
+          height: 1px;
+          background: $v-focus-color;
+          bottom: -20px;
+          left: 0;
+        }
+      }
+    }
+
+    .navigation-bar {
+      background: $navigation-bar-bg-color;
+      z-index: 10000;
+    }
+
+    .logo {
+      color: lighten($navigation-bar-bg-color, 40%);
+      text-align: center;
+      padding: $v-unit-size / 2 $v-unit-size / 4;
+      font-size: $v-font-size * 1.1;
+    }
+
+    .view-title {
+      font-size: $v-font-size * 1.1;
+      color: lighten($v-font-color, 10%);
+      padding: $v-unit-size / 2 $v-unit-size / 3;
+    }
+
+    .padding {
+      padding: $v-unit-size / 3;
+    }
+
+    .padding-top {
+      padding-top: $v-unit-size / 3;
+    }
+
+    .padding-right {
+      padding-right: $v-unit-size / 3;
+    }
+
+    .padding-bottom {
+      padding-bottom: $v-unit-size / 3;
+    }
+
+    .padding-left {
+      padding-left: $v-unit-size / 3;
+    }
+
+    .content-section {
+      background: lighten($v-background-color, 20%);
+      border: valo-border($border: $v-border, $strength: 0.2);
+      font-size: $v-font-size * .9;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .menu {
+      float: right;
+      padding: 0 10px;
+      line-height: $v-unit-size;
+      color: lighten($navigation-bar-bg-color, 40%);
+      display: none;
+
+      .v-icon {
+        line-height: 1;
+        color: lighten($navigation-bar-bg-color, 60%);
+        font-size: 16px;
+      }
+    }
+
+    .navigation {
+      border-top: 1px solid lighten($navigation-bar-bg-color, 7%);
+      border-bottom: 1px solid lighten($navigation-bar-bg-color, 7%);
+      background: darken($navigation-bar-bg-color, 4%);
+
+      .v-icon {
+        color: lighten($navigation-bar-bg-color, 25%);
+      }
+
+      .v-button {
+        text-align: left;
+        font-size: $v-font-size * .9;
+        text-overflow: ellipsis;
+        color: lighten($navigation-bar-bg-color, 40%);
+
+        &.active, &:focus {
+          color: lighten($navigation-bar-bg-color, 70%);
+
+          .v-icon {
+            color: lighten($navigation-bar-bg-color, 45%);
+          }
+        }
+
+        // Removes the default focus border
+        &:focus:after {
+          content: none;
+        }
+        &:after {
+          // Without this the mousedown event is caught by the :after Element
+          // but mouseup goes to the underlying span (after is hidden on focus).
+          // This combination prevents a 'click' event from firing in Safari
+          pointer-events: none;
+        }
+
+        &.borderless:hover {
+          background: darken($navigation-bar-bg-color, 7%);
+        }
+      }
+    }
+
+    // Responsive styles
+    &[width-range~="601px-1000px"] {
+      .navigation-bar-container {
+        width: 80px !important;
+
+        .logo {
+          font-size: $v-font-size * .75;
+        }
+
+        .navigation .v-button {
+          font-size: 26px;
+          height: 60px;
+          padding: 10px 6px;
+          box-sizing: border-box;
+          line-height: 1;
+
+          &:before {
+            content: none;
+          }
+
+          .v-button-wrap {
+            width: 100%
+          }
+
+          .v-button-caption {
+            font-size: $v-font-size * 0.6;
+            margin: 0;
+            width: 100%;
+            float: left;
+            margin-top: 3px;
+            text-align: center;
+          }
+
+          .v-icon {
+            width: 100%;
+            float: left;
+          }
+        }
+      }
+    }
+
+    &[width-range~="-600px"] {
+      .navigation-bar-container {
+        width: 0px !important;
+      }
+
+      .menu {
+        display: block;
+      }
+
+      .navigation {
+        /* disable visibility by default, delay to enable clicks */
+        visibility: hidden;
+        transition: visibility 0.1s;
+      }
+
+      .menu:focus {
+        /* Allow closing the menu by clicking it again */
+        pointer-events: none;
+      }
+      .menu:focus + .navigation {
+        visibility: visible;
+      }
+      .navigation-bar {
+        position: fixed;
+        width: 100%;
+        height: $v-unit-size !important;
+      }
+
+      .logo {
+        line-height: $v-unit-size;
+        width: auto !important;
+        float: left;
+        padding: 0 $v-unit-size / 2.5;
+        font-size: $v-font-size;
+      }
+
+      .content-container {
+        padding-top: $v-unit-size;
+      }
+    }
+  }
+
+// Styles imported from Data_Grid_With_Editor.html
+@mixin vaadin-crud-template {
+     .crud-template {
+       .top-bar {
+         background: white;
+         color: $v-focus-color;
+         padding: 0 $v-unit-size / 2;
+         border-bottom: valo-border($border: $v-border, $strength: 1.0);
+       }
+
+       .padding {
+         padding: $v-unit-size / 2;
+       }
+
+       .border {
+         border: valo-border($v-border)
+       }
+
+       .border-top {
+         border-top: valo-border($v-border)
+       }
+
+       .border-left {
+         border-left: valo-border($v-border)
+       }
+
+       .filters {
+         padding: $v-unit-size / 4;
+
+         .v-slot {
+           position: relative;
+         }
+       }
+
+       .content {
+         position: relative;
+       }
+
+       .list {
+         padding-right: 300px;
+       }
+
+       .inspect {
+         position: absolute;
+         right: 0;
+         top: 0;
+         background: darken($v-app-background-color, 5%);
+         width: 300px !important;
+         border-left: 4px solid darken($v-app-background-color, 10%);
+       }
+
+       .section {
+         padding: $v-unit-size / 4;
+       }
+
+       .edit {
+         padding: $v-unit-size / 4;
+         overflow-x: hidden;
+         overflow-y: auto;
+         border-left: 1px solid darken($v-app-background-color, 15%);
+         border-top: 1px solid darken($v-app-background-color, 15%);
+       }
+
+       .search {
+         background: transparent;
+         border: none;
+         box-shadow: none;
+         border-bottom: 2px solid $v-focus-color;
+         border-radius: 0;
+         max-width: 350px;
+       }
+
+       .buttons {
+         background: $v-app-background-color;
+         padding: $v-unit-size / 4;
+         border-left: 1px solid darken($v-app-background-color, 15%);
+       }
+
+       &[width-range~="-850px"] {
+         .list {
+           height: 50% !important;
+           padding-right: 0;
+         }
+
+         .inspect {
+           position: static;
+           height: 50% !important;
+           width: 100% !important;
+           border-top: 4px solid darken($v-app-background-color, 10%);
+           border-left: none;
+         }
+
+         .section, .edit {
+           padding: $v-unit-size / 8;
+         }
+
+         .half {
+           width: 50% !important;
+           float: left;
+         }
+       }
+
+       &[width-range~="-650px"] {
+         .half {
+           width: 100% !important;
+         }
+       }
+     }
+   }
