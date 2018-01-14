@@ -10,7 +10,7 @@
     }
   }
   .v-grid.orders-grid {
-     > div {
+    > div {
       border-left: 0;
       border-bottom: 0;
     }
@@ -52,7 +52,7 @@
     .delivered .due {
       &:after {
         // checkmark for delivered items
-        content:'\e7c5';
+        content: '\e7c5';
         font-family: Vaadin-Icons;
         line-height: $v-line-height;
         display: block;

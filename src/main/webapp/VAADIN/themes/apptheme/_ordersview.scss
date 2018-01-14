@@ -1,23 +1,23 @@
 @mixin ordersview {
 
-	.order-form {
-		max-width: 768px;
-		.add-items {
-			text-align: left;
-			border: 1px dashed rgba(0,0,0,.2);
-		}
-		.total {
-			text-align: right;
-			border-top: 2px solid black;
-		}
-		.v-widget.header {
-			font-weight: bold;
-			text-transform: uppercase;
-			font-size: 12px;
-			margin-bottom: $v-layout-spacing-vertical;
-			margin-top: $v-layout-spacing-vertical;
-			border-bottom: 2px solid rgba(0, 0, 0, .1);
-		}
+  .order-form {
+    max-width: 768px;
+    .add-items {
+      text-align: left;
+      border: 1px dashed rgba(0, 0, 0, .2);
+    }
+    .total {
+      text-align: right;
+      border-top: 2px solid black;
+    }
+    .v-widget.header {
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 12px;
+      margin-bottom: $v-layout-spacing-vertical;
+      margin-top: $v-layout-spacing-vertical;
+      border-bottom: 2px solid rgba(0, 0, 0, .1);
+    }
     .buttons {
       display: flex;
       justify-content: space-between;
@@ -30,7 +30,7 @@
       margin-top: 0;
     }
     .product-row {
-      border-bottom: 1px solid rgba(0,0,0,.05);
+      border-bottom: 1px solid rgba(0, 0, 0, .05);
       padding-bottom: $v-layout-spacing-vertical;
       margin-bottom: round($v-layout-spacing-vertical * 2);
       .times {
@@ -55,10 +55,10 @@
       }
     }
     .product-row:last-child {
-        border-bottom: 0;
-        margin-bottom: 0;
+      border-bottom: 0;
+      margin-bottom: 0;
     }
-  
+
     .history .v-caption {
       padding-bottom: 0;
       .v-captiontext,
@@ -103,7 +103,7 @@
   }
 
   // minimalistic custom responsive "layout"
-	.responsive {
+  .responsive {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -113,17 +113,17 @@
     .v-caption-half {
       margin: -1px;
     }
-	}
-	.responsive[width-range~="-599px"] {
-		justify-content: flex-end;
-	}
-	.responsive[width-range~="600px-"] .half {
-		width: calc(50% - $v-layout-spacing-horizontal) !important;
-	}
-	.responsive[width-range~="600px-"] .long {
-		width: calc(100% - 166px) !important;
-	}
-	.responsive[width-range~="600px-"] .short {
-		width: 150px !important;
-	}
+  }
+  .responsive[width-range~="-599px"] {
+    justify-content: flex-end;
+  }
+  .responsive[width-range~="600px-"] .half {
+    width: calc(50% - $v-layout-spacing-horizontal) !important;
+  }
+  .responsive[width-range~="600px-"] .long {
+    width: calc(100% - 166px) !important;
+  }
+  .responsive[width-range~="600px-"] .short {
+    width: 150px !important;
+  }
 }

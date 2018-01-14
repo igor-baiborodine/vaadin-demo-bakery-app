@@ -10,20 +10,20 @@
       @extend .v-label;
       @extend .logo;
     }
-  
+
     .navigation-bar {
-      color: lighten($v-focus-color,40%);
+      color: lighten($v-focus-color, 40%);
       background-size: cover;
       background-position: top;
-  
+
       .v-button {
         border-radius: 0;
       }
       .selected {
-        background: rgba(0,0,0,.2);
-        color: lighten($v-focus-color,60%);
+        background: rgba(0, 0, 0, .2);
+        color: lighten($v-focus-color, 60%);
         .v-icon, .v-button-caption {
-            color: lighten($v-focus-color,60%);
+          color: lighten($v-focus-color, 60%);
         }
       }
       .activeViewName {
@@ -54,13 +54,13 @@
       display: none;
     }
     .v-caption-logo {
-      display:block;
+      display: block;
       text-align: center;
     }
     @if $app-background-gradient {
       // apply gradient, if configured
       .navigation-bar-container {
-          background-image: $app-background-gradient;
+        background-image: $app-background-gradient;
       }
       .navigation-bar {
         background-color: transparent;
