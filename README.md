@@ -3,6 +3,8 @@
 > UPDATES
 * 2018-01-14  Regenerated the source code by using the latest version of Vaadin's Starter Pack.
 
+#### See also [Petstore with a Spring based backend and Vaadin 8 UI](https://github.com/igor-baiborodine/jpetstore-6-vaadin-spring-boot)
+
 # Running the project
 
 `mvn spring-boot:run`
