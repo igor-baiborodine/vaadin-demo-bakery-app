@@ -112,7 +112,7 @@ public class DataGenerator implements HasLogger {
 				orders.add(createOrder(dueDate));
 			}
 		}
-		orderRepository.save(orders);
+		orderRepository.saveAll(orders);
 	}
 
 	private Order createOrder(LocalDate dueDate) {

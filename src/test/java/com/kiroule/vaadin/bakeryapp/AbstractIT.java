@@ -14,9 +14,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.LoggerFactory;
 
-import com.kiroule.vaadin.bakeryapp.ui.view.LoginViewElement;
-import com.kiroule.vaadin.bakeryapp.ui.view.dashboard.DashboardViewElement;
-import com.kiroule.vaadin.bakeryapp.ui.view.storefront.StorefrontViewElement;
+import com.kiroule.vaadin.bakeryapp.ui.views.LoginViewElement;
+import com.kiroule.vaadin.bakeryapp.ui.views.dashboard.DashboardViewElement;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.StorefrontViewElement;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.HasDriver;

@@ -1,19 +1,19 @@
 package com.kiroule.vaadin.bakeryapp.app.security;
 
-import com.kiroule.vaadin.bakeryapp.app.Application;
-import com.vaadin.spring.annotation.SpringComponent;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.web.context.annotation.ApplicationScope;
-
 import java.io.IOException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.context.annotation.ApplicationScope;
+
+import com.vaadin.spring.annotation.SpringComponent;
+import com.kiroule.vaadin.bakeryapp.app.Application;
 
 /**
  * Redirects to the application after successful authentication.

@@ -10,8 +10,8 @@ import com.vaadin.spring.internal.Conventions;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.kiroule.vaadin.bakeryapp.app.security.SecurityUtils;
 import com.kiroule.vaadin.bakeryapp.backend.data.Role;
-import com.kiroule.vaadin.bakeryapp.ui.view.dashboard.DashboardView;
-import com.kiroule.vaadin.bakeryapp.ui.view.storefront.StorefrontView;
+import com.kiroule.vaadin.bakeryapp.ui.views.dashboard.DashboardView;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.StorefrontView;
 
 /**
  * Governs view navigation of the app.

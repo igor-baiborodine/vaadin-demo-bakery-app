@@ -14,10 +14,10 @@ import com.vaadin.navigator.ViewLeaveAction;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.spring.annotation.UIScope;
 import com.kiroule.vaadin.bakeryapp.ui.navigation.NavigationManager;
-import com.kiroule.vaadin.bakeryapp.ui.view.admin.product.ProductAdminView;
-import com.kiroule.vaadin.bakeryapp.ui.view.admin.user.UserAdminView;
-import com.kiroule.vaadin.bakeryapp.ui.view.dashboard.DashboardView;
-import com.kiroule.vaadin.bakeryapp.ui.view.storefront.StorefrontView;
+import com.kiroule.vaadin.bakeryapp.ui.views.admin.product.ProductAdminView;
+import com.kiroule.vaadin.bakeryapp.ui.views.admin.user.UserAdminView;
+import com.kiroule.vaadin.bakeryapp.ui.views.dashboard.DashboardView;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.StorefrontView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.UI;
 

@@ -16,6 +16,7 @@ import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
 public class UserService extends CrudService<User> {
 
 	private static final String MODIFY_LOCKED_USER_NOT_PERMITTED = "User has been locked and cannot be modified or deleted";
+	private static final String USER_NOT_FOUND = "User not found";
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
 
@@ -78,8 +79,11 @@ public class UserService extends CrudService<User> {
 			return;
 		}
 
-		User dbUser = getRepository().findOne(userId);
-		if (dbUser.isLocked()) {
+		Optional<User> dbUser = getRepository().findById(userId);
+		if (!dbUser.isPresent()) {
+		    throw new UserFriendlyDataException(USER_NOT_FOUND);
+		}
+		if (dbUser.get().isLocked()) {
 			throw new UserFriendlyDataException(MODIFY_LOCKED_USER_NOT_PERMITTED);
 		}
 	}

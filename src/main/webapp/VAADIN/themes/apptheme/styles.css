@@ -1017,10 +1017,6 @@
  */
 
 /**
- *
- */
-
-/**
  * @group window
  */
 
@@ -1081,7 +1077,7 @@
  */
 
 .v-vaadin-version:after {
-	content: "8.1.5";
+	content: "8.4.1";
 }
 
 .v-widget {
@@ -1172,7 +1168,7 @@
 	overflow: auto;
 }
 
-.v-assistive-device-only {
+.v-assistive-device-only, .v-assistive-device-only-label label {
 	position: absolute;
 	top: -2000px;
 	left: -2000px;
@@ -2041,6 +2037,61 @@ div.v-layout.v-horizontal.v-widget {
 	content: "!";
 }
 
+.apptheme .v-errorindicator-info {
+	color: #00a7f5;
+	font-weight: 600;
+	width: 19px;
+	text-align: center;
+}
+
+.apptheme .v-errorindicator-info:before {
+	content: "!";
+}
+
+.apptheme .v-errorindicator-warning {
+	color: #fc9c00;
+	font-weight: 600;
+	width: 19px;
+	text-align: center;
+}
+
+.apptheme .v-errorindicator-warning:before {
+	content: "!";
+}
+
+.apptheme .v-errorindicator-error {
+	color: #ed473b;
+	font-weight: 600;
+	width: 19px;
+	text-align: center;
+}
+
+.apptheme .v-errorindicator-error:before {
+	content: "!";
+}
+
+.apptheme .v-errorindicator-critical {
+	color: #fa007d;
+	font-weight: 600;
+	width: 19px;
+	text-align: center;
+}
+
+.apptheme .v-errorindicator-critical:before {
+	content: "!";
+}
+
+.apptheme .v-errorindicator-system {
+	color: #bb00ff;
+	font-weight: 600;
+	width: 19px;
+	text-align: center;
+}
+
+.apptheme .v-errorindicator-system:before {
+	content: "!";
+}
+
 .apptheme .v-required-field-indicator {
 	color: #ed473b;
 	padding: 0 0.2em;
@@ -2118,6 +2169,26 @@ div.v-layout.v-horizontal.v-widget {
 .apptheme .v-tooltip .v-errormessage h2:only-child {
 	font: inherit;
 	line-height: inherit;
+}
+
+.apptheme .v-tooltip .v-errormessage-info {
+	color: #00a7f5;
+}
+
+.apptheme .v-tooltip .v-errormessage-warning {
+	color: #fc9c00;
+}
+
+.apptheme .v-tooltip .v-errormessage-error {
+	color: #ed473b;
+}
+
+.apptheme .v-tooltip .v-errormessage-critical {
+	color: #fa007d;
+}
+
+.apptheme .v-tooltip .v-errormessage-system {
+	color: #bb00ff;
 }
 
 .apptheme .v-tooltip .v-tooltip-text {
@@ -3375,6 +3446,61 @@ div.v-layout.v-horizontal.v-widget {
 .apptheme .v-filterselect-error .v-filterselect-button {
 	color: #ed473b;
 	border-color: #ed473b;
+}
+
+.apptheme .v-filterselect-error-info .v-filterselect-input {
+	border-color: #00a7f5 !important;
+	background: #fafdff;
+	color: #195774;
+}
+
+.apptheme .v-filterselect-error-info .v-filterselect-button {
+	color: #00a7f5;
+	border-color: #00a7f5;
+}
+
+.apptheme .v-filterselect-error-warning .v-filterselect-input {
+	border-color: #fc9c00 !important;
+	background: #fffdfa;
+	color: #745119;
+}
+
+.apptheme .v-filterselect-error-warning .v-filterselect-button {
+	color: #fc9c00;
+	border-color: #fc9c00;
+}
+
+.apptheme .v-filterselect-error-error .v-filterselect-input {
+	border-color: #ed473b !important;
+	background: #fffbfb;
+	color: #6c2621;
+}
+
+.apptheme .v-filterselect-error-error .v-filterselect-button {
+	color: #ed473b;
+	border-color: #ed473b;
+}
+
+.apptheme .v-filterselect-error-critical .v-filterselect-input {
+	border-color: #fa007d !important;
+	background: #fffafc;
+	color: #741947;
+}
+
+.apptheme .v-filterselect-error-critical .v-filterselect-button {
+	color: #fa007d;
+	border-color: #fa007d;
+}
+
+.apptheme .v-filterselect-error-system .v-filterselect-input {
+	border-color: #bb00ff !important;
+	background: #fefaff;
+	color: #5c1974;
+}
+
+.apptheme .v-filterselect-error-system .v-filterselect-button {
+	color: #bb00ff;
+	border-color: #bb00ff;
 }
 
 .apptheme .v-filterselect-suggestpopup {
@@ -5407,6 +5533,36 @@ div.v-layout.v-horizontal.v-widget {
 	color: #6c2621;
 }
 
+.apptheme .v-textfield-error-info {
+	border-color: #00a7f5 !important;
+	background: #fafdff;
+	color: #195774;
+}
+
+.apptheme .v-textfield-error-warning {
+	border-color: #fc9c00 !important;
+	background: #fffdfa;
+	color: #745119;
+}
+
+.apptheme .v-textfield-error-error {
+	border-color: #ed473b !important;
+	background: #fffbfb;
+	color: #6c2621;
+}
+
+.apptheme .v-textfield-error-critical {
+	border-color: #fa007d !important;
+	background: #fffafc;
+	color: #741947;
+}
+
+.apptheme .v-textfield-error-system {
+	border-color: #bb00ff !important;
+	background: #fefaff;
+	color: #5c1974;
+}
+
 .apptheme .v-textfield-borderless {
 	border: none;
 	border-radius: 0;
@@ -6151,6 +6307,61 @@ div.v-layout.v-horizontal.v-widget {
 .apptheme .v-datefield-error .v-datefield-button {
 	color: #ed473b;
 	border-color: #ed473b;
+}
+
+.apptheme .v-datefield-error-info .v-datefield-textfield {
+	border-color: #00a7f5 !important;
+	background: #fafdff;
+	color: #195774;
+}
+
+.apptheme .v-datefield-error-info .v-datefield-button {
+	color: #00a7f5;
+	border-color: #00a7f5;
+}
+
+.apptheme .v-datefield-error-warning .v-datefield-textfield {
+	border-color: #fc9c00 !important;
+	background: #fffdfa;
+	color: #745119;
+}
+
+.apptheme .v-datefield-error-warning .v-datefield-button {
+	color: #fc9c00;
+	border-color: #fc9c00;
+}
+
+.apptheme .v-datefield-error-error .v-datefield-textfield {
+	border-color: #ed473b !important;
+	background: #fffbfb;
+	color: #6c2621;
+}
+
+.apptheme .v-datefield-error-error .v-datefield-button {
+	color: #ed473b;
+	border-color: #ed473b;
+}
+
+.apptheme .v-datefield-error-critical .v-datefield-textfield {
+	border-color: #fa007d !important;
+	background: #fffafc;
+	color: #741947;
+}
+
+.apptheme .v-datefield-error-critical .v-datefield-button {
+	color: #fa007d;
+	border-color: #fa007d;
+}
+
+.apptheme .v-datefield-error-system .v-datefield-textfield {
+	border-color: #bb00ff !important;
+	background: #fefaff;
+	color: #5c1974;
+}
+
+.apptheme .v-datefield-error-system .v-datefield-button {
+	color: #bb00ff;
+	border-color: #bb00ff;
 }
 
 .apptheme .v-datefield-full {
@@ -8649,6 +8860,30 @@ div.v-layout.v-horizontal.v-widget {
 	color: inherit;
 }
 
+.apptheme .v-window-closebox:focus::after {
+	content: "";
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	bottom: 6px;
+	left: 2px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 0 0 2px rgba(75, 75, 101, 0.5);
+	box-shadow: 0 0 0 2px rgba(75, 75, 101, 0.5);
+}
+
+.apptheme .v-window-maximizebox:focus::after, .apptheme .v-window-restorebox:focus::after {
+	content: "";
+	position: absolute;
+	top: 6px;
+	right: 2px;
+	bottom: 6px;
+	left: 6px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 0 0 2px rgba(75, 75, 101, 0.5);
+	box-shadow: 0 0 0 2px rgba(75, 75, 101, 0.5);
+}
+
 .apptheme .v-window-closebox {
 	padding-right: 4px;
 	border-radius: 0 4px 0 4px;
@@ -8676,6 +8911,10 @@ div.v-layout.v-horizontal.v-widget {
 	width: 37px;
 	padding-right: 0;
 	border-bottom-left-radius: 4px;
+}
+
+.apptheme .v-window-closebox-disabled  + .v-window-closebox:focus::after, .apptheme .v-window-resizebox-disabled  + .v-window-closebox:focus::after, .apptheme .v-window-restorebox-disabled  + .v-window-closebox:focus::after, .apptheme .v-window-maximizebox-disabled  + .v-window-closebox:focus::after {
+	left: 6px;
 }
 
 .apptheme .v-window-maximizebox:before {
@@ -12661,6 +12900,7 @@ div.v-layout.v-horizontal.v-widget {
 	width: 100% !important;
 	height: auto !important;
 	padding: 9px;
+	display: inline-flex;
 }
 
 .apptheme .v-colorpicker-preview-textfield {
@@ -13024,6 +13264,36 @@ div.v-layout.v-horizontal.v-widget {
 	border-color: #ed473b !important;
 	background: #fffbfb;
 	color: #6c2621;
+}
+
+.apptheme .v-select-twincol-error-info .v-select-twincol-options, .apptheme .v-select-twincol-error-info .v-select-twincol-selections {
+	border-color: #00a7f5 !important;
+	background: #fafdff;
+	color: #195774;
+}
+
+.apptheme .v-select-twincol-error-warning .v-select-twincol-options, .apptheme .v-select-twincol-error-warning .v-select-twincol-selections {
+	border-color: #fc9c00 !important;
+	background: #fffdfa;
+	color: #745119;
+}
+
+.apptheme .v-select-twincol-error-error .v-select-twincol-options, .apptheme .v-select-twincol-error-error .v-select-twincol-selections {
+	border-color: #ed473b !important;
+	background: #fffbfb;
+	color: #6c2621;
+}
+
+.apptheme .v-select-twincol-error-critical .v-select-twincol-options, .apptheme .v-select-twincol-error-critical .v-select-twincol-selections {
+	border-color: #fa007d !important;
+	background: #fffafc;
+	color: #741947;
+}
+
+.apptheme .v-select-twincol-error-system .v-select-twincol-options, .apptheme .v-select-twincol-error-system .v-select-twincol-selections {
+	border-color: #bb00ff !important;
+	background: #fefaff;
+	color: #5c1974;
 }
 
 .apptheme .v-select select {

@@ -17,11 +17,11 @@ public abstract class CrudService<T extends AbstractEntity> {
 	}
 
 	public void delete(long id) {
-		getRepository().delete(id);
+		getRepository().deleteById(id);
 	}
 
 	public T load(long id) {
-		return getRepository().findOne(id);
+		return getRepository().findById(id).orElse(null);
 	}
 
 	public abstract long countAnyMatching(Optional<String> filter);

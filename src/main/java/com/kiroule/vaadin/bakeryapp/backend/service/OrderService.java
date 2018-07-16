@@ -47,7 +47,7 @@ public class OrderService {
 	}
 
 	public Order findOrder(Long id) {
-		return orderRepository.findOne(id);
+		return orderRepository.findById(id).orElse(null);
 	}
 
 	public Order changeState(Order order, OrderState state, User user) {

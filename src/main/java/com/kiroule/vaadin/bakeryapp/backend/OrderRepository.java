@@ -3,6 +3,7 @@ package com.kiroule.vaadin.bakeryapp.backend;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 	@Override
 	@EntityGraph(value = "Order.allData", type = EntityGraphType.LOAD)
-	Order findOne(Long id);
+	Optional<Order> findById(Long id);
 
 	@EntityGraph(value = "Order.gridData", type = EntityGraphType.LOAD)
 	Page<Order> findByDueDateAfter(LocalDate filterDate, Pageable pageable);
