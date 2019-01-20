@@ -2,7 +2,6 @@ package com.kiroule.vaadin.bakeryapp.backend.data.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -11,17 +10,15 @@ import javax.validation.constraints.Size;
 public class OrderItem extends AbstractEntity {
 
 	@ManyToOne
-	@NotNull
+	@NotNull(message = "{bakery.pickup.product.required}")
 	private Product product;
+
 	@Min(1)
-	@Max(1000)
-	private int quantity = 1;
+	@NotNull
+	private Integer quantity = 1;
+
 	@Size(max = 255)
 	private String comment;
-
-	public OrderItem() {
-		// Empty constructor is needed by Spring Data / JPA
-	}
 
 	public Product getProduct() {
 		return product;
@@ -31,11 +28,11 @@ public class OrderItem extends AbstractEntity {
 		this.product = product;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
 
@@ -47,4 +44,7 @@ public class OrderItem extends AbstractEntity {
 		this.comment = comment;
 	}
 
+	public int getTotalPrice() {
+		return quantity == null || product == null ? 0 : quantity * product.getPrice();
+	}
 }

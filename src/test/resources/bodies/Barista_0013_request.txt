@@ -1,1 +1,0 @@
-{"csrfToken":"${seckey}","rpc":[["${phoneFieldId}","com.vaadin.shared.ui.textfield.AbstractTextFieldServerRpc","setText",["111111",6]]],"syncId":${syncId},"clientId":${clientId}}

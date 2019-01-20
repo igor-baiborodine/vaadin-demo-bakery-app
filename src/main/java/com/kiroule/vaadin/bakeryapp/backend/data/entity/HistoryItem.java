@@ -1,30 +1,29 @@
 package com.kiroule.vaadin.bakeryapp.backend.data.entity;
 
+import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
 import java.time.LocalDateTime;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
 
 @Entity
 public class HistoryItem extends AbstractEntity {
 
 	private OrderState newState;
 
-	@NotNull
-	@Size(min = 1, max = 255)
+	@NotBlank
+	@Size(max = 255)
 	private String message;
 
 	@NotNull
 	private LocalDateTime timestamp;
-	@NotNull
 	@ManyToOne
+	@NotNull
 	private User createdBy;
 
-	protected HistoryItem() {
+	HistoryItem() {
 		// Empty constructor is needed by Spring Data / JPA
 	}
 

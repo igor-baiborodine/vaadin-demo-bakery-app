@@ -1,0 +1,1 @@
+{"csrfToken":"${seckey}","rpc":[{"type":"publishedEventHandler","node":${gridId},"templateEventMethodName":"setDetailsVisible","templateEventMethodArgs":[null]},{"type":"publishedEventHandler","node":${gridId},"templateEventMethodName":"confirmUpdate","templateEventMethodArgs":[0]}],"syncId":${syncId},"clientId":${clientId}}

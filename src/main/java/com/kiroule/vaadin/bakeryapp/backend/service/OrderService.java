@@ -1,107 +1,74 @@
 package com.kiroule.vaadin.bakeryapp.backend.service;
 
+import com.kiroule.vaadin.bakeryapp.backend.data.DashboardData;
+import com.kiroule.vaadin.bakeryapp.backend.data.DeliveryStats;
+import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderSummary;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
+import com.kiroule.vaadin.bakeryapp.backend.repositories.OrderRepository;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
+import java.util.function.BiConsumer;
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import com.kiroule.vaadin.bakeryapp.backend.OrderRepository;
-import com.kiroule.vaadin.bakeryapp.backend.data.DashboardData;
-import com.kiroule.vaadin.bakeryapp.backend.data.DeliveryStats;
-import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.HistoryItem;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
-
 @Service
-public class OrderService {
+public class OrderService implements CrudService<Order> {
 
 	private final OrderRepository orderRepository;
 
-	private static Set<OrderState> notAvailableStates;
-
-	static {
-		notAvailableStates = new HashSet<>(Arrays.asList(OrderState.values()));
-		notAvailableStates.remove(OrderState.DELIVERED);
-		notAvailableStates.remove(OrderState.READY);
-		notAvailableStates.remove(OrderState.CANCELLED);
-	}
-
 	@Autowired
 	public OrderService(OrderRepository orderRepository) {
+		super();
 		this.orderRepository = orderRepository;
 	}
 
-	public Order findOrder(Long id) {
-		return orderRepository.findById(id).orElse(null);
-	}
+	private static final Set<OrderState> notAvailableStates = Collections.unmodifiableSet(
+			EnumSet.complementOf(EnumSet.of(OrderState.DELIVERED, OrderState.READY, OrderState.CANCELLED)));
 
-	public Order changeState(Order order, OrderState state, User user) {
-		if (order.getState() == state) {
-			throw new IllegalArgumentException("Order state is already " + state);
+	@Transactional(rollbackOn = Exception.class)
+	public Order saveOrder(User currentUser, Long id, BiConsumer<User, Order> orderFiller) {
+		Order order;
+		if (id == null) {
+			order = new Order(currentUser);
+		} else {
+			order = load(id);
 		}
-		order.setState(state);
-		addHistoryItem(order, state, user);
-
+		orderFiller.accept(currentUser, order);
 		return orderRepository.save(order);
-	}
-
-	private void addHistoryItem(Order order, OrderState newState, User user) {
-		String comment = "Order " + newState.getDisplayName();
-
-		HistoryItem item = new HistoryItem(user, comment);
-		item.setNewState(newState);
-		if (order.getHistory() == null) {
-			order.setHistory(new ArrayList<>());
-		}
-		order.getHistory().add(item);
 	}
 
 	@Transactional(rollbackOn = Exception.class)
-	public Order saveOrder(Order order, User user) {
-		if (order.getHistory() == null) {
-			String comment = "Order placed";
-			order.setHistory(new ArrayList<>());
-			HistoryItem item = new HistoryItem(user, comment);
-			item.setNewState(OrderState.NEW);
-			order.getHistory().add(item);
-		}
-
+	public Order saveOrder(Order order) {
 		return orderRepository.save(order);
 	}
 
-	public Order addHistoryItem(Order order, String comment, User user) {
-		HistoryItem item = new HistoryItem(user, comment);
-
-		if (order.getHistory() == null) {
-			order.setHistory(new ArrayList<>());
-		}
-
-		order.getHistory().add(item);
-
+	@Transactional(rollbackOn = Exception.class)
+	public Order addComment(User currentUser, Order order, String comment) {
+		order.addHistoryItem(currentUser, comment);
 		return orderRepository.save(order);
 	}
 
 	public Page<Order> findAnyMatchingAfterDueDate(Optional<String> optionalFilter,
 			Optional<LocalDate> optionalFilterDate, Pageable pageable) {
-		if (optionalFilter.isPresent()) {
+		if (optionalFilter.isPresent() && !optionalFilter.get().isEmpty()) {
 			if (optionalFilterDate.isPresent()) {
-				return orderRepository.findByCustomerFullNameContainingIgnoreCaseAndDueDateAfter(optionalFilter.get(),
-						optionalFilterDate.get(), pageable);
+				return orderRepository.findByCustomerFullNameContainingIgnoreCaseAndDueDateAfter(
+						optionalFilter.get(), optionalFilterDate.get(), pageable);
 			} else {
 				return orderRepository.findByCustomerFullNameContainingIgnoreCase(optionalFilter.get(), pageable);
 			}
@@ -113,9 +80,10 @@ public class OrderService {
 			}
 		}
 	}
-
-	public long countAfterDueDateWithState(LocalDate filterDate, List<OrderState> states) {
-		return orderRepository.countByDueDateAfterAndStateIn(filterDate, states);
+	
+	@Transactional
+	public List<OrderSummary> findAnyMatchingStartingToday() {
+		return orderRepository.findByDueDateGreaterThanEqual(LocalDate.now());
 	}
 
 	public long countAnyMatchingAfterDueDate(Optional<String> optionalFilter, Optional<LocalDate> optionalFilterDate) {
@@ -136,8 +104,8 @@ public class OrderService {
 		LocalDate today = LocalDate.now();
 		stats.setDueToday((int) orderRepository.countByDueDate(today));
 		stats.setDueTomorrow((int) orderRepository.countByDueDate(today.plusDays(1)));
-		stats.setDeliveredToday(
-				(int) orderRepository.countByDueDateAndStateIn(today, Collections.singleton(OrderState.DELIVERED)));
+		stats.setDeliveredToday((int) orderRepository.countByDueDateAndStateIn(today,
+				Collections.singleton(OrderState.DELIVERED)));
 
 		stats.setNotAvailableToday((int) orderRepository.countByDueDateAndStateIn(today, notAvailableStates));
 		stats.setNewOrders((int) orderRepository.countByState(OrderState.NEW));
@@ -198,6 +166,20 @@ public class OrderService {
 			counts.set((Integer) result[0] - 1, (Number) result[1]);
 		}
 		return counts;
+	}
+
+	@Override
+	public JpaRepository<Order, Long> getRepository() {
+		return orderRepository;
+	}
+
+	@Override
+	@Transactional
+	public Order createNew(User currentUser) {
+		Order order = new Order(currentUser);
+		order.setDueTime(LocalTime.of(16, 0));
+		order.setDueDate(LocalDate.now());
+		return order;
 	}
 
 }

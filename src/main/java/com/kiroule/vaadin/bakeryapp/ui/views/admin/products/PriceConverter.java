@@ -1,0 +1,30 @@
+package com.kiroule.vaadin.bakeryapp.ui.views.admin.products;
+
+import static com.kiroule.vaadin.bakeryapp.ui.dataproviders.DataProviderUtil.convertIfNotNull;
+
+import com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils;
+import com.vaadin.flow.data.binder.Result;
+import com.vaadin.flow.data.binder.ValueContext;
+import com.vaadin.flow.data.converter.Converter;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+
+class PriceConverter implements Converter<String, Integer> {
+
+	private final DecimalFormat df = FormattingUtils.getUiPriceFormatter();
+
+	@Override
+	public Result<Integer> convertToModel(String presentationValue, ValueContext valueContext) {
+		try {
+			return Result.ok((int) Math.round(df.parse(presentationValue).doubleValue() * 100));
+		} catch (ParseException e) {
+			return Result.error("Invalid value");
+		}
+	}
+
+	@Override
+	public String convertToPresentation(Integer modelValue, ValueContext valueContext) {
+		return convertIfNotNull(modelValue, i -> df.format(BigDecimal.valueOf(i, 2)), () -> "");
+	}
+}

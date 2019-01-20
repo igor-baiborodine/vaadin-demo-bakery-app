@@ -1,106 +1,112 @@
 package com.kiroule.vaadin.bakeryapp.ui;
 
-import java.util.HashMap;
-import java.util.Map;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.ICON_DASHBOARD;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.ICON_LOGOUT;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.ICON_PRODUCTS;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.ICON_STOREFRONT;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.ICON_USERS;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.PAGE_DASHBOARD;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.PAGE_DEFAULT;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.PAGE_LOGOUT;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.PAGE_PRODUCTS;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.PAGE_STOREFRONT;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.PAGE_USERS;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.TITLE_DASHBOARD;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.TITLE_LOGOUT;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.TITLE_PRODUCTS;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.TITLE_STOREFRONT;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.TITLE_USERS;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.VIEWPORT;
 
-import javax.annotation.PostConstruct;
-
-import com.vaadin.spring.access.SecuredViewAccessControl;
+import com.kiroule.vaadin.bakeryapp.app.security.SecurityUtils;
+import com.kiroule.vaadin.bakeryapp.ui.components.AppNavigation;
+import com.kiroule.vaadin.bakeryapp.ui.components.BakeryCookieConsent;
+import com.kiroule.vaadin.bakeryapp.ui.entities.PageInfo;
+import com.kiroule.vaadin.bakeryapp.ui.exceptions.AccessDeniedException;
+import com.kiroule.vaadin.bakeryapp.ui.views.HasConfirmation;
+import com.kiroule.vaadin.bakeryapp.ui.views.admin.products.ProductsView;
+import com.kiroule.vaadin.bakeryapp.ui.views.admin.users.UsersView;
+import com.kiroule.vaadin.bakeryapp.ui.views.login.LoginView;
+import com.vaadin.flow.component.HasElement;
+import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.page.Viewport;
+import com.vaadin.flow.component.polymertemplate.Id;
+import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.RouterLayout;
+import com.vaadin.flow.templatemodel.TemplateModel;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewDisplay;
-import com.vaadin.navigator.ViewLeaveAction;
-import com.vaadin.spring.annotation.SpringViewDisplay;
-import com.vaadin.spring.annotation.UIScope;
-import com.kiroule.vaadin.bakeryapp.ui.navigation.NavigationManager;
-import com.kiroule.vaadin.bakeryapp.ui.views.admin.product.ProductAdminView;
-import com.kiroule.vaadin.bakeryapp.ui.views.admin.user.UserAdminView;
-import com.kiroule.vaadin.bakeryapp.ui.views.dashboard.DashboardView;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.StorefrontView;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.UI;
+@Tag("main-view")
+@HtmlImport("src/main-view.html")
 
-/**
- * The main view containing the menu and the content area where actual views are
- * shown.
- * <p>
- * Created as a single View class because the logic is so simple that using a
- * pattern like MVP would add much overhead for little gain. If more complexity
- * is added to the class, you should consider splitting out a presenter.
- */
-@SpringViewDisplay
-@UIScope
-public class MainView extends MainViewDesign implements ViewDisplay {
+@PageTitle("Vaadin Demo Bakery App")
+@Viewport(VIEWPORT)
+public class MainView extends PolymerTemplate<TemplateModel>
+		implements RouterLayout, BeforeEnterObserver {
 
-	private final Map<Class<? extends View>, Button> navigationButtons = new HashMap<>();
-	private final NavigationManager navigationManager;
-	private final SecuredViewAccessControl viewAccessControl;
+	@Id("appNavigation")
+	private AppNavigation appNavigation;
+
+	private final ConfirmDialog confirmDialog;
 
 	@Autowired
-	public MainView(NavigationManager navigationManager, SecuredViewAccessControl viewAccessControl) {
-		this.navigationManager = navigationManager;
-		this.viewAccessControl = viewAccessControl;
+	public MainView() {
+		this.confirmDialog = new ConfirmDialog();
+		confirmDialog.setCancelable(true);
+		confirmDialog.setConfirmButtonTheme("raised tertiary error");
+		confirmDialog.setCancelButtonTheme("raised tertiary");
+
+		List<PageInfo> pages = new ArrayList<>();
+		if (SecurityUtils.isUserLoggedIn()) {
+			pages.add(new PageInfo(PAGE_STOREFRONT, ICON_STOREFRONT,
+				TITLE_STOREFRONT));
+			pages.add(
+				new PageInfo(PAGE_DASHBOARD, ICON_DASHBOARD, TITLE_DASHBOARD));
+			if (SecurityUtils.isAccessGranted(UsersView.class)) {
+				pages.add(new PageInfo(PAGE_USERS, ICON_USERS, TITLE_USERS));
+			}
+			if (SecurityUtils.isAccessGranted(ProductsView.class)) {
+				pages.add(
+					new PageInfo(PAGE_PRODUCTS, ICON_PRODUCTS, TITLE_PRODUCTS));
+			}
+			pages.add(new PageInfo(PAGE_LOGOUT, ICON_LOGOUT, TITLE_LOGOUT));
+		}
+		appNavigation.init(pages, PAGE_DEFAULT, PAGE_LOGOUT);
+
+		getElement().appendChild(confirmDialog.getElement());
+		getElement().appendChild(new BakeryCookieConsent().getElement());
 	}
 
-	@PostConstruct
-	public void init() {
-		attachNavigation(storefront, StorefrontView.class);
-		attachNavigation(dashboard, DashboardView.class);
-		attachNavigation(users, UserAdminView.class);
-		attachNavigation(products, ProductAdminView.class);
-
-		logout.addClickListener(e -> logout());
-	}
-
-	/**
-	 * Makes clicking the given button navigate to the given view if the user
-	 * has access to the view.
-	 * <p>
-	 * If the user does not have access to the view, hides the button.
-	 *
-	 * @param navigationButton
-	 *            the button to use for navigatio
-	 * @param targetView
-	 *            the view to navigate to when the user clicks the button
-	 */
-	private void attachNavigation(Button navigationButton, Class<? extends View> targetView) {
-		boolean hasAccessToView = viewAccessControl.isAccessGranted(targetView);
-		navigationButton.setVisible(hasAccessToView);
-
-		if (hasAccessToView) {
-			navigationButtons.put(targetView, navigationButton);
-			navigationButton.addClickListener(e -> navigationManager.navigateTo(targetView));
+	@Override
+	public void beforeEnter(BeforeEnterEvent event) {
+		final boolean accessGranted =
+			SecurityUtils.isAccessGranted(event.getNavigationTarget());
+		if (!accessGranted) {
+			if (SecurityUtils.isUserLoggedIn()) {
+				event.rerouteToError(AccessDeniedException.class);
+			}
+			else {
+				event.rerouteTo(LoginView.class);
+			}
 		}
 	}
 
 	@Override
-	public void showView(View view) {
-		content.removeAllComponents();
-		content.addComponent(view.getViewComponent());
-
-		navigationButtons.forEach((viewClass, button) -> button.setStyleName("selected", viewClass == view.getClass()));
-
-		Button menuItem = navigationButtons.get(view.getClass());
-		String viewName = "";
-		if (menuItem != null) {
-			viewName = menuItem.getCaption();
+	public void showRouterLayoutContent(HasElement content) {
+		if (content != null) {
+			getElement().appendChild(content.getElement());
 		}
-		activeViewName.setValue(viewName);
+
+		this.confirmDialog.setOpened(false);
+		if (content instanceof HasConfirmation) {
+			((HasConfirmation) content).setConfirmDialog(this.confirmDialog);
+		}
 	}
-
-	/**
-	 * Logs the user out after ensuring the currently open view has no unsaved
-	 * changes.
-	 */
-	public void logout() {
-		ViewLeaveAction doLogout = () -> {
-			UI ui = getUI();
-			ui.getSession().getSession().invalidate();
-			ui.getPage().reload();
-		};
-
-		navigationManager.runAfterLeaveConfirmation(doLogout);
-	}
-
 }

@@ -1,22 +1,5 @@
 package com.kiroule.vaadin.bakeryapp.app;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.vaadin.spring.annotation.SpringComponent;
-import com.kiroule.vaadin.bakeryapp.backend.OrderRepository;
-import com.kiroule.vaadin.bakeryapp.backend.PickupLocationRepository;
-import com.kiroule.vaadin.bakeryapp.backend.ProductRepository;
-import com.kiroule.vaadin.bakeryapp.backend.UserRepository;
 import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
 import com.kiroule.vaadin.bakeryapp.backend.data.Role;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.Customer;
@@ -26,6 +9,23 @@ import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderItem;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.PickupLocation;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
+import com.kiroule.vaadin.bakeryapp.backend.repositories.OrderRepository;
+import com.kiroule.vaadin.bakeryapp.backend.repositories.PickupLocationRepository;
+import com.kiroule.vaadin.bakeryapp.backend.repositories.ProductRepository;
+import com.kiroule.vaadin.bakeryapp.backend.repositories.UserRepository;
+import com.vaadin.flow.spring.annotation.SpringComponent;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.function.Supplier;
+import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringComponent
 public class DataGenerator implements HasLogger {
@@ -44,41 +44,55 @@ public class DataGenerator implements HasLogger {
 
 	private final Random random = new Random(1L);
 
-	private final List<PickupLocation> pickupLocations = new ArrayList<>();
-	private final List<Product> products = new ArrayList<>();
-	private User baker;
-	private User barista;
+	private OrderRepository orderRepository;
+	private UserRepository userRepository;
+	private ProductRepository productRepository;
+	private PickupLocationRepository pickupLocationRepository;
+	private PasswordEncoder passwordEncoder;
 
-	@Bean
-	public CommandLineRunner loadData(OrderRepository orderRepository, UserRepository userRepository,
+	@Autowired
+	public DataGenerator(OrderRepository orderRepository, UserRepository userRepository,
 			ProductRepository productRepository, PickupLocationRepository pickupLocationRepository,
 			PasswordEncoder passwordEncoder) {
-		return args -> {
-			if (hasData(userRepository)) {
-				getLogger().info("Using existing database");
-				return;
-			}
-
-			getLogger().info("Generating demo data");
-			getLogger().info("... generating users");
-			createUsers(userRepository, passwordEncoder);
-			getLogger().info("... generating products");
-			createProducts(productRepository);
-			getLogger().info("... generating pickup locations");
-			createPickupLocations(pickupLocationRepository);
-			getLogger().info("... generating orders");
-			createOrders(orderRepository);
-
-			getLogger().info("Generated demo data");
-		};
+		this.orderRepository = orderRepository;
+		this.userRepository = userRepository;
+		this.productRepository = productRepository;
+		this.pickupLocationRepository = pickupLocationRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
-	private boolean hasData(UserRepository userRepository) {
-		return userRepository.count() != 0L;
+	@PostConstruct
+	public void loadData() {
+		if (userRepository.count() != 0L) {
+			getLogger().info("Using existing database");
+			return;
+		}
+
+		getLogger().info("Generating demo data");
+
+		getLogger().info("... generating users");
+		User baker = createBaker(userRepository, passwordEncoder);
+		User barista = createBarista(userRepository, passwordEncoder);
+		createAdmin(userRepository, passwordEncoder);
+		// A set of products without constrains that can be deleted
+		createDeletableUsers(userRepository, passwordEncoder);
+
+		getLogger().info("... generating products");
+		// A set of products that will be used for creating orders.
+		Supplier<Product> productSupplier = createProducts(productRepository, 8);
+		// A set of products without relationships that can be deleted
+		createProducts(productRepository, 4);
+
+		getLogger().info("... generating pickup locations");
+		Supplier<PickupLocation> pickupLocationSupplier = createPickupLocations(pickupLocationRepository);
+
+		getLogger().info("... generating orders");
+		createOrders(orderRepository, productSupplier, pickupLocationSupplier, barista, baker);
+
+		getLogger().info("Generated demo data");
 	}
 
-	private Customer createCustomer() {
-		Customer customer = new Customer();
+	private void fillCustomer(Customer customer) {
 		String first = getRandom(FIRST_NAME);
 		String last = getRandom(LAST_NAME);
 		customer.setFullName(first + " " + last);
@@ -86,20 +100,25 @@ public class DataGenerator implements HasLogger {
 		if (random.nextInt(10) == 0) {
 			customer.setDetails("Very important customer");
 		}
-		return customer;
 	}
 
 	private String getRandomPhone() {
 		return "+1-555-" + String.format("%04d", random.nextInt(10000));
 	}
 
-	private void createOrders(OrderRepository orderRepository) {
+	private void createOrders(OrderRepository orderRepo, Supplier<Product> productSupplier,
+			Supplier<PickupLocation> pickupLocationSupplier, User barista, User baker) {
 		int yearsToInclude = 2;
-		List<Order> orders = new ArrayList<>();
-
 		LocalDate now = LocalDate.now();
 		LocalDate oldestDate = LocalDate.of(now.getYear() - yearsToInclude, 1, 1);
 		LocalDate newestDate = now.plusMonths(1L);
+
+		// Create first today's order
+		Order order = createOrder(productSupplier, pickupLocationSupplier, barista, baker, now);
+		order.setDueTime(LocalTime.of(8, 0));
+		order.setHistory(order.getHistory().subList(0, 1));
+		order.setItems(order.getItems().subList(0, 1));
+		orderRepo.save(order);
 
 		for (LocalDate dueDate = oldestDate; dueDate.isBefore(newestDate); dueDate = dueDate.plusDays(1)) {
 			// Create a slightly upwards trend - everybody wants to be
@@ -109,20 +128,20 @@ public class DataGenerator implements HasLogger {
 			double multiplier = 1.0 + 0.03 * relativeMonth;
 			int ordersThisDay = (int) (random.nextInt(10) + 1 * multiplier);
 			for (int i = 0; i < ordersThisDay; i++) {
-				orders.add(createOrder(dueDate));
+				orderRepo.save(createOrder(productSupplier, pickupLocationSupplier, barista, baker, dueDate));
 			}
 		}
-		orderRepository.saveAll(orders);
 	}
 
-	private Order createOrder(LocalDate dueDate) {
-		Order order = new Order();
+	private Order createOrder(Supplier<Product> productSupplier, Supplier<PickupLocation> pickupLocationSupplier,
+			User barista, User baker, LocalDate dueDate) {
+		Order order = new Order(barista);
 
-		order.setCustomer(createCustomer());
-		order.setPickupLocation(getRandomPickupLocation());
+		fillCustomer(order.getCustomer());
+		order.setPickupLocation(pickupLocationSupplier.get());
 		order.setDueDate(dueDate);
 		order.setDueTime(getRandomDueTime());
-		order.setState(getRandomState(order.getDueDate()));
+		order.changeState(barista, getRandomState(order.getDueDate()));
 
 		int itemCount = random.nextInt(3);
 		List<OrderItem> items = new ArrayList<>();
@@ -130,7 +149,7 @@ public class DataGenerator implements HasLogger {
 			OrderItem item = new OrderItem();
 			Product product;
 			do {
-				product = getRandomProduct();
+				product = productSupplier.get();
 			} while (containsProduct(items, product));
 			item.setProduct(product);
 			item.setQuantity(random.nextInt(10) + 1);
@@ -145,44 +164,44 @@ public class DataGenerator implements HasLogger {
 		}
 		order.setItems(items);
 
-		order.setHistory(createOrderHistory(order));
+		order.setHistory(createOrderHistory(order, barista, baker));
 
 		return order;
 	}
 
-	private List<HistoryItem> createOrderHistory(Order order) {
+	private List<HistoryItem> createOrderHistory(Order order, User barista, User baker) {
 		ArrayList<HistoryItem> history = new ArrayList<>();
-		HistoryItem item = new HistoryItem(getBarista(), "Order placed");
+		HistoryItem item = new HistoryItem(barista, "Order placed");
 		item.setNewState(OrderState.NEW);
 		LocalDateTime orderPlaced = order.getDueDate().minusDays(random.nextInt(5) + 2L).atTime(random.nextInt(10) + 7,
 				00);
 		item.setTimestamp(orderPlaced);
 		history.add(item);
 		if (order.getState() == OrderState.CANCELLED) {
-			item = new HistoryItem(getBarista(), "Order cancelled");
+			item = new HistoryItem(barista, "Order cancelled");
 			item.setNewState(OrderState.CANCELLED);
 			item.setTimestamp(orderPlaced.plusDays(random
 					.nextInt((int) orderPlaced.until(order.getDueDate().atTime(order.getDueTime()), ChronoUnit.DAYS))));
 			history.add(item);
 		} else if (order.getState() == OrderState.CONFIRMED || order.getState() == OrderState.DELIVERED
 				|| order.getState() == OrderState.PROBLEM || order.getState() == OrderState.READY) {
-			item = new HistoryItem(getBaker(), "Order confirmed");
+			item = new HistoryItem(baker, "Order confirmed");
 			item.setNewState(OrderState.CONFIRMED);
 			item.setTimestamp(orderPlaced.plusDays(random.nextInt(2)).plusHours(random.nextInt(5)));
 			history.add(item);
 
 			if (order.getState() == OrderState.PROBLEM) {
-				item = new HistoryItem(getBaker(), "Can't make it. Did not get any ingredients this morning");
+				item = new HistoryItem(baker, "Can't make it. Did not get any ingredients this morning");
 				item.setNewState(OrderState.PROBLEM);
 				item.setTimestamp(order.getDueDate().atTime(random.nextInt(4) + 4, 0));
 				history.add(item);
 			} else if (order.getState() == OrderState.READY || order.getState() == OrderState.DELIVERED) {
-				item = new HistoryItem(getBaker(), "Order ready for pickup");
+				item = new HistoryItem(baker, "Order ready for pickup");
 				item.setNewState(OrderState.READY);
 				item.setTimestamp(order.getDueDate().atTime(random.nextInt(2) + 8, random.nextBoolean() ? 0 : 30));
 				history.add(item);
 				if (order.getState() == OrderState.DELIVERED) {
-					item = new HistoryItem(getBaker(), "Order delivered");
+					item = new HistoryItem(baker, "Order delivered");
 					item.setNewState(OrderState.DELIVERED);
 					item.setTimestamp(order.getDueDate().atTime(order.getDueTime().minusMinutes(random.nextInt(120))));
 					history.add(item);
@@ -248,54 +267,41 @@ public class DataGenerator implements HasLogger {
 		}
 	}
 
-	private Product getRandomProduct() {
-		double cutoff = 2.5;
-		double g = random.nextGaussian();
-		g = Math.min(cutoff, g);
-		g = Math.max(-cutoff, g);
-		g += cutoff;
-		g /= (cutoff * 2.0);
-
-		return products.get((int) (g * (products.size() - 1)));
-	}
-
-	private PickupLocation getRandomPickupLocation() {
-		return getRandom(pickupLocations);
-	}
-
-	private User getBaker() {
-		return baker;
-	}
-
-	private User getBarista() {
-		return barista;
-	}
-
-	private <T> T getRandom(List<T> items) {
-		return items.get(random.nextInt(items.size()));
-	}
-
 	private <T> T getRandom(T[] array) {
 		return array[random.nextInt(array.length)];
 	}
 
-	private void createPickupLocations(PickupLocationRepository pickupLocationRepository) {
-		PickupLocation store = new PickupLocation();
-		store.setName("Store");
-		pickupLocations.add(pickupLocationRepository.save(store));
-		PickupLocation bakery = new PickupLocation();
-		bakery.setName("Bakery");
-		pickupLocations.add(pickupLocationRepository.save(bakery));
+	private Supplier<PickupLocation> createPickupLocations(PickupLocationRepository pickupLocationRepository) {
+		List<PickupLocation> pickupLocations = Arrays.asList(
+				pickupLocationRepository.save(createPickupLocation("Store")),
+				pickupLocationRepository.save(createPickupLocation("Bakery")));
+		return () -> pickupLocations.get(random.nextInt(pickupLocations.size()));
 	}
 
-	private void createProducts(ProductRepository productRepository) {
-		for (int i = 0; i < 10; i++) {
+	private PickupLocation createPickupLocation(String name) {
+		PickupLocation store = new PickupLocation();
+		store.setName(name);
+		return store;
+	}
+
+	private Supplier<Product> createProducts(ProductRepository productsRepo, int numberOfItems) {
+		List<Product> products  = new ArrayList<>();
+		for (int i = 0; i < numberOfItems; i++) {
 			Product product = new Product();
 			product.setName(getRandomProductName());
 			double doublePrice = 2.0 + random.nextDouble() * 100.0;
 			product.setPrice((int) (doublePrice * 100.0));
-			products.add(productRepository.save(product));
+			products.add(productsRepo.save(product));
 		}
+		return () -> {
+			double cutoff = 2.5;
+			double g = random.nextGaussian();
+			g = Math.min(cutoff, g);
+			g = Math.max(-cutoff, g);
+			g += cutoff;
+			g /= (cutoff * 2.0);
+			return products.get((int) (g * (products.size() - 1)));
+		};
 	}
 
 	private String getRandomProductName() {
@@ -316,13 +322,37 @@ public class DataGenerator implements HasLogger {
 		return name;
 	}
 
-	private void createUsers(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-		baker = userRepository.save(new User("baker@vaadin.com", "Heidi", passwordEncoder.encode("baker"), Role.BAKER));
-		User user = new User("barista@vaadin.com", "Malin", passwordEncoder.encode("barista"), Role.BARISTA);
-		user.setLocked(true);
-		barista = userRepository.save(user);
-		user = new User("admin@vaadin.com", "Göran", passwordEncoder.encode("admin"), Role.ADMIN);
-		user.setLocked(true);
-		userRepository.save(user);
+	private User createBaker(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+		return userRepository.save(
+				createUser("baker@vaadin.com", "Heidi", "Carter", passwordEncoder.encode("baker"), Role.BAKER, false));
+	}
+
+	private User createBarista(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+		return userRepository.save(createUser("barista@vaadin.com", "Malin", "Castro",
+				passwordEncoder.encode("barista"), Role.BARISTA, true));
+	}
+
+	private User createAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+		return userRepository.save(
+				createUser("admin@vaadin.com", "Göran", "Rich", passwordEncoder.encode("admin"), Role.ADMIN, true));
+	}
+
+	private void createDeletableUsers(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+		userRepository.save(
+				createUser("peter@vaadin.com", "Peter", "Bush", passwordEncoder.encode("peter"), Role.BARISTA, false));
+		userRepository
+				.save(createUser("mary@vaadin.com", "Mary", "Ocon", passwordEncoder.encode("mary"), Role.BAKER, true));
+	}
+
+	private User createUser(String email, String firstName, String lastName, String passwordHash, String role,
+			boolean locked) {
+		User user = new User();
+		user.setEmail(email);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setPasswordHash(passwordHash);
+		user.setRole(role);
+		user.setLocked(locked);
+		return user;
 	}
 }

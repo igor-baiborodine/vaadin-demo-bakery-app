@@ -1,43 +1,34 @@
 package com.kiroule.vaadin.bakeryapp.backend.service;
 
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
+import com.kiroule.vaadin.bakeryapp.backend.repositories.UserRepository;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kiroule.vaadin.bakeryapp.backend.UserRepository;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
-
 @Service
-public class UserService extends CrudService<User> {
+public class UserService implements FilterableCrudService<User> {
 
-	private static final String MODIFY_LOCKED_USER_NOT_PERMITTED = "User has been locked and cannot be modified or deleted";
-	private static final String USER_NOT_FOUND = "User not found";
-	private final PasswordEncoder passwordEncoder;
+	public static final String MODIFY_LOCKED_USER_NOT_PERMITTED = "User has been locked and cannot be modified or deleted";
+	private static final String DELETING_SELF_NOT_PERMITTED = "You cannot delete your own account";
 	private final UserRepository userRepository;
 
 	@Autowired
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
-		this.passwordEncoder = passwordEncoder;
 	}
 
-	public User findByEmail(String email) {
-		return getRepository().findByEmail(email);
-	}
-
-	@Override
 	public Page<User> findAnyMatching(Optional<String> filter, Pageable pageable) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
-			return getRepository().findByEmailLikeIgnoreCaseOrNameLikeIgnoreCaseOrRoleLikeIgnoreCase(repositoryFilter,
-					repositoryFilter, repositoryFilter, pageable);
+			return getRepository()
+					.findByEmailLikeIgnoreCaseOrFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCaseOrRoleLikeIgnoreCase(
+							repositoryFilter, repositoryFilter, repositoryFilter, repositoryFilter, pageable);
 		} else {
-			return getRepository().findAll(pageable);
+			return find(pageable);
 		}
 	}
 
@@ -45,47 +36,51 @@ public class UserService extends CrudService<User> {
 	public long countAnyMatching(Optional<String> filter) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
-			return getRepository().countByEmailLikeIgnoreCaseOrNameLikeIgnoreCase(repositoryFilter, repositoryFilter);
+			return userRepository.countByEmailLikeIgnoreCaseOrFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCaseOrRoleLikeIgnoreCase(
+					repositoryFilter, repositoryFilter, repositoryFilter, repositoryFilter);
 		} else {
-			return getRepository().count();
+			return count();
 		}
 	}
 
 	@Override
-	protected UserRepository getRepository() {
+	public UserRepository getRepository() {
 		return userRepository;
 	}
 
-	public String encodePassword(String value) {
-		return passwordEncoder.encode(value);
+	public Page<User> find(Pageable pageable) {
+		return getRepository().findBy(pageable);
+	}
+
+	@Override
+	public User save(User currentUser, User entity) {
+		throwIfUserLocked(entity);
+		return getRepository().saveAndFlush(entity);
 	}
 
 	@Override
 	@Transactional
-	public User save(User entity) {
-		throwIfUserLocked(entity.getId());
-		return super.save(entity);
+	public void delete(User currentUser, User userToDelete) {
+		throwIfDeletingSelf(currentUser, userToDelete);
+		throwIfUserLocked(userToDelete);
+		FilterableCrudService.super.delete(currentUser, userToDelete);
 	}
 
-	@Override
-	@Transactional
-	public void delete(long userId) {
-		throwIfUserLocked(userId);
-		super.delete(userId);
+	private void throwIfDeletingSelf(User currentUser, User user) {
+		if (currentUser.equals(user)) {
+			throw new UserFriendlyDataException(DELETING_SELF_NOT_PERMITTED);
+		}
 	}
 
-	private void throwIfUserLocked(Long userId) {
-		if (userId == null) {
-			return;
-		}
-
-		Optional<User> dbUser = getRepository().findById(userId);
-		if (!dbUser.isPresent()) {
-		    throw new UserFriendlyDataException(USER_NOT_FOUND);
-		}
-		if (dbUser.get().isLocked()) {
+	private void throwIfUserLocked(User entity) {
+		if (entity != null && entity.isLocked()) {
 			throw new UserFriendlyDataException(MODIFY_LOCKED_USER_NOT_PERMITTED);
 		}
+	}
+
+	@Override
+	public User createNew(User currentUser) {
+		return new User();
 	}
 
 }

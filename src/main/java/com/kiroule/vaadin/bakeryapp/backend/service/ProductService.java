@@ -1,17 +1,18 @@
 package com.kiroule.vaadin.bakeryapp.backend.service;
 
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
+import com.kiroule.vaadin.bakeryapp.backend.repositories.ProductRepository;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import com.kiroule.vaadin.bakeryapp.backend.ProductRepository;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
-
 @Service
-public class ProductService extends CrudService<Product> {
+public class ProductService implements FilterableCrudService<Product> {
 
 	private final ProductRepository productRepository;
 
@@ -24,9 +25,9 @@ public class ProductService extends CrudService<Product> {
 	public Page<Product> findAnyMatching(Optional<String> filter, Pageable pageable) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
-			return getRepository().findByNameLikeIgnoreCase(repositoryFilter, pageable);
+			return productRepository.findByNameLikeIgnoreCase(repositoryFilter, pageable);
 		} else {
-			return getRepository().findAll(pageable);
+			return find(pageable);
 		}
 	}
 
@@ -34,15 +35,35 @@ public class ProductService extends CrudService<Product> {
 	public long countAnyMatching(Optional<String> filter) {
 		if (filter.isPresent()) {
 			String repositoryFilter = "%" + filter.get() + "%";
-			return getRepository().countByNameLikeIgnoreCase(repositoryFilter);
+			return productRepository.countByNameLikeIgnoreCase(repositoryFilter);
 		} else {
-			return getRepository().count();
+			return count();
 		}
 	}
 
+	public Page<Product> find(Pageable pageable) {
+		return productRepository.findBy(pageable);
+	}
+
 	@Override
-	protected ProductRepository getRepository() {
+	public JpaRepository<Product, Long> getRepository() {
 		return productRepository;
+	}
+
+	@Override
+	public Product createNew(User currentUser) {
+		return new Product();
+	}
+
+	@Override
+	public Product save(User currentUser, Product entity) {
+		try {
+			return FilterableCrudService.super.save(currentUser, entity);
+		} catch (DataIntegrityViolationException e) {
+			throw new UserFriendlyDataException(
+					"There is already a product with that name. Please select a unique name for the product.");
+		}
+
 	}
 
 }

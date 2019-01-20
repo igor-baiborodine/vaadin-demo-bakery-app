@@ -1,14 +1,13 @@
 package com.kiroule.vaadin.bakeryapp.backend.data.entity;
 
 import java.io.Serializable;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
 @MappedSuperclass
-public class AbstractEntity implements Serializable {
+public abstract class AbstractEntity implements Serializable {
 
 	@Id
 	@GeneratedValue
@@ -16,10 +15,6 @@ public class AbstractEntity implements Serializable {
 
 	@Version
 	private int version;
-
-	public boolean isNew() {
-		return id == null;
-	}
 
 	public Long getId() {
 		return id;

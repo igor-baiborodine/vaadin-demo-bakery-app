@@ -1,26 +1,28 @@
 package com.kiroule.vaadin.bakeryapp.backend.data.entity;
 
 import javax.persistence.Entity;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
 
 @Entity
 public class Customer extends AbstractEntity {
 
-	@NotNull
-	@Size(min = 1, max = 255)
+	@NotBlank
+	@Size(max = 255)
 	private String fullName;
 
-	@NotNull
-	@Size(min = 1, max = 255)
+	@NotBlank
+	@Size(max = 20, message = "{bakery.phone.number.invalid}")
+	// A simple phone number checker, allowing an optional international prefix
+	// plus a variable number of digits that could be separated by dashes or
+	// spaces
+	@Pattern(regexp = "^(\\+\\d+)?([ -]?\\d+){4,14}$", message = "{bakery.phone.number.invalid}")
 	private String phoneNumber;
-
+	
 	@Size(max = 255)
 	private String details;
-
-	public Customer() {
-		// Empty constructor is needed by Spring Data / JPA
-	}
 
 	public String getFullName() {
 		return fullName;

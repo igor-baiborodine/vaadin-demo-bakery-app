@@ -1,0 +1,18 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="access-denied-view">
+  <template>
+    <h3 style="text-align: center">
+      Access denied
+    </h3>
+  </template>
+
+  <script>
+    class AccessDeniedView extends Polymer.Element {
+      static get is() {
+        return 'access-denied-view';
+      }
+    }
+    customElements.define(AccessDeniedView.is, AccessDeniedView);
+  </script>
+</dom-module>

@@ -1,6 +1,7 @@
 package com.kiroule.vaadin.bakeryapp.backend.data;
 
-import com.vaadin.shared.util.SharedUtil;
+import com.vaadin.flow.shared.util.SharedUtil;
+import java.util.Locale;
 
 public enum OrderState {
 	NEW, CONFIRMED, READY, DELIVERED, PROBLEM, CANCELLED;
@@ -11,21 +12,6 @@ public enum OrderState {
 	 * @return a human friendly version of the identifier
 	 */
 	public String getDisplayName() {
-		return SharedUtil.upperCaseUnderscoreToHumanFriendly(name());
-	}
-
-	/**
-	 * Gets a enum value for which {@link #getDisplayName()} returns the given
-	 * string. Match is case-insensitive.
-	 *
-	 * @return the enum value with a matching display name
-	 */
-	public static OrderState forDisplayName(String displayName) {
-		for (OrderState state : values()) {
-			if (displayName.toLowerCase().equals(state.getDisplayName().toLowerCase())) {
-				return state;
-			}
-		}
-		return null;
+		return SharedUtil.capitalize(name().toLowerCase(Locale.ENGLISH));
 	}
 }

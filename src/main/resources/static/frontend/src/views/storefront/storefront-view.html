@@ -1,0 +1,65 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/src/vaadin-grid.html">
+<link rel="import" href="../../../bower_components/vaadin-dialog/src/vaadin-dialog.html">
+
+<link rel="import" href="../../components/search-bar.html">
+<link rel="import" href="../../components/utils-mixin.html">
+<link rel="import" href="order-card.html">
+
+<link rel="import" href="../../../styles/shared-styles.html">
+
+<dom-module id="storefront-view">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+    </style>
+
+    <search-bar id="search" show-checkbox></search-bar>
+
+    <vaadin-grid id="grid" theme="orders no-row-borders"></vaadin-grid>
+
+    <vaadin-dialog id="dialog" on-opened-changed="_onDialogOpen"></vaadin-dialog>
+
+  </template>
+
+  <script>
+    class StorefrontView extends Polymer.Element {
+      static get is() {
+        return 'storefront-view';
+      }
+
+      ready() {
+        super.ready();
+
+        // There is no way for theming the dialog-overlay but using private API
+        this.$.dialog.$.overlay.setAttribute('theme', 'middle');
+
+        // This code is needed to measure the page load performance and can be safely removed
+        // if there is no need for that.
+        const grid = this.$.grid;
+        const listener = () => {
+          if (!grid.loading && window.performance.mark) {
+            window.performance.mark('bakery-page-loaded');
+            grid.removeEventListener('loading-changed', listener);
+          }
+        };
+        grid.addEventListener('loading-changed', listener);
+      }
+
+      // Workaround for styling the dialog content https://github.com/vaadin/vaadin-dialog-flow/issues/69
+      _onDialogOpen(e) {
+        if (!e.detail.value) {
+          return;
+        }
+        var content = this.$.dialog.$.overlay.content;
+        content.querySelector('flow-component-renderer').setAttribute('theme', 'dialog');
+      }
+    }
+
+    window.customElements.define(StorefrontView.is, StorefrontView);
+  </script>
+</dom-module>

@@ -1,18 +1,21 @@
 package com.kiroule.vaadin.bakeryapp.backend.data.entity;
 
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-// "User" is a reserved word in some SQL implementations
-@Entity(name = "UserInfo")
+@Entity(name="UserInfo")
 public class User extends AbstractEntity {
 
-	@NotNull
-	@Size(min = 1, max = 255)
+	@NotEmpty
+	@Email
+	@Size(max = 255)
 	@Column(unique = true)
 	private String email;
 
@@ -20,46 +23,52 @@ public class User extends AbstractEntity {
 	@Size(min = 4, max = 255)
 	private String passwordHash;
 
-	@NotNull
-	@Size(min = 1, max = 255)
-	private String name;
+	@NotBlank
+	@Size(max = 255)
+	private String firstName;
 
-	@NotNull
-	@Size(min = 1, max = 255)
+	@NotBlank
+	@Size(max = 255)
+	private String lastName;
+
+	@NotBlank
+	@Size(max = 255)
 	private String role;
 
 	private boolean locked = false;
 
-	public User() {
-		// An empty constructor is needed for all beans
+	@PrePersist
+	@PreUpdate
+	private void prepareData(){
+		this.email = email == null ? null : email.toLowerCase();
 	}
 
-	public User(String email, String name, String password, String role) {
-		Objects.requireNonNull(email);
-		Objects.requireNonNull(name);
-		Objects.requireNonNull(password);
-		Objects.requireNonNull(role);
-
-		this.email = email;
-		this.name = name;
-		this.passwordHash = password;
-		this.role = role;
+	public User() {
+		// An empty constructor is needed for all beans
 	}
 
 	public String getPasswordHash() {
 		return passwordHash;
 	}
 
-	public void setPasswordHash(String password) {
-		this.passwordHash = password;
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getRole() {

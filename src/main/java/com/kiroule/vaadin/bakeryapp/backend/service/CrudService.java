@@ -1,31 +1,40 @@
 package com.kiroule.vaadin.bakeryapp.backend.service;
 
-import java.util.Optional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
-
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.AbstractEntity;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
+import javax.persistence.EntityNotFoundException;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public abstract class CrudService<T extends AbstractEntity> {
+public interface CrudService<T extends AbstractEntity> {
 
-	protected abstract CrudRepository<T, Long> getRepository();
+	JpaRepository<T, Long> getRepository();
 
-	public T save(T entity) {
-		return getRepository().save(entity);
+	default T save(User currentUser, T entity) {
+		return getRepository().saveAndFlush(entity);
 	}
 
-	public void delete(long id) {
-		getRepository().deleteById(id);
+	default void delete(User currentUser, T entity) {
+		if (entity == null) {
+			throw new EntityNotFoundException();
+		}
+		getRepository().delete(entity);
 	}
 
-	public T load(long id) {
-		return getRepository().findById(id).orElse(null);
+	default void delete(User currentUser, long id) {
+		delete(currentUser, load(id));
 	}
 
-	public abstract long countAnyMatching(Optional<String> filter);
+	default long count() {
+		return getRepository().count();
+	}
 
-	public abstract Page<T> findAnyMatching(Optional<String> filter, Pageable pageable);
+	default T load(long id) {
+		T entity = getRepository().findById(id).orElse(null);
+		if (entity == null) {
+			throw new EntityNotFoundException();
+		}
+		return entity;
+	}
 
+	T createNew(User currentUser);
 }

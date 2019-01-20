@@ -1,101 +1,163 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.storefront;
 
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
+import com.kiroule.vaadin.bakeryapp.app.HasLogger;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.util.EntityUtil;
+import com.kiroule.vaadin.bakeryapp.ui.MainView;
+import com.kiroule.vaadin.bakeryapp.ui.components.SearchBar;
+import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
+import com.kiroule.vaadin.bakeryapp.ui.views.EntityView;
+import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderDetails;
+import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderEditor;
+import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.polymertemplate.Id;
+import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
+import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
+import com.vaadin.flow.router.OptionalParameter;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.templatemodel.TemplateModel;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.spring.annotation.ViewScope;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
-import com.kiroule.vaadin.bakeryapp.ui.navigation.NavigationManager;
-import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderEditView;
-import com.vaadin.ui.Button.ClickShortcut;
+@Tag("storefront-view")
+@HtmlImport("src/views/storefront/storefront-view.html")
+@Route(value = BakeryConst.PAGE_STOREFRONT, layout = MainView.class)
+@RouteAlias(value = BakeryConst.PAGE_STOREFRONT_EDIT, layout = MainView.class)
+@RouteAlias(value = BakeryConst.PAGE_ROOT, layout = MainView.class)
+@PageTitle(BakeryConst.TITLE_STOREFRONT)
+public class StorefrontView extends PolymerTemplate<TemplateModel>
+		implements HasLogger, HasUrlParameter<Long>, EntityView<Order> {
 
-/**
- * The storefront view showing upcoming orders.
- * <p>
- * Created as a single View class because the logic is so simple that using a
- * pattern like MVP would add much overhead for little gain. If more complexity
- * is added to the class, you should consider splitting out a presenter.
- */
-@SpringView
-public class StorefrontView extends StorefrontViewDesign implements View {
+	@Id("search")
+	private SearchBar searchBar;
 
-	private static final String PARAMETER_SEARCH = "search";
+	@Id("grid")
+	private Grid<Order> grid;
 
-	private static final String PARAMETER_INCLUDE_PAST = "includePast";
+	@Id("dialog")
+	private Dialog dialog;
 
-	private final NavigationManager navigationManager;
+	private ConfirmDialog confirmation;
+
+	private final OrderEditor orderEditor;
+
+	private final OrderDetails orderDetails = new OrderDetails();
+
+	private final OrderPresenter presenter;
 
 	@Autowired
-	public StorefrontView(NavigationManager navigationManager) {
-		this.navigationManager = navigationManager;
+	public StorefrontView(OrderPresenter presenter, OrderEditor orderEditor) {
+		this.presenter = presenter;
+		this.orderEditor = orderEditor;
+
+		searchBar.setActionText("New order");
+		searchBar.setCheckboxText("Show past orders");
+		searchBar.setPlaceHolder("Search");
+
+		grid.setSelectionMode(Grid.SelectionMode.NONE);
+
+		grid.addColumn(OrderCard.getTemplate()
+				.withProperty("orderCard", OrderCard::create)
+				.withProperty("header", order -> presenter.getHeaderByOrderId(order.getId()))
+				.withEventHandler("cardClick",
+						order -> UI.getCurrent().navigate(BakeryConst.PAGE_STOREFRONT + "/" + order.getId())));
+
+		getSearchBar().addFilterChangeListener(
+				e -> presenter.filterChanged(getSearchBar().getFilter(), getSearchBar().isCheckboxChecked()));
+		getSearchBar().addActionClickListener(e -> presenter.createNewOrder());
+
+		presenter.init(this);
+
+		dialog.getElement().addEventListener("opened-changed", e -> {
+			if (!dialog.isOpened()) {
+				// Handle client-side closing dialog on escape
+				presenter.cancel();
+			}
+		});
 	}
 
-	/**
-	 * This method is invoked once each time an instance of the view is created.
-	 * <p>
-	 * This typically happens whenever a user opens the URL for the view, or
-	 * refreshes the browser as long as the view is set to {@link ViewScope}. If
-	 * we set the view to {@link UIScope}, the instance will be kept in memory
-	 * (in the session) as long as the UI exists in memory and the same view
-	 * instance will be reused whenever the user enters the view.
-	 * <p>
-	 * Here we set up listeners and attach data providers and otherwise
-	 * configure the components for the parts which only need to be done once.
-	 */
-	@PostConstruct
-	public void init() {
-		list.addSelectionListener(e -> selectedOrder(e.getFirstSelectedItem().get()));
-		newOrder.addClickListener(e -> newOrder());
-		searchButton.addClickListener(e -> search(searchField.getValue(), includePast.getValue()));
-
-		// We don't want a global shortcut for enter, scope it to the panel
-		searchPanel.addAction(new ClickShortcut(searchButton, KeyCode.ENTER, null));
-	}
-
-	public void selectedOrder(Order order) {
-		navigationManager.navigateTo(OrderEditView.class, order.getId());
-	}
-
-	public void newOrder() {
-		navigationManager.navigateTo(OrderEditView.class);
-	}
-
-	public void search(String searchTerm, boolean includePast) {
-		filterGrid(searchTerm, includePast);
-		String parameters = PARAMETER_SEARCH + "=" + searchTerm;
-		if (includePast) {
-			parameters += "&" + PARAMETER_INCLUDE_PAST;
-		}
-		navigationManager.updateViewParameter(parameters);
-	}
-
-	/**
-	 * This is called whenever the user enters the view, regardless of if the
-	 * view instance was created right before this or if an old instance was
-	 * reused.
-	 * <p>
-	 * Here we update the data shown in the view so the user sees the latest
-	 * changes.
-	 */
 	@Override
-	public void enter(ViewChangeEvent event) {
-		Map<String, String> params = event.getParameterMap();
-		String searchTerm = params.getOrDefault(PARAMETER_SEARCH, "");
-		boolean includePast = params.containsKey(PARAMETER_INCLUDE_PAST);
-		filterGrid(searchTerm, includePast);
+	public ConfirmDialog getConfirmDialog() {
+		return confirmation;
 	}
 
-	public void filterGrid(String searchTerm, boolean includePast) {
-		list.filterGrid(searchTerm, includePast);
-		searchField.setValue(searchTerm);
-		this.includePast.setValue(includePast);
+	@Override
+	public void setConfirmDialog(ConfirmDialog confirmDialog) {
+		this.confirmation = confirmDialog;
+	}
+
+	void setOpened(boolean opened) {
+		dialog.setOpened(opened);
+	}
+
+	@Override
+	public void setParameter(BeforeEvent event, @OptionalParameter Long orderId) {
+		boolean editView = event.getLocation().getPath().contains(BakeryConst.PAGE_STOREFRONT_EDIT);
+		if (orderId != null) {
+			presenter.onNavigation(orderId, editView);
+		} else if (dialog.isOpened()) {
+			presenter.closeSilently();
+		}
+	}
+
+	void navigateToMainView() {
+		getUI().ifPresent(ui -> ui.navigate(BakeryConst.PAGE_STOREFRONT));
+	}
+
+	@Override
+	public boolean isDirty() {
+		return orderEditor.hasChanges() || orderDetails.isDirty();
+	}
+
+	@Override
+	public void write(Order entity) throws ValidationException {
+		orderEditor.write(entity);
+	}
+
+	public Stream<HasValue<?, ?>> validate() {
+		return orderEditor.validate();
+	}
+
+	SearchBar getSearchBar() {
+		return searchBar;
+	}
+
+	OrderEditor getOpenedOrderEditor() {
+		return orderEditor;
+	}
+
+	OrderDetails getOpenedOrderDetails() {
+		return orderDetails;
+	}
+
+	Grid<Order> getGrid() {
+		return grid;
+	}
+
+	@Override
+	public void clear() {
+		orderDetails.setDirty(false);
+		orderEditor.clear();
+	}
+
+	void setDialogElementsVisibility(boolean editing) {
+		dialog.add(editing ? orderEditor : orderDetails);
+		orderEditor.setVisible(editing);
+		orderDetails.setVisible(!editing);
+	}
+
+	@Override
+	public String getEntityName() {
+		return EntityUtil.getName(Order.class);
 	}
 }
