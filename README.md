@@ -11,9 +11,6 @@
 * 2018-07-15  Vaadin 8 - regenerated the source code by using the Starter Pack.
 * 2018-01-14  Vaadin 8 - regenerated the source code by using the Starter Pack.
 
-NOTE: This full stack starter uses Vaadin Charts, Vaadin TestBench, Vaadin Board and Vaadin Designer. Before you can run your application, you need to install licenses for all of these products.
-
-
 #### See also [Petstore with a Spring based backend and Vaadin 8 UI](https://github.com/igor-baiborodine/jpetstore-6-vaadin-spring-boot)
 
 # Running the Project in Development Mode
