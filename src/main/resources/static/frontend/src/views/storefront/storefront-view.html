@@ -14,7 +14,7 @@
       :host {
         display: flex;
         flex-direction: column;
-        height: 100vh;
+        height: 100%;
       }
     </style>
 
@@ -22,7 +22,7 @@
 
     <vaadin-grid id="grid" theme="orders no-row-borders"></vaadin-grid>
 
-    <vaadin-dialog id="dialog" on-opened-changed="_onDialogOpen"></vaadin-dialog>
+    <vaadin-dialog id="dialog" theme="orders" on-opened-changed="_onDialogOpen"></vaadin-dialog>
 
   </template>
 
@@ -34,9 +34,6 @@
 
       ready() {
         super.ready();
-
-        // There is no way for theming the dialog-overlay but using private API
-        this.$.dialog.$.overlay.setAttribute('theme', 'middle');
 
         // This code is needed to measure the page load performance and can be safely removed
         // if there is no need for that.

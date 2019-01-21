@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.2.RELEASE</version>
+        <version>2.1.0.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -19,9 +19,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <!-- Dependencies -->
-        <vaadin.version>10.0.10</vaadin.version>
-        <vaadin.confirmdialog.version>1.0.0</vaadin.confirmdialog.version>
-        <vaadin.cookieconsent.version>1.0.0</vaadin.cookieconsent.version>
+        <vaadin.version>12.0.3</vaadin.version>
+
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <!-- Overrides the old version specified by the Spring Boot parent -->
         <selenium.version>3.11.0</selenium.version>
@@ -45,22 +44,10 @@
 
     <repositories>
         <repository>
-            <id>vaadin-prereleases</id>
-            <url>https://maven.vaadin.com/vaadin-prereleases/</url>
-        </repository>
-
-        <repository>
             <id>vaadin-addons</id>
             <url>http://maven.vaadin.com/vaadin-addons</url>
         </repository>
     </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>vaadin-prereleases</id>
-            <url>https://maven.vaadin.com/vaadin-prereleases</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <dependencyManagement>
         <dependencies>
@@ -70,11 +57,6 @@
                 <version>${vaadin.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-tabs-flow</artifactId>
-                <version>1.0.5</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -107,17 +89,7 @@
         <dependency>
             <groupId>org.vaadin.artur</groupId>
             <artifactId>spring-data-provider</artifactId>
-            <version>2.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-confirm-dialog-flow</artifactId>
-            <version>${vaadin.confirmdialog.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-cookie-consent-flow</artifactId>
-            <version>${vaadin.cookieconsent.version}</version>
+            <version>2.0.1</version>
         </dependency>
         <!-- End of Vaadin -->
 
@@ -189,18 +161,6 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-testbench</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-confirm-dialog-testbench</artifactId>
-            <version>${vaadin.confirmdialog.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-cookie-consent-testbench</artifactId>
-            <version>${vaadin.cookieconsent.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -297,11 +257,6 @@
                                     <fragment>
                                       <name>main-fragment</name>
                                       <files>
-                                        <file>src/main-view.html</file>
-                                        <file>src/views/admin/users/users-view.html</file>
-                                        <file>src/views/admin/users/user-form.html</file>
-                                        <file>src/views/admin/products/products-view.html</file>
-                                        <file>src/views/admin/products/product-form.html</file>
                                         <file>src/views/storefront/storefront-view.html</file>
                                         <file>src/views/storefront/order-status-badge.html</file>
                                         <file>src/views/orderedit/order-item-editor.html</file>
@@ -309,7 +264,6 @@
                                         <file>src/views/orderedit/order-details.html</file>
                                         <file>src/views/errors/access-denied-view.html</file>
                                         <file>src/components/amount-field.html</file>
-                                        <file>src/components/app-navigation.html</file>
                                         <file>src/components/form-buttons-bar.html</file>
                                         <file>src/components/search-bar.html</file>
                                         <file>src/components/utils-mixin.html</file>

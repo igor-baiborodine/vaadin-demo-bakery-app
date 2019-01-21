@@ -20,8 +20,9 @@
         background-image: linear-gradient(var(--lumo-shade-20pct), var(--lumo-shade-20pct));
         background-color: var(--lumo-base-color);
         box-shadow: 0 0 16px 2px var(--lumo-shade-20pct);
+        order: 1;
         width: 100%;
-        flex: none;
+        height: 48px;
       }
 
       .row {
@@ -56,7 +57,11 @@
         padding-right: var(--lumo-space-s);
       }
 
-      @media (min-width: 600px) {
+      @media (min-width: 700px) {
+        :host {
+          order: 0;
+        }
+
         .row {
           width: 100%;
           max-width: 964px;
@@ -65,13 +70,6 @@
 
         .field {
           padding-right: var(--lumo-space-m);
-        }
-
-        :host::after {
-          content: '';
-          width: 100%;
-          border-radius: 50%;
-          background: transparent;
         }
 
         :host([show-checkbox][show-extra-filters]) .checkbox.desktop {

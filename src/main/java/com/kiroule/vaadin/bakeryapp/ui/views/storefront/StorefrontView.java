@@ -78,12 +78,7 @@ public class StorefrontView extends PolymerTemplate<TemplateModel>
 
 		presenter.init(this);
 
-		dialog.getElement().addEventListener("opened-changed", e -> {
-			if (!dialog.isOpened()) {
-				// Handle client-side closing dialog on escape
-				presenter.cancel();
-			}
-		});
+		dialog.addDialogCloseActionListener(e -> presenter.cancel());
 	}
 
 	@Override

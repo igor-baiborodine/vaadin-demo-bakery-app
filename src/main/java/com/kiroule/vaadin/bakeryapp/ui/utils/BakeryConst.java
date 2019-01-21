@@ -13,14 +13,6 @@ public class BakeryConst {
 	public static final String PAGE_DASHBOARD = "dashboard";
 	public static final String PAGE_USERS = "users";
 	public static final String PAGE_PRODUCTS = "products";
-	public static final String PAGE_LOGOUT = "logout";
-	public static final String PAGE_DEFAULT = PAGE_STOREFRONT;
-
-	public static final String ICON_STOREFRONT = "edit";
-	public static final String ICON_DASHBOARD = "clock";
-	public static final String ICON_USERS = "user";
-	public static final String ICON_PRODUCTS = "calendar";
-	public static final String ICON_LOGOUT = "arrow-right";
 
 	public static final String TITLE_STOREFRONT = "Storefront";
 	public static final String TITLE_DASHBOARD = "Dashboard";

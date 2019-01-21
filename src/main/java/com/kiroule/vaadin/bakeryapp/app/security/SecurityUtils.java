@@ -75,7 +75,6 @@ public final class SecurityUtils {
 	 * @return true if the user is logged in. False otherwise.
 	 */
 	public static boolean isUserLoggedIn() {
-		SecurityContext context = SecurityContextHolder.getContext();
 		return isUserLoggedIn(SecurityContextHolder.getContext().getAuthentication());
 	}
 

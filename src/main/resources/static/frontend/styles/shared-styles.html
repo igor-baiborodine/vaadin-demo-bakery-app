@@ -1,51 +1,84 @@
 <link rel="import" href="../bower_components/polymer/lib/elements/custom-style.html">
 
+<dom-module id="bakery-app-layout-theme" theme-for="vaadin-app-layout">
+  <template>
+    <style>
+      :host {
+        background-color: var(--lumo-shade-5pct) !important;
+        --vaadin-app-layout-navbar-background: var(--lumo-base-color);
+      }
+
+      [part="content"] {
+        height: 100%;
+      }
+
+      [part="navbar"] {
+        z-index: 200;
+        box-shadow: 0 0 16px 2px var(--lumo-shade-20pct);
+      }
+
+      @media (max-height: 600px) {
+        :host(.hide-navbar) [part="navbar"] {
+          display: none;
+        }
+      }
+    }
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="bakery-crud-theme" theme-for="vaadin-crud">
+  <template>
+    <style>
+      :host {
+        height: 100%;
+      }
+
+      #new {
+        display: none;
+      }
+
+      [part="toolbar"] {
+        padding: 0 !important;
+      }
+
+      :host ::slotted(vaadin-grid) {
+        max-width: calc(964px + var(--lumo-space-m));
+        background-color: var(--lumo-base-color);
+      }
+
+      @media (min-width: 700px) {
+        :host {
+          flex-direction: column-reverse;
+        }
+      }
+    </style>
+  </template>
+</dom-module>
+
 <!-- Themes for dialogs -->
 <dom-module id="bakery-dialog-overlay-theme" theme-for="vaadin-dialog-overlay">
   <template>
     <style>
-      :host([theme]) {
+      :host([theme~="orders"]) {
         padding: var(--lumo-space-xs);
       }
 
-      [part="overlay"] {
+      :host([theme~="orders"]) [part="overlay"] {
         display: flex;
         animation: none !important;
         min-width: 300px;
         outline: none;
       }
 
-      :host([theme]) [part="content"] {
-        width: 100%;
-        box-sizing: border-box;
-        flex: 1 1 auto;
-        display: flex;
-        flex-direction: column;
-        padding: 10px !important;
+      :host([theme~="crud"]) [part="content"] {
+        padding: 0;
       }
 
-      :host([theme="left"]) {
-        align-items: flex-start;
-      }
-
-      :host([theme$="right"]) {
-        align-items: flex-end;
-      }
-
-      :host([theme]) [part="overlay"] {
+      :host([theme~="orders"]) [part="content"],
+      :host([theme~="orders"]) [part="overlay"] {
         max-width: 65em;
         width: 100%;
-      }
-
-      :host([theme="left"]) [part="overlay"],
-      :host([theme="right"]) [part="overlay"] {
-        flex: 1;
-        max-width: 45em;
-      }
-
-      :host([theme="top-right"]) [part="overlay"] {
-        position: absolute;
-        top: var(--lumo-space-xs);
       }
 
       @media (max-width: 600px), (max-height: 600px) {
@@ -57,9 +90,13 @@
           padding: 0;
         }
 
+        :host([theme]) [part="content"] {
+          display: flex;
+          flex-direction: column;
+        }
+
         :host([theme]) [part="overlay"] {
-          flex: 1;
-          width: 100%;
+          height: 100%;
           border-radius: 0 !important;
         }
       }
@@ -150,11 +187,6 @@
       :host([theme~="dashboard"]) [part~="cell"] ::slotted(vaadin-grid-cell-content) {
         padding: 0;
       }
-
-      :host([theme~="crud"]) {
-        max-width: calc(964px + var(--lumo-space-m));
-        background-color: var(--lumo-base-color);
-      }
     </style>
   </template>
 </dom-module>
@@ -219,12 +251,6 @@
         }
       }
 
-      @media (max-width: 600px) {
-        search-bar {
-          order: 1;
-        }
-      }
-
       .flex {
         display: flex;
       }
@@ -242,6 +268,7 @@
         display: flex;
         flex-direction: column;
         flex: auto;
+        height: 100%;
       }
     </style>
   </template>
@@ -322,6 +349,20 @@
     	opacity: 0;
     	transition: opacity 500ms 300ms, width 300ms;
     	animation: none;
+    }
+
+    vaadin-app-layout vaadin-tab {
+      font-size: var(--lumo-font-size-xs);
+      padding-left: .75em;
+      padding-right: .75em;
+    }
+
+    @media (min-width: 700px) {
+      vaadin-app-layout vaadin-tab {
+        font-size: var(--lumo-font-size-m);
+        padding-left: 1em;
+        padding-right: 1em;
+      }
     }
   </style>
 </custom-style>

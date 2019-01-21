@@ -1,6 +1,7 @@
 package com.kiroule.vaadin.bakeryapp.backend.data.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -26,27 +27,19 @@ public abstract class AbstractEntity implements Serializable {
 
 	@Override
 	public int hashCode() {
-		if (id == null) {
-			return super.hashCode();
-		}
-
-		return 31 + id.hashCode();
+		return Objects.hash(id, version);
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		if (id == null) {
-			// New entities are only equal if the instance if the same
-			return super.equals(other);
-		}
-
-		if (this == other) {
+	public boolean equals(Object o) {
+		if (this == o) {
 			return true;
 		}
-		if (!(other instanceof AbstractEntity)) {
+		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		return id.equals(((AbstractEntity) other).id);
+		AbstractEntity that = (AbstractEntity) o;
+		return version == that.version &&
+				Objects.equals(id, that.id);
 	}
-
 }

@@ -118,8 +118,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				// the standard favicon URI
 				"/favicon.ico",
 
+				// the robots exclusion standard
+				"/robots.txt",
+
 				// web application manifest
-				"/manifest.json",
+				"/manifest.webmanifest",
 				"/sw.js",
 				"/offline-page.html",
 

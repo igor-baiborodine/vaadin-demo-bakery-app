@@ -1,15 +1,15 @@
 package com.kiroule.vaadin.bakeryapp.testbench;
 
+import static org.hamcrest.CoreMatchers.containsString;
+
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.StorefrontViewElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.UsersViewElement;
-import com.vaadin.flow.component.formlayout.testbench.FormLayoutElement;
 import com.vaadin.flow.component.textfield.testbench.PasswordFieldElement;
 import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
 import java.util.Random;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 
 public class UsersViewIT extends AbstractIT<UsersViewElement> {
 
@@ -25,21 +25,18 @@ public class UsersViewIT extends AbstractIT<UsersViewElement> {
 	public void updatePassword() {
 		UsersViewElement usersView = openView();
 
-		Assert.assertFalse(usersView.getDialog().isPresent());
+		Assert.assertFalse(usersView.isEditorOpen());
 
 		String uniqueEmail = "e" + r.nextInt() + "@vaadin.com";
 
 		createUser(usersView, uniqueEmail, "Paul", "Irwin", "Vaadin10", "baker");
 
-		WebElement bakerCell = usersView.getGrid().getCell(uniqueEmail);
-		Assert.assertNotNull(bakerCell);
+		int rowNum = usersView.getGrid().getCell(uniqueEmail).getRow();
+		usersView.openRowForEditing(rowNum);
 
-		bakerCell.click();
+		Assert.assertTrue(usersView.isEditorOpen());
 
-		Assert.assertTrue(usersView.getDialog().get().isOpen());
-
-		FormLayoutElement form = usersView.getForm();
-		Assert.assertTrue(form.isDisplayed());
+		Assert.assertTrue(usersView.isEditorOpen());
 
 		// When opening form the password value must be always empty
 		PasswordFieldElement password = usersView.getPasswordField();
@@ -47,23 +44,25 @@ public class UsersViewIT extends AbstractIT<UsersViewElement> {
 
 		// Saving any field without changing password should save and close
 		TextFieldElement emailField = usersView.getEmailField();
-		emailField.setValue("foo" + r.nextInt() + "@bar.com");
+		String newEmail = "foo" + r.nextInt() + "@bar.com";
+		emailField.setValue(newEmail);
 
-		usersView.getButtonsBar().getSaveButton().click();
-		Assert.assertFalse(usersView.getDialog().isPresent());
+		usersView.getEditorSaveButton().click();
+		Assert.assertFalse(usersView.isEditorOpen());
 
 		// Invalid password prevents closing form
-		bakerCell.click();
+		rowNum = usersView.getGrid().getCell(newEmail).getRow();
+		usersView.openRowForEditing(rowNum);
+
 		emailField = usersView.getEmailField(); // Requery email field.
 		password = usersView.getPasswordField(); // Requery password field.
 
 		emailField.setValue(uniqueEmail);
 		password.setValue("123");
 
-		usersView.getButtonsBar().getSaveButton().click();
+		usersView.getEditorSaveButton().click();
 
-		form = usersView.getForm();
-		Assert.assertTrue(form.isDisplayed());
+		Assert.assertTrue(usersView.isEditorOpen());
 
 		password = usersView.getPasswordField(); // Requery password field.
 
@@ -71,11 +70,13 @@ public class UsersViewIT extends AbstractIT<UsersViewElement> {
 		password.focus();
 		password.setValue("Abc123");
 		password.sendKeys(Keys.TAB);
-		usersView.getButtonsBar().getSaveButton().click();
-		Assert.assertFalse(usersView.getDialog().isPresent());
+		usersView.getEditorSaveButton().click();
+		Assert.assertFalse(usersView.isEditorOpen());
 
 		// When reopening the form password field must be empty.
-		bakerCell.click();
+		rowNum = usersView.getGrid().getCell(uniqueEmail).getRow();
+		usersView.openRowForEditing(rowNum);
+
 		password = usersView.getPasswordField(); // Requery password field.
 		Assert.assertEquals("", password.getAttribute("value"));
 	}
@@ -83,47 +84,61 @@ public class UsersViewIT extends AbstractIT<UsersViewElement> {
 	private void createUser(UsersViewElement usersView, String email, String firstName, String lastName,
 							String password, String role) {
 		usersView.getSearchBar().getCreateNewButton().click();
-		Assert.assertTrue(usersView.getDialog().get().isOpen());
+		Assert.assertTrue(usersView.isEditorOpen());
 
 		usersView.getEmailField().setValue(email);
 		usersView.getFirstName().setValue(firstName);
 		usersView.getLastName().setValue(lastName);
 		usersView.getPasswordField().setValue(password);
-		usersView.getRole().selectByText(role);
 
-		usersView.getButtonsBar().getSaveButton().click();
-		Assert.assertFalse(usersView.getDialog().isPresent());
+		// TODO: Fix combo selection as soon as API updated
+		// https://github.com/vaadin/vaadin-components-testbench/issues/60
+		usersView.getRole().openPopup();
+		usersView.getRole().setFilter(role);
+		usersView.getRole().sendKeys(Keys.ENTER);
+
+		usersView.getEditorSaveButton().click();
+		Assert.assertFalse(usersView.isEditorOpen());
 	}
 
 	@Test
 	public void tryToUpdateLockedEntity() {
 		UsersViewElement page = openView();
 
-		page.getGrid().getCell("barista@vaadin.com").click();
+		int rowNum = page.getGrid().getCell("barista@vaadin.com").getRow();
+		page.openRowForEditing(rowNum);
 
 		PasswordFieldElement field = page.getPasswordField();
 		field.setValue("Abc123");
-		page.getButtonsBar().getSaveButton().click();
+		page.getEmailField().setValue("barista123@vaadin.com");
+		page.getEditorSaveButton().click();
+
+		Assert.assertEquals(rowNum, page.getGrid().getCell("barista@vaadin.com").getRow());
 	}
 
 	@Test
 	public void tryToDeleteLockedEntity() {
 		UsersViewElement page = openView();
 
-		page.getGrid().getCell("barista@vaadin.com").click();
+		int rowNum = page.getGrid().getCell("barista@vaadin.com").getRow();
+		page.openRowForEditing(rowNum);
 
-		page.getButtonsBar().getDeleteButton().click();
-		page.getConfirmDialog().get().getConfirmButton().click();
+		Assert.assertTrue(page.isEditorOpen());
+
+		page.getEditorDeleteButton().click();
+		page.getDeleteConfirmDialog().getConfirmButton().click();
+
+		Assert.assertEquals(rowNum, page.getGrid().getCell("barista@vaadin.com").getRow());
 	}
-	
 	
 	@Test
 	public void testCancelConfirmationMessage() {
 		UsersViewElement page = openView();
 		page.getSearchBar().getCreateNewButton().click();
-		page.getFirstName().setValue("Some name");
-		page.getButtonsBar().getCancelButton().click();
-		Assert.assertEquals("There are unsaved modifications to the User. Discard changes?",
-				page.getConfirmDialog().get().getMessageText());
+		page.getFirstName().focus();
+		page.getFirstName().sendKeys("Some name");
+		page.getEditorCancelButton().click();
+
+		Assert.assertThat(page.getDiscardConfirmDialog().getMessageText(), containsString("Discard changes"));
 	}
 }

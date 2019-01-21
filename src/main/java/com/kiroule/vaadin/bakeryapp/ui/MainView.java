@@ -1,13 +1,6 @@
 package com.kiroule.vaadin.bakeryapp.ui;
 
-import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.ICON_DASHBOARD;
-import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.ICON_LOGOUT;
-import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.ICON_PRODUCTS;
-import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.ICON_STOREFRONT;
-import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.ICON_USERS;
 import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.PAGE_DASHBOARD;
-import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.PAGE_DEFAULT;
-import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.PAGE_LOGOUT;
 import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.PAGE_PRODUCTS;
 import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.PAGE_STOREFRONT;
 import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.PAGE_USERS;
@@ -19,69 +12,79 @@ import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.TITLE_USERS;
 import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.VIEWPORT;
 
 import com.kiroule.vaadin.bakeryapp.app.security.SecurityUtils;
-import com.kiroule.vaadin.bakeryapp.ui.components.AppNavigation;
 import com.kiroule.vaadin.bakeryapp.ui.components.BakeryCookieConsent;
-import com.kiroule.vaadin.bakeryapp.ui.entities.PageInfo;
+import com.kiroule.vaadin.bakeryapp.ui.components.OfflineBanner;
 import com.kiroule.vaadin.bakeryapp.ui.exceptions.AccessDeniedException;
 import com.kiroule.vaadin.bakeryapp.ui.views.HasConfirmation;
 import com.kiroule.vaadin.bakeryapp.ui.views.admin.products.ProductsView;
 import com.kiroule.vaadin.bakeryapp.ui.views.admin.users.UsersView;
 import com.kiroule.vaadin.bakeryapp.ui.views.login.LoginView;
 import com.vaadin.flow.component.HasElement;
-import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.applayout.AbstractAppRouterLayout;
+import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.applayout.AppLayoutMenu;
+import com.vaadin.flow.component.applayout.AppLayoutMenuItem;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
-import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.page.Viewport;
-import com.vaadin.flow.component.polymertemplate.Id;
-import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.RouterLayout;
-import com.vaadin.flow.templatemodel.TemplateModel;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.vaadin.flow.server.PWA;
 
-@Tag("main-view")
-@HtmlImport("src/main-view.html")
 
-@PageTitle("Vaadin Demo Bakery App")
 @Viewport(VIEWPORT)
-public class MainView extends PolymerTemplate<TemplateModel>
-		implements RouterLayout, BeforeEnterObserver {
-
-	@Id("appNavigation")
-	private AppNavigation appNavigation;
+@PWA(name = "Bakery App Starter", shortName = "vaadin-demo-bakery-app",
+		startPath = "login",
+		backgroundColor = "#227aef", themeColor = "#227aef",
+		offlinePath = "offline-page.html",
+		offlineResources = {"images/offline-login-banner.jpg"})
+public class MainView extends AbstractAppRouterLayout implements BeforeEnterObserver {
 
 	private final ConfirmDialog confirmDialog;
 
-	@Autowired
 	public MainView() {
 		this.confirmDialog = new ConfirmDialog();
 		confirmDialog.setCancelable(true);
 		confirmDialog.setConfirmButtonTheme("raised tertiary error");
 		confirmDialog.setCancelButtonTheme("raised tertiary");
 
-		List<PageInfo> pages = new ArrayList<>();
-		if (SecurityUtils.isUserLoggedIn()) {
-			pages.add(new PageInfo(PAGE_STOREFRONT, ICON_STOREFRONT,
-				TITLE_STOREFRONT));
-			pages.add(
-				new PageInfo(PAGE_DASHBOARD, ICON_DASHBOARD, TITLE_DASHBOARD));
-			if (SecurityUtils.isAccessGranted(UsersView.class)) {
-				pages.add(new PageInfo(PAGE_USERS, ICON_USERS, TITLE_USERS));
-			}
-			if (SecurityUtils.isAccessGranted(ProductsView.class)) {
-				pages.add(
-					new PageInfo(PAGE_PRODUCTS, ICON_PRODUCTS, TITLE_PRODUCTS));
-			}
-			pages.add(new PageInfo(PAGE_LOGOUT, ICON_LOGOUT, TITLE_LOGOUT));
-		}
-		appNavigation.init(pages, PAGE_DEFAULT, PAGE_LOGOUT);
-
 		getElement().appendChild(confirmDialog.getElement());
 		getElement().appendChild(new BakeryCookieConsent().getElement());
+		getElement().addAttachListener(e -> UI.getCurrent().add(new OfflineBanner()));
+	}
+
+	@Override
+	protected void configure(AppLayout appLayout, AppLayoutMenu menu) {
+		appLayout.setBranding(new Span("vaadin-demo-bakery-app"));
+
+		if (SecurityUtils.isUserLoggedIn()) {
+			setMenuItem(menu, new AppLayoutMenuItem(VaadinIcon.EDIT.create(), TITLE_STOREFRONT, PAGE_STOREFRONT));
+			setMenuItem(menu, new AppLayoutMenuItem(VaadinIcon.CLOCK.create(), TITLE_DASHBOARD, PAGE_DASHBOARD));
+
+			if (SecurityUtils.isAccessGranted(UsersView.class)) {
+				setMenuItem(menu, new AppLayoutMenuItem(VaadinIcon.USER.create(), TITLE_USERS, PAGE_USERS));
+			}
+			if (SecurityUtils.isAccessGranted(ProductsView.class)) {
+				setMenuItem(menu, new AppLayoutMenuItem(VaadinIcon.CALENDAR.create(), TITLE_PRODUCTS, PAGE_PRODUCTS));
+			}
+
+			setMenuItem(menu, new AppLayoutMenuItem(VaadinIcon.ARROW_RIGHT.create(), TITLE_LOGOUT, e ->
+					UI.getCurrent().getPage().executeJavaScript("location.assign('logout')")));
+		}
+		getElement().addEventListener("search-focus", e -> {
+			appLayout.getElement().getClassList().add("hide-navbar");
+		});
+
+		getElement().addEventListener("search-blur", e -> {
+			appLayout.getElement().getClassList().remove("hide-navbar");
+		});
+	}
+
+	private void setMenuItem(AppLayoutMenu menu, AppLayoutMenuItem menuItem) {
+		menuItem.getElement().setAttribute("theme", "icon-on-top");
+		menu.addMenuItem(menuItem);
 	}
 
 	@Override
@@ -100,9 +103,7 @@ public class MainView extends PolymerTemplate<TemplateModel>
 
 	@Override
 	public void showRouterLayoutContent(HasElement content) {
-		if (content != null) {
-			getElement().appendChild(content.getElement());
-		}
+		super.showRouterLayoutContent(content);
 
 		this.confirmDialog.setOpened(false);
 		if (content instanceof HasConfirmation) {

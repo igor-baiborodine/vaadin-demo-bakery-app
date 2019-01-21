@@ -8,10 +8,8 @@ import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.UsersViewElement;
 import com.vaadin.flow.component.tabs.testbench.TabElement;
 import com.vaadin.flow.component.tabs.testbench.TabsElement;
 import com.vaadin.testbench.TestBenchElement;
-import com.vaadin.testbench.elementsbase.Element;
 
-@Element("app-navigation")
-public class AppNavigationElement extends TestBenchElement {
+public class AppNavigationElement extends TabsElement {
 
 	public StorefrontViewElement navigateToStorefront() {
 		return navigateTo(0, StorefrontViewElement.class);
@@ -35,7 +33,7 @@ public class AppNavigationElement extends TestBenchElement {
 	}
 
 	private <T extends TestBenchElement> T navigateTo(int index, Class<T> landingPage) {
-		$(TabsElement.class).first().$(TabElement.class).get(index).click();
+		$(TabElement.class).get(index).click();
 		return $(landingPage).onPage().waitForFirst();
 	}
 }

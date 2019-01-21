@@ -1,85 +1,79 @@
-/**
- *
- */
 package com.kiroule.vaadin.bakeryapp.ui.crud;
 
+import com.kiroule.vaadin.bakeryapp.app.HasLogger;
 import com.kiroule.vaadin.bakeryapp.app.security.CurrentUser;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.AbstractEntity;
-import com.kiroule.vaadin.bakeryapp.backend.service.FilterableCrudService;
-import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
+import com.kiroule.vaadin.bakeryapp.backend.service.CrudService;
+import com.kiroule.vaadin.bakeryapp.backend.service.UserFriendlyDataException;
+import com.kiroule.vaadin.bakeryapp.ui.utils.messages.CrudErrorMessage;
+import com.kiroule.vaadin.bakeryapp.ui.views.HasNotifications;
+import java.util.function.Consumer;
+import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.OptimisticLockingFailureException;
 
-public class CrudEntityPresenter<T extends AbstractEntity> extends EntityPresenter<T, CrudView<T, ?>> {
+public class CrudEntityPresenter<E extends AbstractEntity>	implements HasLogger {
 
-	private FilterablePageableDataProvider<T, String> filteredDataProvider;
+	private final CrudService<E> crudService;
 
+	private final CurrentUser currentUser;
 
-	public CrudEntityPresenter(FilterableCrudService<T> crudService, CurrentUser currentUser) {
-		super(crudService, currentUser);
+	private final HasNotifications view;
 
-		filteredDataProvider = new CrudEntityDataProvider<>(crudService);
+	public CrudEntityPresenter(CrudService<E> crudService, CurrentUser currentUser, HasNotifications view) {
+		this.crudService = crudService;
+		this.currentUser = currentUser;
+		this.view = view;
 	}
 
-	@Override
-	public void setView(CrudView<T, ?> view) {
-		super.setView(view);
-		view.getGrid().setDataProvider(filteredDataProvider);
-	}
-
-	public void filter(String filter) {
-		filteredDataProvider.setFilter(filter);
-	}
-
-	public void cancel() {
-		cancel(this::closeSilently, getView()::openDialog);
-	}
-
-	public void closeSilently() {
-		close();
-		getView().closeDialog();
-	}
-
-	@Override
-	public T createNew() {
-		return open(super.createNew());
-	}
-
-	public void loadEntity(Long id) {
-		loadEntity(id, this::open);
-	}
-
-	private T open(T entity) {
-		getView().getBinder().readBean(entity);
-		getView().getForm().getButtons().setSaveDisabled(true);
-		getView().getForm().getButtons().setDeleteDisabled(isNew());
-		getView().updateTitle(isNew());
-		getView().openDialog();
-		return entity;
-	}
-
-	public void save() {
-		if (writeEntity()) {
-			super.save(e -> {
-				if (isNew()) {
-					getView().showCreatedNotification();
-					filteredDataProvider.refreshAll();
-				} else {
-					getView().showUpdatedNotification();
-					filteredDataProvider.refreshItem(e);
-				}
-				closeSilently();
-			});
+	public void delete(E entity, Consumer<E> onSuccess, Consumer<E> onFail) {
+		if (executeOperation(() -> crudService.delete(currentUser.getUser(), entity))) {
+			onSuccess.accept(entity);
+		} else {
+			onFail.accept(entity);
 		}
 	}
 
-	public void delete() {
-		super.delete(e -> {
-			getView().showDeletedNotification();
-			filteredDataProvider.refreshAll();
-			closeSilently();
-		});
+	public void save(E entity, Consumer<E> onSuccess, Consumer<E> onFail) {
+		if (executeOperation(() -> saveEntity(entity))) {
+			onSuccess.accept(entity);
+		} else {
+			onFail.accept(entity);
+		}
 	}
 
-	public void onValueChange(boolean isDirty) {
-		getView().getForm().getButtons().setSaveDisabled(!isDirty);
+	private boolean executeOperation(Runnable operation) {
+		try {
+			operation.run();
+			return true;
+		} catch (UserFriendlyDataException e) {
+			// Commit failed because of application-level data constraints
+			consumeError(e, e.getMessage(), true);
+		} catch (DataIntegrityViolationException e) {
+			// Commit failed because of validation errors
+			consumeError(
+					e, CrudErrorMessage.OPERATION_PREVENTED_BY_REFERENCES, true);
+		} catch (OptimisticLockingFailureException e) {
+			consumeError(e, CrudErrorMessage.CONCURRENT_UPDATE, true);
+		} catch (EntityNotFoundException e) {
+			consumeError(e, CrudErrorMessage.ENTITY_NOT_FOUND, false);
+		} catch (ConstraintViolationException e) {
+			consumeError(e, CrudErrorMessage.REQUIRED_FIELDS_MISSING, false);
+		}
+		return false;
+	}
+
+	private void consumeError(Exception e, String message, boolean isPersistent) {
+		getLogger().debug(message, e);
+		view.showNotification(message, isPersistent);
+	}
+
+	private void saveEntity(E entity) {
+		crudService.save(currentUser.getUser(), entity);
+	}
+
+	public boolean loadEntity(Long id, Consumer<E> onSuccess) {
+		return executeOperation(() -> onSuccess.accept(crudService.load(id)));
 	}
 }

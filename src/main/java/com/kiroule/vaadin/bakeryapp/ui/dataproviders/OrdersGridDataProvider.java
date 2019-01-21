@@ -104,6 +104,9 @@ public class OrdersGridDataProvider extends FilterablePageableDataProvider<Order
 	public void setPageObserver(Consumer<Page<Order>> pageObserver) {
 		this.pageObserver = pageObserver;
 	}
-	
-	
+
+	@Override
+	public Object getId(Order item) {
+		return item.getId();
+	}
 }
