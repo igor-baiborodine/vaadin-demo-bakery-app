@@ -15,7 +15,9 @@ vaadin-demo-backery-app
 * 2018-07-15  Vaadin 8 - regenerated the source code by using the Starter Pack.
 * 2018-01-14  Vaadin 8 - regenerated the source code by using the Starter Pack.
 
-#### See also [Petstore with a Spring based backend and Vaadin 8 UI](https://github.com/igor-baiborodine/jpetstore-6-vaadin-spring-boot)
+### Other Demo Apps
+* [Petstore with a Spring based backend and Vaadin 8 UI](https://github.com/igor-baiborodine/jpetstore-6-vaadin-spring-boot)
+* [Beverage Buddy App Starter for Vaadin Flow](https://github.com/vaadin/beverage-starter-flow)
 
 # Running the Project in Development Mode
 
