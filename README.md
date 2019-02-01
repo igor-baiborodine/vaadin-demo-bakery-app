@@ -18,6 +18,7 @@ vaadin-demo-backery-app
 ### Other Example Apps
 * [Petstore with a Spring-based Backend and Vaadin 8 UI](https://github.com/igor-baiborodine/jpetstore-6-vaadin-spring-boot)
 * [Beverage Buddy App Starter for Vaadin Flow](https://github.com/vaadin/beverage-starter-flow)
+* [Bookstore App Starter for Vaadin Flow](https://github.com/vaadin/bookstore-starter-flow)
 
 # Running the Project in Development Mode
 
