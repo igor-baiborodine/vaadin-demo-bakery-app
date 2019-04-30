@@ -6,13 +6,14 @@ import static com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils.SHORT_DAY_FO
 import static com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils.WEEKDAY_FULLNAME_FORMATTER;
 import static com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils.WEEK_OF_YEAR_FIELD;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderItem;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderSummary;
 import com.kiroule.vaadin.bakeryapp.ui.utils.converters.OrderStateConverter;
-import com.vaadin.flow.data.renderer.TemplateRenderer;
-import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Help class to get ready to use TemplateRenderer for displaying order card list on the Storefront and Dashboard grids.

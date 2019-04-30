@@ -1,9 +1,5 @@
 package com.kiroule.vaadin.bakeryapp.app.security;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.Role;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
-import com.kiroule.vaadin.bakeryapp.backend.repositories.UserRepository;
-import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +14,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+
+import com.kiroule.vaadin.bakeryapp.backend.data.Role;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
+import com.kiroule.vaadin.bakeryapp.backend.repositories.UserRepository;
+import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
 
 /**
  * Configures spring security, doing the following:

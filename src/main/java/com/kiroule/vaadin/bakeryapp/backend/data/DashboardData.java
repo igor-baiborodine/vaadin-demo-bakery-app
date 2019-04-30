@@ -1,8 +1,9 @@
 package com.kiroule.vaadin.bakeryapp.backend.data;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
 
 public class DashboardData {
 

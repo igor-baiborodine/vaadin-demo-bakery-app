@@ -1,9 +1,10 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.errors;
 
-import com.kiroule.vaadin.bakeryapp.ui.MainView;
-import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
+import javax.servlet.http.HttpServletResponse;
+
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.dom.ElementFactory;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.ErrorParameter;
@@ -12,10 +13,12 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.ParentLayout;
 import com.vaadin.flow.router.RouteNotFoundError;
 import com.vaadin.flow.router.RouterLink;
-import javax.servlet.http.HttpServletResponse;
+import com.kiroule.vaadin.bakeryapp.ui.MainView;
+import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
 
 @ParentLayout(MainView.class)
 @PageTitle(BakeryConst.TITLE_NOT_FOUND)
+@HtmlImport("styles/shared-styles.html")
 public class CustomRouteNotFoundError extends RouteNotFoundError {
 
 	public CustomRouteNotFoundError() {

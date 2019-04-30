@@ -1,9 +1,11 @@
 package com.kiroule.vaadin.bakeryapp.backend.service;
 
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.AbstractEntity;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
-import javax.persistence.EntityNotFoundException;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CrudService<T extends AbstractEntity> {
 

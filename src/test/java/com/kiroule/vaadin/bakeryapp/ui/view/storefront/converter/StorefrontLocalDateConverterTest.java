@@ -5,11 +5,13 @@ package com.kiroule.vaadin.bakeryapp.ui.view.storefront.converter;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.LocalDate;
+
+import org.junit.Test;
+
 import com.kiroule.vaadin.bakeryapp.test.FormattingTest;
 import com.kiroule.vaadin.bakeryapp.ui.views.storefront.converters.StorefrontDate;
 import com.kiroule.vaadin.bakeryapp.ui.views.storefront.converters.StorefrontLocalDateConverter;
-import java.time.LocalDate;
-import org.junit.Test;
 
 public class StorefrontLocalDateConverterTest extends FormattingTest {
 

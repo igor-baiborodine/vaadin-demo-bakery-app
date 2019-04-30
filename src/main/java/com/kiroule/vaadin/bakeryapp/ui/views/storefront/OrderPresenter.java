@@ -1,5 +1,16 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.storefront;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+
+import com.vaadin.flow.component.Focusable;
+import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.kiroule.vaadin.bakeryapp.app.security.CurrentUser;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
 import com.kiroule.vaadin.bakeryapp.backend.service.OrderService;
@@ -8,15 +19,6 @@ import com.kiroule.vaadin.bakeryapp.ui.dataproviders.OrdersGridDataProvider;
 import com.kiroule.vaadin.bakeryapp.ui.dataproviders.OrdersGridDataProvider.OrderFilter;
 import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
 import com.kiroule.vaadin.bakeryapp.ui.views.storefront.beans.OrderCardHeader;
-import com.vaadin.flow.component.Focusable;
-import com.vaadin.flow.component.HasValue;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.spring.annotation.SpringComponent;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

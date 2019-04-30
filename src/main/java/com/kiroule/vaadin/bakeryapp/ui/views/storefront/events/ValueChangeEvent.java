@@ -1,7 +1,7 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.storefront.events;
 
-import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderItemsEditor;
 import com.vaadin.flow.component.ComponentEvent;
+import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderItemsEditor;
 
 public class ValueChangeEvent extends ComponentEvent<OrderItemsEditor> {
 

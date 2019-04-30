@@ -11,14 +11,6 @@ import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.TITLE_STOREFRONT
 import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.TITLE_USERS;
 import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.VIEWPORT;
 
-import com.kiroule.vaadin.bakeryapp.app.security.SecurityUtils;
-import com.kiroule.vaadin.bakeryapp.ui.components.BakeryCookieConsent;
-import com.kiroule.vaadin.bakeryapp.ui.components.OfflineBanner;
-import com.kiroule.vaadin.bakeryapp.ui.exceptions.AccessDeniedException;
-import com.kiroule.vaadin.bakeryapp.ui.views.HasConfirmation;
-import com.kiroule.vaadin.bakeryapp.ui.views.admin.products.ProductsView;
-import com.kiroule.vaadin.bakeryapp.ui.views.admin.users.UsersView;
-import com.kiroule.vaadin.bakeryapp.ui.views.login.LoginView;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AbstractAppRouterLayout;
@@ -29,18 +21,21 @@ import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.page.Viewport;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.server.PWA;
+import com.kiroule.vaadin.bakeryapp.app.security.SecurityUtils;
+import com.kiroule.vaadin.bakeryapp.ui.components.BakeryCookieConsent;
+import com.kiroule.vaadin.bakeryapp.ui.views.HasConfirmation;
+import com.kiroule.vaadin.bakeryapp.ui.views.admin.products.ProductsView;
+import com.kiroule.vaadin.bakeryapp.ui.views.admin.users.UsersView;
 
 
 @Viewport(VIEWPORT)
-@PWA(name = "Bakery App Starter", shortName = "vaadin-demo-bakery-app",
+@PWA(name = "Bakery App Starter", shortName = "Vaadin Demo Bakery App",
 		startPath = "login",
 		backgroundColor = "#227aef", themeColor = "#227aef",
 		offlinePath = "offline-page.html",
 		offlineResources = {"images/offline-login-banner.jpg"})
-public class MainView extends AbstractAppRouterLayout implements BeforeEnterObserver {
+public class MainView extends AbstractAppRouterLayout {
 
 	private final ConfirmDialog confirmDialog;
 
@@ -52,12 +47,11 @@ public class MainView extends AbstractAppRouterLayout implements BeforeEnterObse
 
 		getElement().appendChild(confirmDialog.getElement());
 		getElement().appendChild(new BakeryCookieConsent().getElement());
-		getElement().addAttachListener(e -> UI.getCurrent().add(new OfflineBanner()));
 	}
 
 	@Override
 	protected void configure(AppLayout appLayout, AppLayoutMenu menu) {
-		appLayout.setBranding(new Span("vaadin-demo-bakery-app"));
+		appLayout.setBranding(new Span("Vaadin Demo Bakery App"));
 
 		if (SecurityUtils.isUserLoggedIn()) {
 			setMenuItem(menu, new AppLayoutMenuItem(VaadinIcon.EDIT.create(), TITLE_STOREFRONT, PAGE_STOREFRONT));
@@ -85,20 +79,6 @@ public class MainView extends AbstractAppRouterLayout implements BeforeEnterObse
 	private void setMenuItem(AppLayoutMenu menu, AppLayoutMenuItem menuItem) {
 		menuItem.getElement().setAttribute("theme", "icon-on-top");
 		menu.addMenuItem(menuItem);
-	}
-
-	@Override
-	public void beforeEnter(BeforeEnterEvent event) {
-		final boolean accessGranted =
-			SecurityUtils.isAccessGranted(event.getNavigationTarget());
-		if (!accessGranted) {
-			if (SecurityUtils.isUserLoggedIn()) {
-				event.rerouteToError(AccessDeniedException.class);
-			}
-			else {
-				event.rerouteTo(LoginView.class);
-			}
-		}
 	}
 
 	@Override

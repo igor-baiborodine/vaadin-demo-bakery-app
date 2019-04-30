@@ -1,9 +1,10 @@
 package com.kiroule.vaadin.bakeryapp.testbench.elements.ui;
 
-import com.kiroule.vaadin.bakeryapp.testbench.elements.components.SearchBarElement;
 import com.vaadin.flow.component.confirmdialog.testbench.ConfirmDialogElement;
 import com.vaadin.flow.component.crud.testbench.CrudElement;
 import com.vaadin.flow.component.formlayout.testbench.FormLayoutElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.components.SearchBarElement;
+import com.vaadin.testbench.TestBenchElement;
 
 public class BakeryCrudViewElement extends CrudElement implements HasApp {
 
@@ -21,5 +22,9 @@ public class BakeryCrudViewElement extends CrudElement implements HasApp {
 
 	public ConfirmDialogElement getDeleteConfirmDialog() {
 		return $(ConfirmDialogElement.class).last();
+	}
+
+	public void openRowForEditing(int row, int editCol) {
+		getGrid().getCell(row, editCol).$(TestBenchElement.class).first().click();
 	}
 }

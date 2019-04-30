@@ -1,7 +1,5 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.storefront;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.beans.OrderCardHeader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,6 +8,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.beans.OrderCardHeader;
 
 public class OrderCardHeaderGenerator {
 

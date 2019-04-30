@@ -3,8 +3,9 @@ package com.kiroule.vaadin.bakeryapp.ui.utils.converters;
 import static com.kiroule.vaadin.bakeryapp.ui.dataproviders.DataProviderUtil.convertIfNotNull;
 import static com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils.FULL_DATE_FORMATTER;
 
-import com.vaadin.flow.templatemodel.ModelEncoder;
 import java.time.LocalDateTime;
+
+import com.vaadin.flow.templatemodel.ModelEncoder;
 
 public class LocalDateTimeConverter implements ModelEncoder<LocalDateTime, String> {
 

@@ -2,12 +2,13 @@ package com.kiroule.vaadin.bakeryapp.ui.utils.converters;
 
 import static com.kiroule.vaadin.bakeryapp.ui.dataproviders.DataProviderUtil.convertIfNotNull;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
-import com.vaadin.flow.templatemodel.ModelEncoder;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import com.vaadin.flow.templatemodel.ModelEncoder;
+import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
 
 public class OrderStateConverter implements ModelEncoder<OrderState, String> {
 

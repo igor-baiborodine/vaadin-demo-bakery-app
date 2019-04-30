@@ -2,6 +2,7 @@ package com.kiroule.vaadin.bakeryapp.backend.data.entity;
 
 import java.io.Serializable;
 import java.util.Objects;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;

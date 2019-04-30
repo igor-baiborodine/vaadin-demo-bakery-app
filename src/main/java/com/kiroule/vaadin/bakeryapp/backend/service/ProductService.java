@@ -1,15 +1,17 @@
 package com.kiroule.vaadin.bakeryapp.backend.service;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
-import com.kiroule.vaadin.bakeryapp.backend.repositories.ProductRepository;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
+import com.kiroule.vaadin.bakeryapp.backend.repositories.ProductRepository;
 
 @Service
 public class ProductService implements FilterableCrudService<Product> {

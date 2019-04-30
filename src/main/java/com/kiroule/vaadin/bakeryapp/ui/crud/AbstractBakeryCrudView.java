@@ -1,12 +1,5 @@
 package com.kiroule.vaadin.bakeryapp.ui.crud;
 
-import com.kiroule.vaadin.bakeryapp.app.security.CurrentUser;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.AbstractEntity;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.util.EntityUtil;
-import com.kiroule.vaadin.bakeryapp.backend.service.FilterableCrudService;
-import com.kiroule.vaadin.bakeryapp.ui.components.SearchBar;
-import com.kiroule.vaadin.bakeryapp.ui.utils.TemplateUtil;
-import com.kiroule.vaadin.bakeryapp.ui.views.HasNotifications;
 import com.vaadin.flow.component.crud.Crud;
 import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.crud.CrudI18n;
@@ -14,7 +7,15 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
+import com.kiroule.vaadin.bakeryapp.app.security.CurrentUser;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.AbstractEntity;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.util.EntityUtil;
+import com.kiroule.vaadin.bakeryapp.backend.service.FilterableCrudService;
+import com.kiroule.vaadin.bakeryapp.ui.components.SearchBar;
+import com.kiroule.vaadin.bakeryapp.ui.utils.TemplateUtil;
+import com.kiroule.vaadin.bakeryapp.ui.views.HasNotifications;
 import elemental.json.Json;
+
 import java.util.function.Consumer;
 
 public abstract class AbstractBakeryCrudView<E extends AbstractEntity> extends Crud<E>

@@ -1,23 +1,25 @@
 package com.kiroule.vaadin.bakeryapp.ui.dataproviders;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
-import com.kiroule.vaadin.bakeryapp.backend.service.OrderService;
-import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
-import com.vaadin.flow.data.provider.Query;
-import com.vaadin.flow.data.provider.QuerySortOrder;
-import com.vaadin.flow.data.provider.QuerySortOrderBuilder;
-import com.vaadin.flow.spring.annotation.SpringComponent;
-import com.vaadin.flow.spring.annotation.UIScope;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
+
+import com.vaadin.flow.data.provider.Query;
+import com.vaadin.flow.data.provider.QuerySortOrder;
+import com.vaadin.flow.data.provider.QuerySortOrderBuilder;
+import com.vaadin.flow.spring.annotation.SpringComponent;
+import com.vaadin.flow.spring.annotation.UIScope;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
+import com.kiroule.vaadin.bakeryapp.backend.service.OrderService;
+import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
 
 /**
  * A pageable order data provider.

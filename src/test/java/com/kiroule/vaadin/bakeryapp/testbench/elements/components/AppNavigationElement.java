@@ -1,12 +1,12 @@
 package com.kiroule.vaadin.bakeryapp.testbench.elements.components;
 
-import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.DashboardViewElement;
-import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.LoginViewElement;
-import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.ProductsViewElement;
-import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.StorefrontViewElement;
-import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.UsersViewElement;
 import com.vaadin.flow.component.tabs.testbench.TabElement;
 import com.vaadin.flow.component.tabs.testbench.TabsElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.DashboardViewElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.LoginViewElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.StorefrontViewElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.ProductsViewElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.UsersViewElement;
 import com.vaadin.testbench.TestBenchElement;
 
 public class AppNavigationElement extends TabsElement {

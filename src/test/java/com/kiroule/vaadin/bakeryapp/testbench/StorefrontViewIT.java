@@ -2,20 +2,22 @@ package com.kiroule.vaadin.bakeryapp.testbench;
 
 import static org.hamcrest.CoreMatchers.containsString;
 
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.vaadin.flow.component.button.testbench.ButtonElement;
+import com.vaadin.flow.component.notification.testbench.NotificationElement;
+import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.components.OrderCardElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.OrderItemEditorElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.StorefrontViewElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.StorefrontViewElement.OrderEditorElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.UsersViewElement;
 import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
-import com.vaadin.flow.component.button.testbench.ButtonElement;
-import com.vaadin.flow.component.notification.testbench.NotificationElement;
-import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import org.junit.Assert;
-import org.junit.Test;
 
 public class StorefrontViewIT extends AbstractIT<StorefrontViewElement> {
 

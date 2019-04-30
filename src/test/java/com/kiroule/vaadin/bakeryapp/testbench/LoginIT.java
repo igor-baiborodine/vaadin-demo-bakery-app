@@ -2,12 +2,13 @@ package com.kiroule.vaadin.bakeryapp.testbench;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.vaadin.flow.component.cookieconsent.testbench.CookieConsentElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.DashboardViewElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.LoginViewElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.StorefrontViewElement;
-import com.vaadin.flow.component.cookieconsent.testbench.CookieConsentElement;
-import org.junit.Assert;
-import org.junit.Test;
 
 public class LoginIT extends AbstractIT<LoginViewElement> {
 

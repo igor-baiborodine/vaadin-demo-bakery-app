@@ -1,6 +1,7 @@
 package com.kiroule.vaadin.bakeryapp.ui.utils;
 
 import java.util.Locale;
+
 import org.springframework.data.domain.Sort;
 
 public class BakeryConst {

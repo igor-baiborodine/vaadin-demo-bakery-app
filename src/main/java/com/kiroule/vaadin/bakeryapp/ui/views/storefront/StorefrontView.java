@@ -1,20 +1,16 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.storefront;
 
-import com.kiroule.vaadin.bakeryapp.app.HasLogger;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
+import java.util.stream.Stream;
+
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.util.EntityUtil;
-import com.kiroule.vaadin.bakeryapp.ui.MainView;
-import com.kiroule.vaadin.bakeryapp.ui.components.SearchBar;
-import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
-import com.kiroule.vaadin.bakeryapp.ui.views.EntityView;
-import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderDetails;
-import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderEditor;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.dependency.HtmlImport;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
@@ -26,8 +22,14 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.templatemodel.TemplateModel;
-import java.util.stream.Stream;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kiroule.vaadin.bakeryapp.app.HasLogger;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
+import com.kiroule.vaadin.bakeryapp.ui.MainView;
+import com.kiroule.vaadin.bakeryapp.ui.components.SearchBar;
+import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
+import com.kiroule.vaadin.bakeryapp.ui.views.EntityView;
+import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderDetails;
+import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderEditor;
 
 @Tag("storefront-view")
 @HtmlImport("src/views/storefront/storefront-view.html")

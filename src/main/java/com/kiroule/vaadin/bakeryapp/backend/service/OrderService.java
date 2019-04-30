@@ -1,13 +1,5 @@
 package com.kiroule.vaadin.bakeryapp.backend.service;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.DashboardData;
-import com.kiroule.vaadin.bakeryapp.backend.data.DeliveryStats;
-import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderSummary;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
-import com.kiroule.vaadin.bakeryapp.backend.repositories.OrderRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
@@ -19,12 +11,23 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
+
 import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+
+import com.kiroule.vaadin.bakeryapp.backend.data.DashboardData;
+import com.kiroule.vaadin.bakeryapp.backend.data.DeliveryStats;
+import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderSummary;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
+import com.kiroule.vaadin.bakeryapp.backend.repositories.OrderRepository;
 
 @Service
 public class OrderService implements CrudService<Order> {

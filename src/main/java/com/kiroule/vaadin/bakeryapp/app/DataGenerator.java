@@ -1,5 +1,21 @@
 package com.kiroule.vaadin.bakeryapp.app;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.function.Supplier;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
 import com.kiroule.vaadin.bakeryapp.backend.data.Role;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.Customer;
@@ -13,19 +29,6 @@ import com.kiroule.vaadin.bakeryapp.backend.repositories.OrderRepository;
 import com.kiroule.vaadin.bakeryapp.backend.repositories.PickupLocationRepository;
 import com.kiroule.vaadin.bakeryapp.backend.repositories.ProductRepository;
 import com.kiroule.vaadin.bakeryapp.backend.repositories.UserRepository;
-import com.vaadin.flow.spring.annotation.SpringComponent;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.function.Supplier;
-import javax.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringComponent
 public class DataGenerator implements HasLogger {

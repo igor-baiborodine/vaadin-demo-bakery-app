@@ -7,11 +7,12 @@ import com.kiroule.vaadin.bakeryapp.backend.service.CrudService;
 import com.kiroule.vaadin.bakeryapp.backend.service.UserFriendlyDataException;
 import com.kiroule.vaadin.bakeryapp.ui.utils.messages.CrudErrorMessage;
 import com.kiroule.vaadin.bakeryapp.ui.views.HasNotifications;
-import java.util.function.Consumer;
-import javax.persistence.EntityNotFoundException;
-import javax.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
+
+import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
+import java.util.function.Consumer;
 
 public class CrudEntityPresenter<E extends AbstractEntity>	implements HasLogger {
 

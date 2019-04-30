@@ -1,7 +1,8 @@
 package com.kiroule.vaadin.bakeryapp.backend.data;
 
-import com.vaadin.flow.shared.util.SharedUtil;
 import java.util.Locale;
+
+import com.vaadin.flow.shared.util.SharedUtil;
 
 public enum OrderState {
 	NEW, CONFIRMED, READY, DELIVERED, PROBLEM, CANCELLED;

@@ -2,6 +2,7 @@ package com.kiroule.vaadin.bakeryapp.test;
 
 import java.util.Locale;
 import java.util.Locale.Category;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 

@@ -3,17 +3,6 @@
  */
 package com.kiroule.vaadin.bakeryapp.ui.views.orderedit;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
-import com.kiroule.vaadin.bakeryapp.ui.events.CancelEvent;
-import com.kiroule.vaadin.bakeryapp.ui.events.SaveEvent;
-import com.kiroule.vaadin.bakeryapp.ui.utils.converters.CurrencyFormatter;
-import com.kiroule.vaadin.bakeryapp.ui.utils.converters.LocalDateTimeConverter;
-import com.kiroule.vaadin.bakeryapp.ui.utils.converters.LocalTimeConverter;
-import com.kiroule.vaadin.bakeryapp.ui.utils.converters.LongToStringConverter;
-import com.kiroule.vaadin.bakeryapp.ui.utils.converters.OrderStateConverter;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.converters.StorefrontLocalDateConverter;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.CommentEvent;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.EditEvent;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Tag;
@@ -27,6 +16,17 @@ import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.templatemodel.Encode;
 import com.vaadin.flow.templatemodel.Include;
 import com.vaadin.flow.templatemodel.TemplateModel;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
+import com.kiroule.vaadin.bakeryapp.ui.events.CancelEvent;
+import com.kiroule.vaadin.bakeryapp.ui.events.SaveEvent;
+import com.kiroule.vaadin.bakeryapp.ui.utils.converters.CurrencyFormatter;
+import com.kiroule.vaadin.bakeryapp.ui.utils.converters.LocalDateTimeConverter;
+import com.kiroule.vaadin.bakeryapp.ui.utils.converters.LocalTimeConverter;
+import com.kiroule.vaadin.bakeryapp.ui.utils.converters.LongToStringConverter;
+import com.kiroule.vaadin.bakeryapp.ui.utils.converters.OrderStateConverter;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.converters.StorefrontLocalDateConverter;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.CommentEvent;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.EditEvent;
 
 /**
  * The component displaying a full (read-only) summary of an order, and a comment

@@ -2,13 +2,14 @@ package com.kiroule.vaadin.bakeryapp.ui.views.admin.products;
 
 import static com.kiroule.vaadin.bakeryapp.ui.dataproviders.DataProviderUtil.convertIfNotNull;
 
-import com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils;
-import com.vaadin.flow.data.binder.Result;
-import com.vaadin.flow.data.binder.ValueContext;
-import com.vaadin.flow.data.converter.Converter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+
+import com.vaadin.flow.data.binder.Result;
+import com.vaadin.flow.data.binder.ValueContext;
+import com.vaadin.flow.data.converter.Converter;
+import com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils;
 
 class PriceConverter implements Converter<String, Integer> {
 

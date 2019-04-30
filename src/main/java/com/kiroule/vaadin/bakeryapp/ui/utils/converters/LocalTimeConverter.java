@@ -3,12 +3,13 @@ package com.kiroule.vaadin.bakeryapp.ui.utils.converters;
 import static com.kiroule.vaadin.bakeryapp.ui.dataproviders.DataProviderUtil.convertIfNotNull;
 import static com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils.HOUR_FORMATTER;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
+
 import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
 import com.vaadin.flow.templatemodel.ModelEncoder;
-import java.time.LocalTime;
-import java.time.format.DateTimeParseException;
 
 public class LocalTimeConverter implements ModelEncoder<LocalTime, String>, Converter<String, LocalTime> {
 

@@ -1,39 +1,32 @@
 package com.kiroule.vaadin.bakeryapp.testbench.elements.ui;
 
-import com.vaadin.flow.component.button.testbench.ButtonElement;
-import com.vaadin.flow.component.textfield.testbench.PasswordFieldElement;
-import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
+import com.vaadin.flow.component.login.testbench.LoginOverlayElement;
+import com.vaadin.flow.component.orderedlayout.testbench.VerticalLayoutElement;
 import com.vaadin.testbench.TestBenchElement;
-import com.vaadin.testbench.elementsbase.Element;
 
-@Element("login-view")
-public class LoginViewElement extends TestBenchElement {
+public class LoginViewElement extends VerticalLayoutElement {
 
 	public StorefrontViewElement login(String username, String password) {
 		return login(username, password, StorefrontViewElement.class);
 	}
 
-	public <E extends TestBenchElement> E login(String username, String password, Class<E> target) {
-		setUsername(username);
-		setPassword(password);
-		signIn();
+	public <E extends TestBenchElement> E login(
+		String username, String password, Class<E> target) {
+
+		final LoginOverlayElement loginElement = getLoginElement();
+		loginElement.getUsernameField().setValue(username);
+		loginElement.getPasswordField().setValue(password);
+		loginElement.getSubmitButton().click();
 
 		return $(target).onPage().waitForFirst();
 	}
 
-	public void signIn() {
-		$(ButtonElement.class).waitForFirst().click();
-	}
-
-	public void setPassword(String password) {
-		$(PasswordFieldElement.class).waitForFirst().setValue(password);
-	}
-
-	public void setUsername(String username) {
-		$(TextFieldElement.class).waitForFirst().setValue(username);
-	}
-
 	public String getUsernameLabel() {
-		return $(TextFieldElement.class).waitForFirst().getLabel();
+		return getLoginElement().getUsernameField().getLabel();
 	}
+
+	private LoginOverlayElement getLoginElement() {
+		return $(LoginOverlayElement.class).waitForFirst();
+	}
+
 }

@@ -2,18 +2,17 @@ package com.kiroule.vaadin.bakeryapp.ui.views.orderedit;
 
 import static com.kiroule.vaadin.bakeryapp.ui.dataproviders.DataProviderUtil.createItemLabelGenerator;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.PickupLocation;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
-import com.kiroule.vaadin.bakeryapp.ui.dataproviders.DataProviderUtil;
-import com.kiroule.vaadin.bakeryapp.ui.dataproviders.PickupLocationDataProvider;
-import com.kiroule.vaadin.bakeryapp.ui.dataproviders.ProductDataProvider;
-import com.kiroule.vaadin.bakeryapp.ui.events.CancelEvent;
-import com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils;
-import com.kiroule.vaadin.bakeryapp.ui.utils.converters.LocalTimeConverter;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.ReviewEvent;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.ValueChangeEvent;
+import java.time.LocalTime;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.HasValue;
@@ -36,15 +35,18 @@ import com.vaadin.flow.data.validator.BeanValidator;
 import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.templatemodel.TemplateModel;
-import java.time.LocalTime;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
+import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.PickupLocation;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
+import com.kiroule.vaadin.bakeryapp.ui.dataproviders.DataProviderUtil;
+import com.kiroule.vaadin.bakeryapp.ui.dataproviders.PickupLocationDataProvider;
+import com.kiroule.vaadin.bakeryapp.ui.dataproviders.ProductDataProvider;
+import com.kiroule.vaadin.bakeryapp.ui.events.CancelEvent;
+import com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils;
+import com.kiroule.vaadin.bakeryapp.ui.utils.converters.LocalTimeConverter;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.ReviewEvent;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.ValueChangeEvent;
 
 @Tag("order-editor")
 @HtmlImport("src/views/orderedit/order-editor.html")

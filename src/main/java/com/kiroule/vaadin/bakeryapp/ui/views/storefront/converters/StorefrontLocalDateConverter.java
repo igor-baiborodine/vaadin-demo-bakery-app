@@ -1,9 +1,10 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.storefront.converters;
 
+import com.vaadin.flow.templatemodel.ModelEncoder;
+
 import static com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils.MONTH_AND_DAY_FORMATTER;
 import static com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils.WEEKDAY_FULLNAME_FORMATTER;
 
-import com.vaadin.flow.templatemodel.ModelEncoder;
 import java.time.LocalDate;
 
 /**

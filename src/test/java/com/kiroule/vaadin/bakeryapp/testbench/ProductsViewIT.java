@@ -1,16 +1,17 @@
 package com.kiroule.vaadin.bakeryapp.testbench;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import java.util.Random;
 
-import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.ProductsViewElement;
-import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.StorefrontViewElement;
+import org.junit.Assert;
+import org.junit.Test;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+
 import com.vaadin.flow.component.grid.testbench.GridElement;
 import com.vaadin.flow.component.grid.testbench.GridTHTDElement;
 import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
-import java.util.Random;
-import org.junit.Assert;
-import org.junit.Test;
-import org.openqa.selenium.support.ui.ExpectedCondition;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.ProductsViewElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.StorefrontViewElement;
 
 public class ProductsViewIT extends AbstractIT<ProductsViewElement> {
 
@@ -33,7 +34,9 @@ public class ProductsViewIT extends AbstractIT<ProductsViewElement> {
 
 		Assert.assertTrue(productsPage.isEditorOpen());
 		String newValue = "New " + uniqueName;
-		productsPage.getProductName().setValue(newValue);
+		TextFieldElement nameField = productsPage.getProductName();
+		nameField.setValue(newValue);
+
 		productsPage.getEditorSaveButton().click();
 		Assert.assertFalse(productsPage.isEditorOpen());
 		GridElement grid = productsPage.getGrid();
@@ -41,7 +44,9 @@ public class ProductsViewIT extends AbstractIT<ProductsViewElement> {
 
 		productsPage.openRowForEditing(rowNum);
 		newValue = "The " + newValue;
-		productsPage.getProductName().setValue(newValue);
+		nameField = productsPage.getProductName();
+		nameField.setValue(newValue);
+
 		productsPage.getEditorSaveButton().click();
 		Assert.assertFalse(productsPage.isEditorOpen());
 		Assert.assertEquals(rowNum, grid.getCell(newValue).getRow());
@@ -65,7 +70,6 @@ public class ProductsViewIT extends AbstractIT<ProductsViewElement> {
 		TextFieldElement price = productsPage.getPrice();
 		Assert.assertEquals(initialPrice, price.getValue());
 
-		price.focus();
 		price.setValue("123.45");
 
 		productsPage.getEditorSaveButton().click();
@@ -80,7 +84,6 @@ public class ProductsViewIT extends AbstractIT<ProductsViewElement> {
 		Assert.assertEquals("123.45", price.getValue());
 
 		// Return initial value
-		price.focus();
 		price.setValue(initialPrice);
 
 		productsPage.getEditorSaveButton().click();
@@ -94,12 +97,8 @@ public class ProductsViewIT extends AbstractIT<ProductsViewElement> {
 		productsPage.getNewItemButton().get().click();
 		Assert.assertTrue(productsPage.isEditorOpen());
 		productsPage.getProductName().setValue("Some name");
-		productsPage.getProductName().focus();
-		// We need to call sendKeys in order to fire value change event
-		// https://github.com/vaadin/vaadin-crud-flow/issues/78
-		productsPage.getProductName().sendKeys("a");
 		productsPage.getEditorCancelButton().click();
-		Assert.assertThat(productsPage.getDiscardConfirmDialog().getMessageText(), containsString("Discard changes"));
+		Assert.assertEquals(productsPage.getDiscardConfirmDialog().getHeaderText(), "Discard changes");
 	}
 
 	private int createProduct(ProductsViewElement productsPage, String name, String price) {
@@ -110,10 +109,7 @@ public class ProductsViewIT extends AbstractIT<ProductsViewElement> {
 		TextFieldElement nameField = productsPage.getProductName();
 		TextFieldElement priceField = productsPage.getPrice();
 
-		nameField.focus();
 		nameField.setValue(name);
-
-		priceField.focus();
 		priceField.setValue(price);
 
 		productsPage.getEditorSaveButton().click();

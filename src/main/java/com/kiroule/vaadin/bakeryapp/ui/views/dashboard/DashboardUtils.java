@@ -1,16 +1,17 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.dashboard;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Iterator;
+
 import com.kiroule.vaadin.bakeryapp.backend.data.DeliveryStats;
 import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderSummary;
 import com.kiroule.vaadin.bakeryapp.ui.views.storefront.beans.OrdersCountData;
 import com.kiroule.vaadin.bakeryapp.ui.views.storefront.beans.OrdersCountDataWithChart;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Iterator;
 
 public class DashboardUtils {
 

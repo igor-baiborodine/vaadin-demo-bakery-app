@@ -6,11 +6,13 @@ package com.kiroule.vaadin.bakeryapp.ui.utils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import com.kiroule.vaadin.bakeryapp.test.FormattingTest;
-import com.kiroule.vaadin.bakeryapp.ui.utils.converters.LocalDateTimeConverter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 import org.junit.Test;
+
+import com.kiroule.vaadin.bakeryapp.test.FormattingTest;
+import com.kiroule.vaadin.bakeryapp.ui.utils.converters.LocalDateTimeConverter;
 
 public class FormattingUtilsTest extends FormattingTest {
 

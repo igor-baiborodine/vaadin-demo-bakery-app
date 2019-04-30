@@ -1,18 +1,7 @@
 package com.kiroule.vaadin.bakeryapp.testbench;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.LoginViewElement;
-import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.MainViewElement;
-import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
-import com.vaadin.flow.component.cookieconsent.CookieConsent;
-import com.vaadin.flow.component.cookieconsent.testbench.CookieConsentElement;
-import com.vaadin.testbench.IPAddress;
-import com.vaadin.testbench.ScreenshotOnFailureRule;
-import com.vaadin.testbench.TestBenchDriverProxy;
-import com.vaadin.testbench.TestBenchElement;
-import com.vaadin.testbench.parallel.ParallelTest;
 import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,6 +9,20 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.LoggerFactory;
+
+import com.vaadin.flow.component.cookieconsent.CookieConsent;
+import com.vaadin.flow.component.cookieconsent.testbench.CookieConsentElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.LoginViewElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.MainViewElement;
+import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
+import com.vaadin.testbench.IPAddress;
+import com.vaadin.testbench.ScreenshotOnFailureRule;
+import com.vaadin.testbench.TestBenchDriverProxy;
+import com.vaadin.testbench.TestBenchElement;
+import com.vaadin.testbench.parallel.ParallelTest;
+
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 
 public abstract class AbstractIT<E extends TestBenchElement> extends ParallelTest {
 	public String APP_URL = "http://localhost:8080/";

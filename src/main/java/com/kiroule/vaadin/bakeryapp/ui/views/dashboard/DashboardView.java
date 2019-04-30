@@ -1,17 +1,16 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.dashboard;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.DashboardData;
-import com.kiroule.vaadin.bakeryapp.backend.data.DeliveryStats;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderSummary;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
-import com.kiroule.vaadin.bakeryapp.backend.service.OrderService;
-import com.kiroule.vaadin.bakeryapp.ui.MainView;
-import com.kiroule.vaadin.bakeryapp.ui.dataproviders.OrdersGridDataProvider;
-import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
-import com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.OrderCard;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.beans.OrdersCountDataWithChart;
+import java.time.LocalDate;
+import java.time.MonthDay;
+import java.time.Year;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
@@ -34,15 +33,18 @@ import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.templatemodel.TemplateModel;
-import java.time.LocalDate;
-import java.time.MonthDay;
-import java.time.Year;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kiroule.vaadin.bakeryapp.backend.data.DashboardData;
+import com.kiroule.vaadin.bakeryapp.backend.data.DeliveryStats;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderSummary;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
+import com.kiroule.vaadin.bakeryapp.backend.service.OrderService;
+import com.kiroule.vaadin.bakeryapp.ui.MainView;
+import com.kiroule.vaadin.bakeryapp.ui.dataproviders.OrdersGridDataProvider;
+import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
+import com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.OrderCard;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.beans.OrdersCountDataWithChart;
 
 @Tag("dashboard-view")
 @HtmlImport("src/views/dashboard/dashboard-view.html")

@@ -1,5 +1,15 @@
 package com.kiroule.vaadin.bakeryapp.ui.crud;
 
+import java.util.function.UnaryOperator;
+
+import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
+
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.OptimisticLockingFailureException;
+
+import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.shared.Registration;
 import com.kiroule.vaadin.bakeryapp.app.HasLogger;
 import com.kiroule.vaadin.bakeryapp.app.security.CurrentUser;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.AbstractEntity;
@@ -9,13 +19,6 @@ import com.kiroule.vaadin.bakeryapp.backend.service.UserFriendlyDataException;
 import com.kiroule.vaadin.bakeryapp.ui.utils.messages.CrudErrorMessage;
 import com.kiroule.vaadin.bakeryapp.ui.utils.messages.Message;
 import com.kiroule.vaadin.bakeryapp.ui.views.EntityView;
-import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.shared.Registration;
-import java.util.function.UnaryOperator;
-import javax.persistence.EntityNotFoundException;
-import javax.validation.ConstraintViolationException;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.OptimisticLockingFailureException;
 
 public class EntityPresenter<T extends AbstractEntity, V extends EntityView<T>>
 	implements HasLogger {

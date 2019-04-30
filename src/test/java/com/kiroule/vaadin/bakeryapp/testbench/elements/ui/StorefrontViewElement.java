@@ -1,15 +1,16 @@
 package com.kiroule.vaadin.bakeryapp.testbench.elements.ui;
 
-import com.kiroule.vaadin.bakeryapp.testbench.elements.components.OrderCardElement;
-import com.kiroule.vaadin.bakeryapp.testbench.elements.components.OrderDetailsElement;
-import com.kiroule.vaadin.bakeryapp.testbench.elements.components.SearchBarElement;
+import java.util.Optional;
+
 import com.vaadin.flow.component.button.testbench.ButtonElement;
 import com.vaadin.flow.component.dialog.testbench.DialogElement;
 import com.vaadin.flow.component.grid.testbench.GridElement;
 import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.components.OrderCardElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.components.OrderDetailsElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.components.SearchBarElement;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.elementsbase.Element;
-import java.util.Optional;
 
 @Element("storefront-view")
 public class StorefrontViewElement extends TestBenchElement implements HasApp, HasCrudView {

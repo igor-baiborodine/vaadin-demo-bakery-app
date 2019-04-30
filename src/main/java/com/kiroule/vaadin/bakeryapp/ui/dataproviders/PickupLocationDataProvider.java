@@ -1,14 +1,16 @@
 package com.kiroule.vaadin.bakeryapp.ui.dataproviders;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.PickupLocation;
-import com.kiroule.vaadin.bakeryapp.backend.service.PickupLocationService;
+import java.util.List;
+import java.util.stream.Stream;
+
+import org.springframework.data.domain.PageRequest;
+
 import com.vaadin.flow.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import java.util.List;
-import java.util.stream.Stream;
-import org.springframework.data.domain.PageRequest;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.PickupLocation;
+import com.kiroule.vaadin.bakeryapp.backend.service.PickupLocationService;
 
 /**
  * A data provider which knows which pickup locations are available.

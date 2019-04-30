@@ -1,11 +1,11 @@
 package com.kiroule.vaadin.bakeryapp.app.security;
 
-import com.vaadin.flow.server.ServletHelper.RequestType;
-import com.vaadin.flow.shared.ApplicationConstants;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -14,6 +14,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.vaadin.flow.server.ServletHelper.RequestType;
+import com.vaadin.flow.shared.ApplicationConstants;
+import com.kiroule.vaadin.bakeryapp.ui.views.errors.AccessDeniedView;
+import com.kiroule.vaadin.bakeryapp.ui.views.errors.CustomRouteNotFoundError;
+import com.kiroule.vaadin.bakeryapp.ui.views.login.LoginView;
 
 /**
  * SecurityUtils takes care of all such static operations that have to do with
@@ -47,13 +53,22 @@ public final class SecurityUtils {
 	 * Checks if access is granted for the current user for the given secured view,
 	 * defined by the view class.
 	 *
-	 * @param securedClass
+	 * @param securedClass View class
 	 * @return true if access is granted, false otherwise.
 	 */
 	public static boolean isAccessGranted(Class<?> securedClass) {
+		final boolean publicView = LoginView.class.equals(securedClass)
+			|| AccessDeniedView.class.equals(securedClass)
+			|| CustomRouteNotFoundError.class.equals(securedClass);
+
+		// Always allow access to public views
+		if (publicView) {
+			return true;
+		}
+
 		Authentication userAuthentication = SecurityContextHolder.getContext().getAuthentication();
 
-		// All views require authentication
+		// All other views require authentication
 		if (!isUserLoggedIn(userAuthentication)) {
 			return false;
 		}

@@ -1,10 +1,11 @@
 package com.kiroule.vaadin.bakeryapp.testbench;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import com.kiroule.vaadin.bakeryapp.testbench.elements.components.DashboardLCounterLabelElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.DashboardViewElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.StorefrontViewElement;
-import org.junit.Assert;
-import org.junit.Test;
 
 public class DashboardViewIT extends AbstractIT<DashboardViewElement> {
 

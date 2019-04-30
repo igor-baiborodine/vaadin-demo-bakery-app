@@ -5,8 +5,9 @@ package com.kiroule.vaadin.bakeryapp.ui.utils.converters;
 
 import static org.junit.Assert.assertEquals;
 
-import com.kiroule.vaadin.bakeryapp.test.FormattingTest;
 import org.junit.Test;
+
+import com.kiroule.vaadin.bakeryapp.test.FormattingTest;
 
 public class CurrencyFormatterTest extends FormattingTest {
 

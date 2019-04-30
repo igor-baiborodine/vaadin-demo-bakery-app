@@ -1,8 +1,8 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.storefront.events;
 
+import com.vaadin.flow.component.ComponentEvent;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
 import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderItemEditor;
-import com.vaadin.flow.component.ComponentEvent;
 
 public class ProductChangeEvent extends ComponentEvent<OrderItemEditor> {
 

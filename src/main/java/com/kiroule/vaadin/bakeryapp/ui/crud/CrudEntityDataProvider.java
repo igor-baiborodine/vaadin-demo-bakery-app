@@ -1,14 +1,16 @@
 package com.kiroule.vaadin.bakeryapp.ui.crud;
 
+import java.util.List;
+
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.AbstractEntity;
 import com.kiroule.vaadin.bakeryapp.backend.service.FilterableCrudService;
-import com.vaadin.flow.data.provider.Query;
-import com.vaadin.flow.data.provider.QuerySortOrder;
-import com.vaadin.flow.data.provider.QuerySortOrderBuilder;
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
+
+import com.vaadin.flow.data.provider.Query;
+import com.vaadin.flow.data.provider.QuerySortOrder;
+import com.vaadin.flow.data.provider.QuerySortOrderBuilder;
 
 public class CrudEntityDataProvider<T extends AbstractEntity> extends FilterablePageableDataProvider<T, String> {
 

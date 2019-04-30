@@ -1,15 +1,16 @@
 package com.kiroule.vaadin.bakeryapp.testbench;
 
-import static org.hamcrest.CoreMatchers.containsString;
-
-import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.StorefrontViewElement;
-import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.UsersViewElement;
-import com.vaadin.flow.component.textfield.testbench.PasswordFieldElement;
-import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
 import java.util.Random;
+
 import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.Keys;
+
+import com.vaadin.flow.component.tabs.testbench.TabElement;
+import com.vaadin.flow.component.textfield.testbench.EmailFieldElement;
+import com.vaadin.flow.component.textfield.testbench.PasswordFieldElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.StorefrontViewElement;
+import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.UsersViewElement;
+import com.vaadin.testbench.TestBenchElement;
 
 public class UsersViewIT extends AbstractIT<UsersViewElement> {
 
@@ -43,7 +44,7 @@ public class UsersViewIT extends AbstractIT<UsersViewElement> {
 		Assert.assertEquals("", password.getValue());
 
 		// Saving any field without changing password should save and close
-		TextFieldElement emailField = usersView.getEmailField();
+		EmailFieldElement emailField = usersView.getEmailField();
 		String newEmail = "foo" + r.nextInt() + "@bar.com";
 		emailField.setValue(newEmail);
 
@@ -67,9 +68,7 @@ public class UsersViewIT extends AbstractIT<UsersViewElement> {
 		password = usersView.getPasswordField(); // Requery password field.
 
 		// Good password
-		password.focus();
 		password.setValue("Abc123");
-		password.sendKeys(Keys.TAB);
 		usersView.getEditorSaveButton().click();
 		Assert.assertFalse(usersView.isEditorOpen());
 
@@ -82,7 +81,7 @@ public class UsersViewIT extends AbstractIT<UsersViewElement> {
 	}
 
 	private void createUser(UsersViewElement usersView, String email, String firstName, String lastName,
-							String password, String role) {
+			String password, String role) {
 		usersView.getSearchBar().getCreateNewButton().click();
 		Assert.assertTrue(usersView.isEditorOpen());
 
@@ -91,11 +90,7 @@ public class UsersViewIT extends AbstractIT<UsersViewElement> {
 		usersView.getLastName().setValue(lastName);
 		usersView.getPasswordField().setValue(password);
 
-		// TODO: Fix combo selection as soon as API updated
-		// https://github.com/vaadin/vaadin-components-testbench/issues/60
-		usersView.getRole().openPopup();
-		usersView.getRole().setFilter(role);
-		usersView.getRole().sendKeys(Keys.ENTER);
+		usersView.getRole().selectByText(role);
 
 		usersView.getEditorSaveButton().click();
 		Assert.assertFalse(usersView.isEditorOpen());
@@ -130,15 +125,25 @@ public class UsersViewIT extends AbstractIT<UsersViewElement> {
 
 		Assert.assertEquals(rowNum, page.getGrid().getCell("barista@vaadin.com").getRow());
 	}
-	
+
 	@Test
 	public void testCancelConfirmationMessage() {
 		UsersViewElement page = openView();
 		page.getSearchBar().getCreateNewButton().click();
-		page.getFirstName().focus();
-		page.getFirstName().sendKeys("Some name");
+		page.getFirstName().setValue("Some name");
 		page.getEditorCancelButton().click();
 
-		Assert.assertThat(page.getDiscardConfirmDialog().getMessageText(), containsString("Discard changes"));
+		Assert.assertEquals(page.getDiscardConfirmDialog().getHeaderText(), "Discard changes");
+	}
+
+	@Test
+	public void accessDenied() {
+		StorefrontViewElement storefront = openLoginView().login("barista@vaadin.com", "barista");
+		Assert.assertEquals(3, storefront.getMenu().$(TabElement.class).all().size());
+
+		driver.get(APP_URL + "users");
+		TestBenchElement accessDeniedPage = $("access-denied-view").waitForFirst();
+
+		Assert.assertEquals("Access denied", accessDeniedPage.$("h3").first().getText());
 	}
 }

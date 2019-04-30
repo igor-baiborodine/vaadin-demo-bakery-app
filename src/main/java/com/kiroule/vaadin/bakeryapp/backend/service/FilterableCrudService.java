@@ -1,7 +1,8 @@
 package com.kiroule.vaadin.bakeryapp.backend.service;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.AbstractEntity;
 import java.util.Optional;
+
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.AbstractEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -1,11 +1,11 @@
 package com.kiroule.vaadin.bakeryapp.backend.data.entity;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,7 +22,10 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.BatchSize;
+
+import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
 
 @Entity(name = "OrderInfo") // "Order" is a reserved word
 @NamedEntityGraphs({@NamedEntityGraph(name = Order.ENTITY_GRAPTH_BRIEF, attributeNodes = {

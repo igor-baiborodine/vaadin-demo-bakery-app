@@ -1,14 +1,8 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.orderedit;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderItem;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
-import com.kiroule.vaadin.bakeryapp.ui.components.AmountField;
-import com.kiroule.vaadin.bakeryapp.ui.dataproviders.ProductDataProvider;
-import com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.CommentChangeEvent;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.DeleteEvent;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.PriceChangeEvent;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.ProductChangeEvent;
+import java.util.Objects;
+import java.util.stream.Stream;
+
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasValue;
@@ -26,8 +20,15 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.BindingValidationStatus;
 import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.templatemodel.TemplateModel;
-import java.util.Objects;
-import java.util.stream.Stream;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderItem;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
+import com.kiroule.vaadin.bakeryapp.ui.components.AmountField;
+import com.kiroule.vaadin.bakeryapp.ui.dataproviders.ProductDataProvider;
+import com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.CommentChangeEvent;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.DeleteEvent;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.PriceChangeEvent;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.ProductChangeEvent;
 
 @Tag("order-item-editor")
 @HtmlImport("src/views/orderedit/order-item-editor.html")

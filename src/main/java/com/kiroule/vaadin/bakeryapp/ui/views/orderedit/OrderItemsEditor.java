@@ -1,22 +1,23 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.orderedit;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderItem;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
-import com.kiroule.vaadin.bakeryapp.ui.dataproviders.ProductDataProvider;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.NewEditorEvent;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.TotalPriceChangeEvent;
-import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
-import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.HasValue;
-import com.vaadin.flow.component.HasValueAndElement;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.internal.AbstractFieldSupport;
-import com.vaadin.flow.shared.Registration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.HasValueAndElement;
+import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.internal.AbstractFieldSupport;
+import com.vaadin.flow.shared.Registration;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderItem;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
+import com.kiroule.vaadin.bakeryapp.ui.dataproviders.ProductDataProvider;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.NewEditorEvent;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.TotalPriceChangeEvent;
 
 public class OrderItemsEditor extends Div implements HasValueAndElement<ComponentValueChangeEvent<OrderItemsEditor,List<OrderItem>>, List<OrderItem>> {
 

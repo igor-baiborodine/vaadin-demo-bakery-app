@@ -1,9 +1,10 @@
 package com.kiroule.vaadin.bakeryapp.backend.data.entity;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+
+import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
 
 public interface OrderSummary {
 	Long getId();

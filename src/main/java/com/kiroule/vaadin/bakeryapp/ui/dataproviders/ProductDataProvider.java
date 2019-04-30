@@ -1,13 +1,15 @@
 package com.kiroule.vaadin.bakeryapp.ui.dataproviders;
 
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
-import com.kiroule.vaadin.bakeryapp.backend.service.ProductService;
+import java.util.stream.Stream;
+
+import org.springframework.data.domain.PageRequest;
+
 import com.vaadin.flow.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import java.util.stream.Stream;
-import org.springframework.data.domain.PageRequest;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
+import com.kiroule.vaadin.bakeryapp.backend.service.ProductService;
 
 @SpringComponent
 @UIScope

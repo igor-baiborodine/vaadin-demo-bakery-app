@@ -13,4 +13,8 @@ public class ProductsViewElement extends BakeryCrudViewElement {
 		return getEditor().$(FormLayoutElement.class).first().$(TextFieldElement.class).all().get(1);
 	}
 
+	@Override
+	public void openRowForEditing(int row) {
+		openRowForEditing(row, 2);
+	}
 }

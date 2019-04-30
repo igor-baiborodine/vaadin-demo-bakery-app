@@ -1,6 +1,5 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.dashboard;
 
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.beans.OrdersCountData;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.Div;
@@ -9,6 +8,7 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.templatemodel.TemplateModel;
+import com.kiroule.vaadin.bakeryapp.ui.views.storefront.beans.OrdersCountData;
 
 @Tag("dashboard-counter-label")
 @HtmlImport("src/views/dashboard/dashboard-counter-label.html")
