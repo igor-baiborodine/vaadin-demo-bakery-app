@@ -19,7 +19,7 @@ Vaadin Demo Bakery App
 * [Petstore with a Spring-based Backend and Vaadin 8 UI](https://github.com/igor-baiborodine/jpetstore-6-vaadin-spring-boot)
 * [Beverage Buddy App Starter for Vaadin Flow](https://github.com/vaadin/beverage-starter-flow)
 * [Bookstore App Starter for Vaadin Flow](https://github.com/vaadin/bookstore-starter-flow)
-* [Business App Starter] (https://github.com/igor-baiborodine/vaadin-demo-business-app)
+* [Business App Starter](https://github.com/igor-baiborodine/vaadin-demo-business-app)
 
 # Running the Project in Development Mode
 
