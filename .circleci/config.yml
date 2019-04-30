@@ -2,7 +2,7 @@ version: 2 # use CircleCI 2.0
 jobs: 
   build: 
     
-    working_directory: ~/vaadin-demo-backery-app
+    working_directory: ~/vaadin-demo-bakery-app
 
     docker: 
       - image: circleci/openjdk:8-jdk-browsers
@@ -12,14 +12,14 @@ jobs:
       - checkout 
 
       - restore_cache: 
-          key: vaadin-demo-backery-app-{{ checksum "pom.xml" }}
+          key: vaadin-demo-bakery-app-{{ checksum "pom.xml" }}
       
       - run: mvn dependency:go-offline
       
       - save_cache:
           paths:
             - ~/.m2
-          key: vaadin-demo-backery-app-{{ checksum "pom.xml" }}
+          key: vaadin-demo-bakery-app-{{ checksum "pom.xml" }}
       
       - run: mvn package
       
