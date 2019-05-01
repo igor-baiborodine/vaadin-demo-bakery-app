@@ -21,7 +21,7 @@ jobs:
             - ~/.m2
           key: vaadin-demo-bakery-app-{{ checksum "pom.xml" }}
       
-      - run: mvn package
+      - run: mvn compile
       
       - run:
           name: Save test results
