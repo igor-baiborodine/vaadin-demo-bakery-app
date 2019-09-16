@@ -1,6 +1,7 @@
-<link rel="import" href="../bower_components/polymer/lib/elements/custom-style.html">
+import '@polymer/polymer/lib/elements/custom-style.js';
+const $_documentContainer = document.createElement('template');
 
-<dom-module id="bakery-app-layout-theme" theme-for="vaadin-app-layout">
+$_documentContainer.innerHTML = `<dom-module id="bakery-app-layout-theme" theme-for="vaadin-app-layout">
   <template>
     <style>
       :host {
@@ -22,6 +23,34 @@
           display: none;
         }
       }
+
+      [part="navbar"] {
+        align-items: center;
+        justify-content: center;
+      }
+
+      [part="navbar"]::after {
+        content: '';
+      }
+
+      [part="navbar"] ::slotted(*:first-child),
+      [part="navbar"]::after {
+        flex: 1 0 0.001px;
+      }
+
+      @media (max-width: 800px) {
+        [part="navbar"] ::slotted(vaadin-tabs) {
+          max-width: 100% !important;
+        }
+
+        [part="navbar"] ::slotted(.hide-on-mobile) {
+          display: none;
+        }
+
+        [part="navbar"]::after {
+          content: none;
+        }
+      }
     </style>
   </template>
 </dom-module>
@@ -30,7 +59,7 @@
   <template>
     <style>
       [part="brand"] {
-        background-image: url(../images/login-banner.jpg);
+        background-image: url(frontend/images/login-banner.jpg);
       }
     </style>
   </template>
@@ -289,6 +318,7 @@
       0% {
         width: 0%;
       }
+
       100% {
         width: 50%;
       }
@@ -366,6 +396,26 @@
       padding-right: .75em;
     }
 
+    vaadin-app-layout vaadin-tab a:hover {
+      text-decoration: none;
+    }
+
+    vaadin-app-layout vaadin-tab:not([selected]) a {
+      color: var(--lumo-contrast-60pct);
+    }
+
+    vaadin-app-layout vaadin-tab iron-icon {
+      margin: 0 4px;
+      width: var(--lumo-icon-size-m);
+      height: var(--lumo-icon-size-m);
+      padding: .25rem;
+      box-sizing: border-box !important;
+    }
+
+    vaadin-app-layout vaadin-tabs {
+      max-width: 65%;
+    }
+
     @media (min-width: 700px) {
       vaadin-app-layout vaadin-tab {
         font-size: var(--lumo-font-size-m);
@@ -374,4 +424,6 @@
       }
     }
   </style>
-</custom-style>
+</custom-style>`;
+
+document.head.appendChild($_documentContainer.content);

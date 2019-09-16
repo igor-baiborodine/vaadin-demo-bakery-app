@@ -10,7 +10,7 @@ import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.internal.AbstractFieldSupport;
 import com.vaadin.flow.component.polymertemplate.Id;
@@ -18,12 +18,12 @@ import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.BindingValidationStatus;
+import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.templatemodel.TemplateModel;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderItem;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
 import com.kiroule.vaadin.bakeryapp.ui.components.AmountField;
-import com.kiroule.vaadin.bakeryapp.ui.dataproviders.ProductDataProvider;
 import com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils;
 import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.CommentChangeEvent;
 import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.DeleteEvent;
@@ -31,7 +31,7 @@ import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.PriceChangeEvent;
 import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.ProductChangeEvent;
 
 @Tag("order-item-editor")
-@HtmlImport("src/views/orderedit/order-item-editor.html")
+@JsModule("./src/views/orderedit/order-item-editor.js")
 public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements HasValueAndElement<ComponentValueChangeEvent<OrderItemEditor,OrderItem>, OrderItem> {
 
 	@Id("products")
@@ -54,10 +54,10 @@ public class OrderItemEditor extends PolymerTemplate<TemplateModel> implements H
     private final AbstractFieldSupport<OrderItemEditor,OrderItem> fieldSupport;
 
 	private BeanValidationBinder<OrderItem> binder = new BeanValidationBinder<>(OrderItem.class);
-	public OrderItemEditor(ProductDataProvider productSource) {
+	public OrderItemEditor(DataProvider<Product, String> productDataProvider) {
 		this.fieldSupport =  new AbstractFieldSupport<>(this, null,
 				Objects::equals, c ->  {});
-		products.setDataProvider(productSource);
+		products.setDataProvider(productDataProvider);
 		products.addValueChangeListener(e -> {
 			setPrice();
 			fireEvent(new ProductChangeEvent(this, e.getValue()));

@@ -4,7 +4,6 @@ import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import com.vaadin.flow.component.grid.testbench.GridElement;

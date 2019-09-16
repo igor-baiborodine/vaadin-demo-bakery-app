@@ -10,9 +10,7 @@ gulp.task('lint', ['lint:js', 'lint:html', 'lint:css']);
 gulp.task('lint:js', function() {
   return gulp.src([
     'gulpfile.js',
-    '../src/main/resources/static/frontend/*.js',
-    '../src/main/resources/static/frontend/src/**/*.js',
-    '../src/main/resources/static/frontend/test/**/*.js'
+    '../frontend/src/**/*.js'
   ])
     .pipe(eslint())
     .pipe(eslint.format())
@@ -21,11 +19,6 @@ gulp.task('lint:js', function() {
 
 gulp.task('lint:html', function() {
   return gulp.src([
-    '../src/main/resources/static/frontend/*.html',
-    '!../src/main/resources/static/frontend/flow-component-renderer.html',
-    '!../src/main/resources/static/frontend/flow-grid-component-renderer.html',
-    '../src/main/resources/static/frontend/src/**/*.html',
-    '../src/main/resources/static/frontend/test/**/*.html',
     '../src/main/resources/META-INF/resources/offline-page.html'
   ])
     .pipe(htmlExtract({
@@ -39,11 +32,8 @@ gulp.task('lint:html', function() {
 
 gulp.task('lint:css', function() {
   return gulp.src([
-    '../src/main/resources/static/frontend/*.html',
-    '!../src/main/resources/static/frontend/flow-component-renderer.html',
-    '!../src/main/resources/static/frontend/flow-grid-component-renderer.html',
-    '../src/main/resources/static/frontend/src/**/*.html',
-    '../src/main/resources/static/frontend/test/**/*.html',
+    '../frontend/styles/*.js',
+    '../frontend/src/**/*.js',
     '../src/main/resources/META-INF/resources/offline-page.html'
   ])
     .pipe(htmlExtract({

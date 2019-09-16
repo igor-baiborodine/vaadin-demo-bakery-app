@@ -1,17 +1,16 @@
-<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../../bower_components/vaadin-board/vaadin-board.html">
-<link rel="import" href="../../../bower_components/vaadin-board/vaadin-board-row.html">
-<link rel="import" href="../../../bower_components/vaadin-charts/vaadin-chart.html">
-<link rel="import" href="../../../bower_components/vaadin-grid/src/vaadin-grid.html">
-
-<link rel="import" href="../../../styles/shared-styles.html">
-<link rel="import" href="../../../styles/bakery-charts-theme.html">
-<link rel="import" href="../storefront/order-card.html">
-
-<link rel="import" href="dashboard-counter-label.html">
-
-<dom-module id="dashboard-view">
-  <template>
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import '@vaadin/vaadin-board/vaadin-board.js';
+import '@vaadin/vaadin-board/vaadin-board-row.js';
+import '@vaadin/vaadin-charts/vaadin-chart.js';
+import '@vaadin/vaadin-grid/src/vaadin-grid.js';
+import '../../../styles/shared-styles.js';
+import '../../../styles/bakery-charts-theme.js';
+import '../storefront/order-card.js';
+import './dashboard-counter-label.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+class DashboardView extends PolymerElement {
+  static get template() {
+    return html`
     <style include="shared-styles">
       :host {
         width: 100%;
@@ -77,48 +76,45 @@
       </vaadin-board-row>
       <vaadin-board-row class="custom-board-row">
         <div class="vaadin-board-cell">
-          <vaadin-chart id="monthlyProductSplit" class="product-split-donut"></vaadin-chart >
+          <vaadin-chart id="monthlyProductSplit" class="product-split-donut"></vaadin-chart>
         </div>
         <div class="vaadin-board-cell">
           <vaadin-grid id="ordersGrid" theme="orders dashboard"></vaadin-grid>
         </div>
       </vaadin-board-row>
     </vaadin-board>
-  </template>
+`;
+  }
 
-  <script>
-    class DashboardView extends Polymer.Element {
-      static get is() {
-        return 'dashboard-view';
-      }
+  static get is() {
+    return 'dashboard-view';
+  }
 
-      // This method is overridden to measure the page load performance and can be safely removed
-      // if there is no need for that.
-      ready() {
-        super.ready();
-        this._chartsLoaded = new Promise((resolve, reject) => {
-          // save the 'resolve' callback to trigger it later from the server
-          this._chartsLoadedResolve = () => {
-            resolve();
-          };
-        });
+  // This method is overridden to measure the page load performance and can be safely removed
+  // if there is no need for that.
+  ready() {
+    super.ready();
+    this._chartsLoaded = new Promise((resolve, reject) => {
+      // save the 'resolve' callback to trigger it later from the server
+      this._chartsLoadedResolve = () => {
+        resolve();
+      };
+    });
 
-        this._gridLoaded = new Promise((resolve, reject) => {
-          const listener = () => {
-            if (!this.$['ordersGrid'].loading) {
-              this.$['ordersGrid'].removeEventListener('loading-changed', listener);
-              resolve();
-            }
-          };
-          this.$['ordersGrid'].addEventListener('loading-changed', listener);
-        });
+    this._gridLoaded = new Promise((resolve, reject) => {
+      const listener = () => {
+        if (!this.$['ordersGrid'].loading) {
+          this.$['ordersGrid'].removeEventListener('loading-changed', listener);
+          resolve();
+        }
+      };
+      this.$['ordersGrid'].addEventListener('loading-changed', listener);
+    });
 
-        Promise.all([this._chartsLoaded, this._gridLoaded]).then(() => {
-          window.performance.mark && window.performance.mark('bakery-page-loaded');
-        });
-      }
-    }
+    Promise.all([this._chartsLoaded, this._gridLoaded]).then(() => {
+      window.performance.mark && window.performance.mark('bakery-page-loaded');
+    });
+  }
+}
 
-    window.customElements.define(DashboardView.is, DashboardView);
-  </script>
-</dom-module>
+window.customElements.define(DashboardView.is, DashboardView);

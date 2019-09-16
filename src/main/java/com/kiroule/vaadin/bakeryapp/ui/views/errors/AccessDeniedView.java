@@ -3,7 +3,7 @@ package com.kiroule.vaadin.bakeryapp.ui.views.errors;
 import javax.servlet.http.HttpServletResponse;
 
 import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.ErrorParameter;
@@ -17,7 +17,7 @@ import com.kiroule.vaadin.bakeryapp.ui.exceptions.AccessDeniedException;
 import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
 
 @Tag("access-denied-view")
-@HtmlImport("src/views/errors/access-denied-view.html")
+@JsModule("./src/views/errors/access-denied-view.js")
 @ParentLayout(MainView.class)
 @PageTitle(BakeryConst.TITLE_ACCESS_DENIED)
 @Route

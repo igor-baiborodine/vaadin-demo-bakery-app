@@ -3,6 +3,7 @@ package com.kiroule.vaadin.bakeryapp.ui.views.storefront;
 import java.util.stream.Stream;
 
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.util.EntityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
@@ -32,7 +32,7 @@ import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderDetails;
 import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderEditor;
 
 @Tag("storefront-view")
-@HtmlImport("src/views/storefront/storefront-view.html")
+@JsModule("./src/views/storefront/storefront-view.js")
 @Route(value = BakeryConst.PAGE_STOREFRONT, layout = MainView.class)
 @RouteAlias(value = BakeryConst.PAGE_STOREFRONT_EDIT, layout = MainView.class)
 @RouteAlias(value = BakeryConst.PAGE_ROOT, layout = MainView.class)

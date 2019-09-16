@@ -68,8 +68,7 @@ public abstract class AbstractBakeryCrudView<E extends AbstractEntity> extends C
     private void setupCrudEventListeners(CrudEntityPresenter<E> entityPresenter) {
         Consumer<E> onSuccess = entity -> navigateToEntity(null);
         Consumer<E> onFail = entity -> {
-            // TODO: https://github.com/vaadin/vaadin-crud-flow/issues/76
-            // Throw an exception whenever it is supported by component
+            throw new RuntimeException("The operation could not be performed.");
         };
 
         addEditListener(e ->
@@ -96,13 +95,9 @@ public abstract class AbstractBakeryCrudView<E extends AbstractEntity> extends C
             if (item != null && id.equals(item.getId())) {
                 return;
             }
-            entityPresenter.loadEntity(id, this::edit);
+            entityPresenter.loadEntity(id, entity -> edit(entity, EditMode.EXISTING_ITEM));
+        } else {
+            setOpened(false);
         }
-    }
-
-    private void edit(E entity) {
-        // TODO: Use component API after https://github.com/vaadin/vaadin-crud-flow/issues/68
-        getElement().callFunction("__edit", Json.instance().parse("{\"key\":\""
-                + grid.getDataCommunicator().getKeyMapper().key(entity) + "\"}"));
     }
 }

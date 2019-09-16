@@ -1,7 +1,8 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/vaadin-charts/vaadin-chart-default-theme.html">
+import '@polymer/polymer/polymer-element.js';
+import '@vaadin/vaadin-charts/vaadin-chart-default-theme.js';
+const $_documentContainer = document.createElement('template');
 
-<dom-module id="bakery-charts-theme" theme-for="vaadin-chart">
+$_documentContainer.innerHTML = `<dom-module id="bakery-charts-theme" theme-for="vaadin-chart">
   <template>
     <style include="vaadin-chart-default-theme">
       :host(.counter),
@@ -91,4 +92,6 @@
       }
     </style>
   </template>
-</dom-module>
+</dom-module>`;
+
+document.head.appendChild($_documentContainer.content);

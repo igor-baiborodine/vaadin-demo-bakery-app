@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.vaadin.flow.component.cookieconsent.testbench.CookieConsentElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.DashboardViewElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.LoginViewElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.StorefrontViewElement;
@@ -33,16 +32,14 @@ public class LoginIT extends AbstractIT<LoginViewElement> {
 		DashboardViewElement dashboard = loginView.login("admin@vaadin.com", "admin", DashboardViewElement.class);
 		Assert.assertNotNull(dashboard);
 	}
-	
-	/*
-	 * Overridden because test is different in this case, since LoginView doesn't
-	 * have MainView
-	 */
-	@Override
+
 	@Test
-	public void shouldShowCookieConsent() {
-		LoginViewElement loginView = openView();
-		Assert.assertEquals(1, loginView.$(CookieConsentElement.class).all().size());
+	public void openLoginAfterLoggedIn() {
+		loginToNotDefaultUrl();
+		// Navigating to /login after user is logged in will forward to storefront view
+		driver.get(APP_URL + "login");
+		$(StorefrontViewElement.class).onPage().waitForFirst();
+		Assert.assertTrue($(LoginViewElement.class).all().isEmpty());
 	}
 
 	@Override

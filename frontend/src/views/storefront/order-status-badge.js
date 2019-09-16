@@ -1,9 +1,10 @@
-<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../../../bower_components/vaadin-icons/vaadin-icons.html">
-
-<dom-module id="order-status-badge">
-  <template>
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@vaadin/vaadin-icons/vaadin-icons.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+class OrderStatusBadge extends PolymerElement {
+  static get template() {
+    return html`
     <style>
       #wrapper {
         display: inline-block;
@@ -56,31 +57,26 @@
       <span>[[status]]</span>
       <iron-icon icon="vaadin:check"></iron-icon>
     </div>
+`;
+  }
 
-  </template>
+  static get is() {
+    return 'order-status-badge';
+  }
 
-  <script>
-    class OrderStatusBadge extends Polymer.Element {
-      static get is() {
-        return 'order-status-badge';
-      }
+  static get properties() {
+    return {
+      status: {
+        type: String,
+        observer: '_onStatusChanged',
+        reflectToAttribute: true
+      },
+    };
+  }
 
-      static get properties() {
-        return {
-          status: {
-            type: String,
-            observer: '_onStatusChanged',
-            reflectToAttribute: true
-          },
-        };
-      }
+  _onStatusChanged(current) {
+    this.status = current && current.toLowerCase();
+  }
+}
 
-      _onStatusChanged(current) {
-        this.status = current && current.toLowerCase();
-      }
-
-    }
-
-    window.customElements.define(OrderStatusBadge.is, OrderStatusBadge);
-  </script>
-</dom-module>
+window.customElements.define(OrderStatusBadge.is, OrderStatusBadge);

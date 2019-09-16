@@ -1,5 +1,7 @@
 package com.kiroule.vaadin.bakeryapp.testbench.elements.components;
 
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.html.testbench.AnchorElement;
 import com.vaadin.flow.component.tabs.testbench.TabElement;
 import com.vaadin.flow.component.tabs.testbench.TabsElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.DashboardViewElement;
@@ -8,6 +10,7 @@ import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.StorefrontViewElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.ProductsViewElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.UsersViewElement;
 import com.vaadin.testbench.TestBenchElement;
+import org.openqa.selenium.By;
 
 public class AppNavigationElement extends TabsElement {
 
@@ -28,12 +31,16 @@ public class AppNavigationElement extends TabsElement {
 	}
 
 	public LoginViewElement logout() {
-		$(TabElement.class).last().click();
+		clickLink($(TabElement.class).last());
 		return $(LoginViewElement.class).onPage().waitForFirst();
 	}
 
 	private <T extends TestBenchElement> T navigateTo(int index, Class<T> landingPage) {
-		$(TabElement.class).get(index).click();
+		clickLink($(TabElement.class).get(index));
 		return $(landingPage).onPage().waitForFirst();
+	}
+
+	private static void clickLink(TabElement tab) {
+		tab.$(AnchorElement.class).first().click();
 	}
 }

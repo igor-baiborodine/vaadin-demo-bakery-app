@@ -6,32 +6,31 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.HasValueAndElement;
-import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.internal.AbstractFieldSupport;
+import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.shared.Registration;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.OrderItem;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
-import com.kiroule.vaadin.bakeryapp.ui.dataproviders.ProductDataProvider;
-import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.NewEditorEvent;
 import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.TotalPriceChangeEvent;
 
 public class OrderItemsEditor extends Div implements HasValueAndElement<ComponentValueChangeEvent<OrderItemsEditor,List<OrderItem>>, List<OrderItem>> {
 
 	private OrderItemEditor empty;
 
-	private ProductDataProvider productDataProvider;
+	private DataProvider<Product, String> productDataProvider;
 
 	private int totalPrice = 0;
 
 	private boolean hasChanges = false;
 
-    private final AbstractFieldSupport<OrderItemsEditor,List<OrderItem>> fieldSupport;
+	private final AbstractFieldSupport<OrderItemsEditor,List<OrderItem>> fieldSupport;
 	
-	public OrderItemsEditor(ProductDataProvider productDataProvider) {
+	public OrderItemsEditor(DataProvider<Product, String> productDataProvider) {
 		this.productDataProvider = productDataProvider;
 		this.fieldSupport = new AbstractFieldSupport<>(this, Collections.emptyList(),
 				Objects::equals, c ->  {}); 
@@ -91,7 +90,6 @@ public class OrderItemsEditor extends Div implements HasValueAndElement<Componen
 			orderItem.setProduct(product);
 			item.setValue(orderItem);
 			setValue(Stream.concat(getValue().stream(),Stream.of(orderItem)).collect(Collectors.toList()));
-			fireEvent(new NewEditorEvent(this));
 		}
 	}
 

@@ -6,13 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.PickupLocation;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
 import com.kiroule.vaadin.bakeryapp.backend.repositories.PickupLocationRepository;
 
 @Service
-public class PickupLocationService {
+public class PickupLocationService implements FilterableCrudService<PickupLocation>{
 
 	private final PickupLocationRepository pickupLocationRepository;
 
@@ -41,5 +43,15 @@ public class PickupLocationService {
 
 	public PickupLocation getDefault() {
 		return findAnyMatching(Optional.empty(), PageRequest.of(0, 1)).iterator().next();
+	}
+
+	@Override
+	public JpaRepository<PickupLocation, Long> getRepository() {
+		return pickupLocationRepository;
+	}
+
+	@Override
+	public PickupLocation createNew(User currentUser) {
+		return new PickupLocation();
 	}
 }

@@ -1,9 +1,10 @@
-<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../../styles/shared-styles.html">
-<link rel="import" href="order-status-badge.html">
-
-<dom-module id="order-card">
-  <template>
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import '../../../styles/shared-styles.js';
+import './order-status-badge.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+class OrderCard extends PolymerElement {
+  static get template() {
+    return html`
     <style include="shared-styles">
       :host {
         display: block;
@@ -131,7 +132,7 @@
       }
     </style>
     <div class="content">
-      <div class="group-heading" hidden$="[[!header]]">
+      <div class="group-heading" hidden\$="[[!header]]">
         <span class="main">[[header.main]]</span>
         <span class="secondary">[[header.secondary]]</span>
       </div>
@@ -160,20 +161,16 @@
         </div>
       </div>
     </div>
-  </template>
+`;
+  }
 
-  <script>
-    class OrderCard extends Polymer.Element {
-      static get is() {
-        return 'order-card';
-      }
+  static get is() {
+    return 'order-card';
+  }
 
-      _cardClick() {
-        this.dispatchEvent(new CustomEvent('card-click'));
-      }
+  _cardClick() {
+    this.dispatchEvent(new CustomEvent('card-click'));
+  }
+}
 
-    }
-
-    window.customElements.define(OrderCard.is, OrderCard);
-  </script>
-</dom-module>
+window.customElements.define(OrderCard.is, OrderCard);

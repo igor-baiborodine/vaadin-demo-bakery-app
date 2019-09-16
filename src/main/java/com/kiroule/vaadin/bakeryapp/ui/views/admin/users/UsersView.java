@@ -81,11 +81,6 @@ public class UsersView extends AbstractBakeryCrudView<User> {
 					}
 				});
 
-		return new BinderCrudEditor<User>(binder, form) {
-			@Override
-			public boolean isValid() {
-				return binder.validate().isOk();
-			}
-		};
+		return new BinderCrudEditor<User>(binder, form);
 	}
 }

@@ -1,7 +1,9 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-
-<dom-module id="buttons-bar">
-  <template>
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+{
+  class ButtonsBarElement extends PolymerElement {
+    static get template() {
+      return html`
     <style>
       :host {
         flex: none;
@@ -40,17 +42,13 @@
     <slot name="left"></slot>
     <slot name="info"><div class="info"></div></slot>
     <slot name="right"></slot>
-  </template>
-
-  <script>
-    {
-      class ButtonsBarElement extends Polymer.Element {
-        static get is() {
-          return 'buttons-bar';
-        }
-      }
-
-      window.customElements.define(ButtonsBarElement.is, ButtonsBarElement);
+`;
     }
-  </script>
-</dom-module>
+
+    static get is() {
+      return 'buttons-bar';
+    }
+  }
+
+  window.customElements.define(ButtonsBarElement.is, ButtonsBarElement);
+}

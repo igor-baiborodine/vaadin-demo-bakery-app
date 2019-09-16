@@ -6,7 +6,6 @@ import com.vaadin.flow.component.confirmdialog.testbench.ConfirmDialogElement;
 import com.vaadin.flow.component.dialog.testbench.DialogElement;
 import com.vaadin.flow.component.formlayout.testbench.FormLayoutElement;
 import com.vaadin.flow.component.grid.testbench.GridElement;
-import com.kiroule.vaadin.bakeryapp.testbench.elements.components.FormButtonsBarElement;
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.HasElementQuery;
 import com.vaadin.testbench.TestBenchElement;
@@ -27,10 +26,6 @@ public interface HasCrudView extends HasElementQuery {
 	default Optional<DialogElement> getDialog() {
 		ElementQuery<DialogElement> query = $(DialogElement.class).onPage();
 		return query.exists() ? Optional.of(query.first()) : Optional.empty();
-	}
-
-	default FormButtonsBarElement getButtonsBar() {
-		return getDialog().get().$(getFormClass()).first().$(FormButtonsBarElement.class).first();
 	}
 
 	default FormLayoutElement getForm() {

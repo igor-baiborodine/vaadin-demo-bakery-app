@@ -26,7 +26,7 @@ import com.vaadin.flow.component.charts.model.ListSeries;
 import com.vaadin.flow.component.charts.model.Pane;
 import com.vaadin.flow.component.charts.model.PlotOptionsPie;
 import com.vaadin.flow.component.charts.model.PlotOptionsSolidgauge;
-import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
@@ -47,7 +47,7 @@ import com.kiroule.vaadin.bakeryapp.ui.views.storefront.OrderCard;
 import com.kiroule.vaadin.bakeryapp.ui.views.storefront.beans.OrdersCountDataWithChart;
 
 @Tag("dashboard-view")
-@HtmlImport("src/views/dashboard/dashboard-view.html")
+@JsModule("./src/views/dashboard/dashboard-view.js")
 @Route(value = BakeryConst.PAGE_DASHBOARD, layout = MainView.class)
 @PageTitle(BakeryConst.TITLE_DASHBOARD)
 public class DashboardView extends PolymerTemplate<TemplateModel> {

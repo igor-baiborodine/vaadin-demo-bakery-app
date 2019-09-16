@@ -20,7 +20,7 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
-import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
@@ -38,10 +38,12 @@ import com.vaadin.flow.templatemodel.TemplateModel;
 import com.kiroule.vaadin.bakeryapp.backend.data.OrderState;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.PickupLocation;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.Product;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.User;
+import com.kiroule.vaadin.bakeryapp.backend.service.PickupLocationService;
+import com.kiroule.vaadin.bakeryapp.backend.service.ProductService;
+import com.kiroule.vaadin.bakeryapp.ui.crud.CrudEntityDataProvider;
 import com.kiroule.vaadin.bakeryapp.ui.dataproviders.DataProviderUtil;
-import com.kiroule.vaadin.bakeryapp.ui.dataproviders.PickupLocationDataProvider;
-import com.kiroule.vaadin.bakeryapp.ui.dataproviders.ProductDataProvider;
 import com.kiroule.vaadin.bakeryapp.ui.events.CancelEvent;
 import com.kiroule.vaadin.bakeryapp.ui.utils.FormattingUtils;
 import com.kiroule.vaadin.bakeryapp.ui.utils.converters.LocalTimeConverter;
@@ -49,7 +51,7 @@ import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.ReviewEvent;
 import com.kiroule.vaadin.bakeryapp.ui.views.storefront.events.ValueChangeEvent;
 
 @Tag("order-editor")
-@HtmlImport("src/views/orderedit/order-editor.html")
+@JsModule("./src/views/orderedit/order-editor.js")
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
@@ -108,7 +110,9 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 	private final LocalTimeConverter localTimeConverter = new LocalTimeConverter();
 
 	@Autowired
-	public OrderEditor(PickupLocationDataProvider locationProvider, ProductDataProvider productDataProvider) {
+	public OrderEditor(PickupLocationService locationService, ProductService productService) {
+		DataProvider<PickupLocation, String> locationDataProvider = new CrudEntityDataProvider<>(locationService);
+		DataProvider<Product, String> productDataProvider = new CrudEntityDataProvider<>(productService);
 		itemsEditor = new OrderItemsEditor(productDataProvider);
 
 		itemsContainer.add(itemsEditor);
@@ -136,7 +140,7 @@ public class OrderEditor extends PolymerTemplate<OrderEditor.Model> {
 		binder.bind(dueTime, "dueTime");
 
 		pickupLocation.setItemLabelGenerator(createItemLabelGenerator(PickupLocation::getName));
-		pickupLocation.setDataProvider(locationProvider);
+		pickupLocation.setDataProvider(locationDataProvider);
 		binder.bind(pickupLocation, "pickupLocation");
 		pickupLocation.setRequired(false);
 

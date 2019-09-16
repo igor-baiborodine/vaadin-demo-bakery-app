@@ -1,7 +1,8 @@
-<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
-
-<dom-module id="dashboard-counter-label">
-  <template>
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+class DashboardCounterLabel extends PolymerElement {
+  static get template() {
+    return html`
     <style>
       :host {
         position: relative;
@@ -72,15 +73,12 @@
       <h4 id="title">[[title]]</h4>
       <div id="subtitle" class="subtitle">[[subtitle]]</div>
     </div>
-  </template>
+`;
+  }
 
-  <script>
-    class DashboardCounterLabel extends Polymer.Element {
-      static get is() {
-        return 'dashboard-counter-label';
-      }
-    }
+  static get is() {
+    return 'dashboard-counter-label';
+  }
+}
 
-    window.customElements.define(DashboardCounterLabel.is, DashboardCounterLabel);
-  </script>
-</dom-module>
+window.customElements.define(DashboardCounterLabel.is, DashboardCounterLabel);

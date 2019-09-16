@@ -2,10 +2,10 @@
 <root>
     <windows>
         <driver id="googlechrome">
-            <version id="2.46">
+            <version id="75.0.3770.140">
                 <bitrate thirtytwobit="true" sixtyfourbit="true">
-                    <filelocation>http://chromedriver.storage.googleapis.com/2.46/chromedriver_win32.zip</filelocation>
-                    <hash>a95696782d22d94bb60f83a315e8a584f2ff5db2</hash>
+                    <filelocation>http://chromedriver.storage.googleapis.com/75.0.3770.140/chromedriver_win32.zip</filelocation>
+                    <hash>643862ffe1adafd1eefc251704fa417f7331144a</hash>
                     <hashtype>sha1</hashtype>
                 </bitrate>
             </version>
@@ -13,10 +13,10 @@
     </windows>
     <linux>
         <driver id="googlechrome">
-            <version id="2.46">
+            <version id="75.0.3770.140">
                 <bitrate sixtyfourbit="true">
-                    <filelocation>https://chromedriver.storage.googleapis.com/2.46/chromedriver_linux64.zip</filelocation>
-                    <hash>402a44dc7719f7d40d4493942e2bd3238fa99ce5</hash>
+                    <filelocation>https://chromedriver.storage.googleapis.com/75.0.3770.140/chromedriver_linux64.zip</filelocation>
+                    <hash>e83ebe6d91c27736173fb1aa2f39e98169ee5788</hash>
                     <hashtype>sha1</hashtype>
                 </bitrate>
             </version>
@@ -24,10 +24,10 @@
     </linux>
     <osx>
         <driver id="googlechrome">
-            <version id="2.46">
+            <version id="75.0.3770.140">
                 <bitrate sixtyfourbit="true">
-                    <filelocation>https://chromedriver.storage.googleapis.com/2.46/chromedriver_mac64.zip</filelocation>
-                    <hash>c0d44dea937978f4c762a63ceda539f8c64bb5c5</hash>
+                    <filelocation>https://chromedriver.storage.googleapis.com/75.0.3770.140/chromedriver_mac64.zip</filelocation>
+                    <hash>f6512038646e05328a70ff136619134e7ce0ad41</hash>
                     <hashtype>sha1</hashtype>
                 </bitrate>
             </version>

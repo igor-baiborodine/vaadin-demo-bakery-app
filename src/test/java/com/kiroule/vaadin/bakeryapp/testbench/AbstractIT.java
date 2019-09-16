@@ -1,19 +1,12 @@
 package com.kiroule.vaadin.bakeryapp.testbench;
 
-import java.util.List;
-
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.LoggerFactory;
 
-import com.vaadin.flow.component.cookieconsent.CookieConsent;
-import com.vaadin.flow.component.cookieconsent.testbench.CookieConsentElement;
 import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.LoginViewElement;
-import com.kiroule.vaadin.bakeryapp.testbench.elements.ui.MainViewElement;
 import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
 import com.vaadin.testbench.IPAddress;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
@@ -71,21 +64,5 @@ public abstract class AbstractIT<E extends TestBenchElement> extends ParallelTes
 	}
 
 	protected abstract E openView();
-
-	@Test
-	public void shouldShowCookieConsent() {
-		openView();
-		final MainViewElement mainView = $(MainViewElement.class).first();
-		final List<CookieConsentElement> cookieConsentElements =
-			mainView.$(CookieConsentElement.class).all();
-		Assert.assertEquals(1, cookieConsentElements.size());
-		final CookieConsentElement cookieConsentElement =
-			cookieConsentElements.get(0);
-		Assert.assertEquals(
-			CookieConsentElement.DefaultValues.MESSAGE,
-			cookieConsentElement.getMessage());
-		Assert.assertEquals(CookieConsent.Position.BOTTOM,
-			cookieConsentElement.getPosition());
-	}
 
 }
