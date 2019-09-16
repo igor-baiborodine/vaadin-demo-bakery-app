@@ -233,6 +233,5 @@ typings/
 
 ### Misc ###
 webpack*
-.eslintrc.json
 
 # End of https://www.gitignore.io/api/maven,vaadin,eclipse,intellij,node
