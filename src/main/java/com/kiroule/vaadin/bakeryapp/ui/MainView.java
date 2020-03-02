@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Viewport(VIEWPORT)
-@PWA(name = "Bakery App Starter", shortName = "vaadin-demo-bakery-app",
+@PWA(name = "Bakery App Starter", shortName = "Vaadin Demo Bakery App",
 		startPath = "login",
 		backgroundColor = "#227aef", themeColor = "#227aef",
 		offlinePath = "offline-page.html",
@@ -46,15 +46,12 @@ public class MainView extends AppLayout {
 	private final Tabs menu;
 
 	public MainView() {
-		// Workaround for https://github.com/vaadin/spring/issues/475
-		new OfflineBanner();
-
 		confirmDialog.setCancelable(true);
 		confirmDialog.setConfirmButtonTheme("raised tertiary error");
 		confirmDialog.setCancelButtonTheme("raised tertiary");
 
 		this.setDrawerOpened(false);
-		Span appName = new Span("vaadin-demo-bakery-app");
+		Span appName = new Span("Vaadin Demo Bakery App");
 		appName.addClassName("hide-on-mobile");
 
 		menu = createMenuTabs();

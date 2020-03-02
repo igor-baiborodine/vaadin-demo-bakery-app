@@ -11,6 +11,7 @@ Vaadin Demo Bakery App
 * **V8** - Vaadin 8
 
 ### Updates
+* 2020-03-01  Vaadin 14 - generated the source code by using the Starter Pack.
 * 2019-09-15  Vaadin 14 - generated the source code by using the Starter Pack.
 * 2019-04-30  Vaadin 13 - generated the source code by using the Starter Pack.
 * 2019-01-18  Vaadin 12 - generated the source code by using the Starter Pack.

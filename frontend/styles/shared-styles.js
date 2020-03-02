@@ -86,8 +86,8 @@ $_documentContainer.innerHTML = `<dom-module id="bakery-app-layout-theme" theme-
       }
 
       @media (min-width: 700px) {
-        :host {
-          flex-direction: column-reverse;
+        [part="toolbar"] {
+          order: -1;
         }
       }
     </style>

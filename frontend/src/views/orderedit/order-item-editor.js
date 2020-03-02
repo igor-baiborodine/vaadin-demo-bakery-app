@@ -1,10 +1,10 @@
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-icon/iron-icon.js';
+import '@vaadin/vaadin-text-field/src/vaadin-integer-field.js';
 import '@vaadin/vaadin-text-field/src/vaadin-text-field.js';
 import '@vaadin/vaadin-button/src/vaadin-button.js';
 import '@vaadin/vaadin-form-layout/src/vaadin-form-layout.js';
 import '@vaadin/vaadin-combo-box/src/vaadin-combo-box.js';
-import '../../components/amount-field.js';
 import '../../../styles/shared-styles.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 class OrderItemEditor extends PolymerElement {
@@ -41,8 +41,8 @@ class OrderItemEditor extends PolymerElement {
 
       <vaadin-form-layout id="form2" colspan="16" class="product" style="flex: auto;">
         <vaadin-combo-box id="products" colspan="8" index="[[index]]"></vaadin-combo-box>
-        <amount-field id="amount" colspan="4" index="[[index]]" class="self-start" min="1" max="15" editable="" 
-          pattern="|1[0-5]?|[2-9]"></amount-field>
+        <vaadin-integer-field id="amount" colspan="4" index="[[index]]" class="self-start"
+          min="1" max="15" has-controls prevent-invalid-input></vaadin-integer-field>
         <div id="price" colspan="4" class="money">[[price]]</div>
         <vaadin-text-field id="comment" colspan="12" placeholder="Details" index="[[index]]"></vaadin-text-field>
       </vaadin-form-layout>
