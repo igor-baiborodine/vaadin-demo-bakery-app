@@ -5,7 +5,10 @@ import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.TITLE_LOGOUT;
 import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.TITLE_PRODUCTS;
 import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.TITLE_STOREFRONT;
 import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.TITLE_USERS;
-import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.VIEWPORT;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
@@ -14,32 +17,19 @@ import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.page.Viewport;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.RouterLink;
-import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.VaadinServlet;
 import com.kiroule.vaadin.bakeryapp.app.security.SecurityUtils;
-import com.kiroule.vaadin.bakeryapp.ui.components.OfflineBanner;
 import com.kiroule.vaadin.bakeryapp.ui.views.HasConfirmation;
 import com.kiroule.vaadin.bakeryapp.ui.views.admin.products.ProductsView;
 import com.kiroule.vaadin.bakeryapp.ui.views.admin.users.UsersView;
 import com.kiroule.vaadin.bakeryapp.ui.views.dashboard.DashboardView;
 import com.kiroule.vaadin.bakeryapp.ui.views.storefront.StorefrontView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-@Viewport(VIEWPORT)
-@PWA(name = "Bakery App Starter", shortName = "Vaadin Demo Bakery App",
-		startPath = "login",
-		backgroundColor = "#227aef", themeColor = "#227aef",
-		offlinePath = "offline-page.html",
-		offlineResources = {"images/offline-login-banner.jpg"})
 public class MainView extends AppLayout {
 
 	private final ConfirmDialog confirmDialog = new ConfirmDialog();
@@ -76,13 +66,17 @@ public class MainView extends AppLayout {
 		if (getContent() instanceof HasConfirmation) {
 			((HasConfirmation) getContent()).setConfirmDialog(confirmDialog);
 		}
-
-		String target = RouteConfiguration.forSessionScope().getUrl(this.getContent().getClass());
-		Optional<Component> tabToSelect = menu.getChildren().filter(tab -> {
-			Component child = tab.getChildren().findFirst().get();
-			return child instanceof RouterLink && ((RouterLink) child).getHref().equals(target);
-		}).findFirst();
-		tabToSelect.ifPresent(tab -> menu.setSelectedTab((Tab)tab));
+		RouteConfiguration configuration = RouteConfiguration.forSessionScope();
+		if (configuration.isRouteRegistered(this.getContent().getClass())) {
+			String target = configuration.getUrl(this.getContent().getClass());
+			Optional < Component > tabToSelect = menu.getChildren().filter(tab -> {
+				Component child = tab.getChildren().findFirst().get();
+				return child instanceof RouterLink && ((RouterLink) child).getHref().equals(target);
+			}).findFirst();
+			tabToSelect.ifPresent(tab -> menu.setSelectedTab((Tab) tab));
+		} else {
+			menu.setSelectedTab(null);
+		}
 	}
 
 	private static Tabs createMenuTabs() {
@@ -122,7 +116,9 @@ public class MainView extends AppLayout {
 
 	private static Anchor createLogoutLink(String contextPath) {
 		final Anchor a = populateLink(new Anchor(), VaadinIcon.ARROW_RIGHT, TITLE_LOGOUT);
+		// inform vaadin-router that it should ignore this link
 		a.setHref(contextPath + "/logout");
+		a.getElement().setAttribute("router-ignore", true);
 		return a;
 	}
 

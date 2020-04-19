@@ -20,7 +20,6 @@ import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
 @JsModule("./src/views/errors/access-denied-view.js")
 @ParentLayout(MainView.class)
 @PageTitle(BakeryConst.TITLE_ACCESS_DENIED)
-@Route
 public class AccessDeniedView extends PolymerTemplate<TemplateModel> implements HasErrorParameter<AccessDeniedException> {
 
 	@Override

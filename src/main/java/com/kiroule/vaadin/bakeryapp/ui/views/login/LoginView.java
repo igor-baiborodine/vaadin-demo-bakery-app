@@ -17,7 +17,6 @@ import com.kiroule.vaadin.bakeryapp.ui.views.storefront.StorefrontView;
 @Route
 @PageTitle("Vaadin Demo Bakery App")
 @JsModule("./styles/shared-styles.js")
-@Viewport(BakeryConst.VIEWPORT)
 public class LoginView extends LoginOverlay
 	implements AfterNavigationObserver, BeforeEnterObserver {
 

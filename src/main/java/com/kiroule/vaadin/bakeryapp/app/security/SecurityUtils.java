@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.vaadin.flow.server.ServletHelper.RequestType;
+import com.vaadin.flow.server.HandlerHelper.RequestType;
 import com.vaadin.flow.shared.ApplicationConstants;
 import com.kiroule.vaadin.bakeryapp.ui.views.errors.AccessDeniedView;
 import com.kiroule.vaadin.bakeryapp.ui.views.errors.CustomRouteNotFoundError;
@@ -40,10 +40,12 @@ public final class SecurityUtils {
 	 */
 	public static String getUsername() {
 		SecurityContext context = SecurityContextHolder.getContext();
-		Object principal = context.getAuthentication().getPrincipal();
-		if(principal instanceof UserDetails) {
-			UserDetails userDetails = (UserDetails) context.getAuthentication().getPrincipal();
-			return userDetails.getUsername();
+		if (context != null && context.getAuthentication() != null) {
+			Object principal = context.getAuthentication().getPrincipal();
+			if(principal instanceof UserDetails) {
+				UserDetails userDetails = (UserDetails) context.getAuthentication().getPrincipal();
+				return userDetails.getUsername();
+			}
 		}
 		// Anonymous or no authentication.
 		return null;

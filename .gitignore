@@ -231,7 +231,28 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-### Misc ###
-webpack*
-
 # End of https://www.gitignore.io/api/maven,vaadin,eclipse,intellij,node
+
+### Misc ###
+# Testing
+.driver
+.gatling
+error-screenshots
+selenium_standalone_zips
+webdriver/
+
+# macOs
+.DS_Store
+
+# Frontend
+/build-tools/bin/
+/build-tools/etc/
+/build-tools/lib/
+/build-tools/node/
+/build-tools/node_modules/
+/build-tools/yarn.lock
+
+# NPM
+node_modules
+webpack.generated.js
+webpack.config.js
