@@ -113,7 +113,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) {
 		web.ignoring().antMatchers(
-				// Vaadin Flow static resources
+				// client-side JS code
 				"/VAADIN/**",
 
 				// the standard favicon URI
@@ -131,16 +131,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				"/icons/**",
 				"/images/**",
 
-				// (development mode) static resources
-				"/frontend/**",
-
-				// (development mode) webjars
-				"/webjars/**",
-
 				// (development mode) H2 debugging console
-				"/h2-console/**",
-
-				// (production mode) static resources
-				"/frontend-es5/**", "/frontend-es6/**");
+				"/h2-console/**"
+		);
 	}
 }
