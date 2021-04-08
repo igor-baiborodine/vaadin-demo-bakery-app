@@ -8,9 +8,17 @@ public class BakeryConst {
 
 	public static final Locale APP_LOCALE = Locale.US;
 
+	public static final String ORDER_ID = "orderID";
+	public static final String EDIT_SEGMENT = "edit";
+
 	public static final String PAGE_ROOT = "";
 	public static final String PAGE_STOREFRONT = "storefront";
-	public static final String PAGE_STOREFRONT_EDIT = "storefront/edit";
+	public static final String PAGE_STOREFRONT_ORDER_TEMPLATE =
+			PAGE_STOREFRONT + "/:" + ORDER_ID + "?";
+	public static final String PAGE_STOREFRONT_ORDER_EDIT_TEMPLATE =
+			PAGE_STOREFRONT + "/:" + ORDER_ID + "/" + EDIT_SEGMENT;
+	public static final String PAGE_STOREFRONT_ORDER_EDIT =
+			"storefront/%d/edit";
 	public static final String PAGE_DASHBOARD = "dashboard";
 	public static final String PAGE_USERS = "users";
 	public static final String PAGE_PRODUCTS = "products";

@@ -65,7 +65,7 @@ public class ProductsView extends AbstractBakeryCrudView<Product> {
 		String currencySymbol = Currency.getInstance(BakeryConst.APP_LOCALE).getSymbol();
 		price.setPrefixComponent(new Span(currencySymbol));
 
-		return new BinderCrudEditor<Product>(binder, form);
+		return new BinderCrudEditor<>(binder, form);
 	}
 
 }

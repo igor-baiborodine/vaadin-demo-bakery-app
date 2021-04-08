@@ -1,29 +1,30 @@
 package com.kiroule.vaadin.bakeryapp.ui.views.storefront;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
-import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
-import com.vaadin.flow.component.dependency.JsModule;
-import com.vaadin.flow.component.dialog.Dialog;
-import com.kiroule.vaadin.bakeryapp.backend.data.entity.util.EntityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.OptionalParameter;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.templatemodel.TemplateModel;
 import com.kiroule.vaadin.bakeryapp.app.HasLogger;
 import com.kiroule.vaadin.bakeryapp.backend.data.entity.Order;
+import com.kiroule.vaadin.bakeryapp.backend.data.entity.util.EntityUtil;
 import com.kiroule.vaadin.bakeryapp.ui.MainView;
 import com.kiroule.vaadin.bakeryapp.ui.components.SearchBar;
 import com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst;
@@ -31,14 +32,17 @@ import com.kiroule.vaadin.bakeryapp.ui.views.EntityView;
 import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderDetails;
 import com.kiroule.vaadin.bakeryapp.ui.views.orderedit.OrderEditor;
 
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.EDIT_SEGMENT;
+import static com.kiroule.vaadin.bakeryapp.ui.utils.BakeryConst.ORDER_ID;
+
 @Tag("storefront-view")
 @JsModule("./src/views/storefront/storefront-view.js")
-@Route(value = BakeryConst.PAGE_STOREFRONT, layout = MainView.class)
-@RouteAlias(value = BakeryConst.PAGE_STOREFRONT_EDIT, layout = MainView.class)
+@Route(value = BakeryConst.PAGE_STOREFRONT_ORDER_TEMPLATE, layout = MainView.class)
+@RouteAlias(value = BakeryConst.PAGE_STOREFRONT_ORDER_EDIT_TEMPLATE, layout = MainView.class)
 @RouteAlias(value = BakeryConst.PAGE_ROOT, layout = MainView.class)
 @PageTitle(BakeryConst.TITLE_STOREFRONT)
 public class StorefrontView extends PolymerTemplate<TemplateModel>
-		implements HasLogger, HasUrlParameter<Long>, EntityView<Order> {
+		implements HasLogger, BeforeEnterObserver, EntityView<Order> {
 
 	@Id("search")
 	private SearchBar searchBar;
@@ -98,10 +102,11 @@ public class StorefrontView extends PolymerTemplate<TemplateModel>
 	}
 
 	@Override
-	public void setParameter(BeforeEvent event, @OptionalParameter Long orderId) {
-		boolean editView = event.getLocation().getPath().contains(BakeryConst.PAGE_STOREFRONT_EDIT);
-		if (orderId != null) {
-			presenter.onNavigation(orderId, editView);
+	public void beforeEnter(BeforeEnterEvent event) {
+		Optional<Long> orderId = event.getRouteParameters().getLong(ORDER_ID);
+		if (orderId.isPresent()) {
+			boolean isEditView = EDIT_SEGMENT.equals(getLastSegment(event));
+			presenter.onNavigation(orderId.get(), isEditView);
 		} else if (dialog.isOpened()) {
 			presenter.closeSilently();
 		}
@@ -156,5 +161,10 @@ public class StorefrontView extends PolymerTemplate<TemplateModel>
 	@Override
 	public String getEntityName() {
 		return EntityUtil.getName(Order.class);
+	}
+
+	private String getLastSegment(BeforeEnterEvent event) {
+		List<String> segments = event.getLocation().getSegments();
+		return segments.get(segments.size() - 1);
 	}
 }
