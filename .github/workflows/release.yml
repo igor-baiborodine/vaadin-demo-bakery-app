@@ -36,7 +36,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: v${{ github.event.inputs.releaseVersion }}
+          ref: ${{ github.event.inputs.releaseVersion }}
 
       - name: Build image
         run: |
