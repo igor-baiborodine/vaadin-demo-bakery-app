@@ -22,7 +22,7 @@ $ docker build --rm -t bakery-app .
 $ docker run --name bakery-app -d bakery-app
 $ docker logs -f bakery-app 
 ```
-The application is available at `http://container-ip:8080`. To get the container IP address, execute the following command:
+The application is available at `http://container-ip:8080/`. To get the container IP address, execute the following command:
 ```console
 $ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' bakery-app
 ```
@@ -30,7 +30,7 @@ Via the host machine on port 80:
 ```console
 $ docker run --name bakery-app -p 80:8080 -d bakery-app
 ```
-The application is available at `http://localhost:80` or `http://host-ip:80`.
+The application is available at `http://localhost:80/` or `http://host-ip:80/`.
 
 ... or with an [image from Docker Hub](https://hub.docker.com/r/ibaiborodine/vaadin-bakery-app):
 ```console
