@@ -18,8 +18,6 @@ Vaadin Demo Bakery App
 
 # Running the Project in Production Mode with Docker 
 ```bash
-$ git clone https://github.com/igor-baiborodine/vaadin-demo-bakery-app.git
-$ cd vaadin-demo-bakery-app
 $ docker build --rm -t bakery-app .
 $ docker run --name bakery-app -d bakery-app
 $ docker logs -f bakery-app 
