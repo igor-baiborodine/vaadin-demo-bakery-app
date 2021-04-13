@@ -33,5 +33,5 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Run Maven Verify
-        run: mvn -B clean verify
+      - name: Run Maven Package
+        run: mvn -B clean package -Pproduction
