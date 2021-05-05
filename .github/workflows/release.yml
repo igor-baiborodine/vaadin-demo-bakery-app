@@ -7,7 +7,7 @@ on:
         required: true
 
 env:
-  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/vaadin-bakery-app
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}
   IMAGE_TAG:  ${{ github.event.inputs.releaseVersion }}
 
 jobs:
