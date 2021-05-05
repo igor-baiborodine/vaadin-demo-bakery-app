@@ -15,7 +15,8 @@ jobs:
     name: Tag Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out project
+        uses: actions/checkout@v2
 
       - name: Configure Git user
         run: |
