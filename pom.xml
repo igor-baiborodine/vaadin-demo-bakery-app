@@ -19,7 +19,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <!-- Dependencies -->
-        <vaadin.version>14.5.0.alpha3</vaadin.version>
+        <vaadin.version>14.6.3</vaadin.version>
 
         <!-- Overrides the old version specified by the Spring Boot parent -->
         <selenium.version>3.141.59</selenium.version>
@@ -215,6 +215,12 @@
             <artifactId>vaadin-testbench</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 
@@ -315,6 +321,14 @@
                     <name>it</name>
                 </property>
             </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>io.github.bonigarcia</groupId>
+                    <artifactId>webdrivermanager</artifactId>
+                    <version>4.4.1</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
             <build>
                 <plugins>
                     <plugin>
@@ -353,32 +367,10 @@
                         <configuration>
                             <trimStackTrace>false</trimStackTrace>
                             <systemPropertyVariables>
-                                <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
                                 <com.vaadin.testbench.Parameters.runLocally>chrome</com.vaadin.testbench.Parameters.runLocally>
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
-                    <!-- Plugin for automatically download Chrome Driver for tests -->
-                    <plugin>
-                        <groupId>com.lazerycode.selenium</groupId>
-                        <artifactId>driver-binary-downloader-maven-plugin</artifactId>
-                        <version>1.0.17</version>
-                        <configuration>
-                            <!-- root directory that downloaded driver binaries will be stored
-                                in -->
-                            <onlyGetDriversForHostOperatingSystem>true</onlyGetDriversForHostOperatingSystem>
-                            <rootStandaloneServerDirectory>.driver</rootStandaloneServerDirectory>
-                            <customRepositoryMap>webdrivers.xml</customRepositoryMap>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>selenium</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
                 </plugins>
             </build>
         </profile>

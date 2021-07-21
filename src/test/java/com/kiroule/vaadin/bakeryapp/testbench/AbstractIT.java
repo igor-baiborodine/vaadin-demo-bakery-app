@@ -1,5 +1,6 @@
 package com.kiroule.vaadin.bakeryapp.testbench;
 
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.BrowserType;
@@ -12,6 +13,8 @@ import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchDriverProxy;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.parallel.ParallelTest;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public abstract class AbstractIT<E extends TestBenchElement> extends ParallelTest {
 	public String APP_URL = "http://localhost:8080/";
@@ -30,6 +33,11 @@ public abstract class AbstractIT<E extends TestBenchElement> extends ParallelTes
 		if (getRunLocallyBrowser() == null) {
 			APP_URL = "http://" + IPAddress.findSiteLocalAddress() + ":8080/";
 		}
+	}
+
+	@BeforeClass
+	public static void setupClass() {
+		WebDriverManager.chromedriver().setup();
 	}
 
 	@Override
