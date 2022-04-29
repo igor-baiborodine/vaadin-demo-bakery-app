@@ -1,3 +1,5 @@
+### This project is no longer maintained!
+
 Vaadin Demo Bakery App
 =======================
 ![Master Branch](https://github.com/igor-baiborodine/vaadin-demo-bakery-app/actions/workflows/build.yml/badge.svg?branch=master)
